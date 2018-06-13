@@ -1,4 +1,4 @@
-"""DjangoDemo URL Configuration
+"""MicroWeb URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
@@ -20,7 +20,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('micro/', include('wallpaper.urls')),
+    path('wallpaper/', include('wallpaper.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('', views.api_root),
 ]

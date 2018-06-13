@@ -1,0 +1,7 @@
+certifi==2018.4.16
+Django==2.0.6
+djangorestframework==3.8.2
+Pygments==2.2.0
+PyMySQL==0.8.1
+pytz==2018.4
+wincertstore==0.2

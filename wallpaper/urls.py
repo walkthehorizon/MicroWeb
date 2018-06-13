@@ -2,10 +2,18 @@ from django.urls import path
 import wallpaper.views as bv
 
 urlpatterns = [
-    path('list/', bv.SnippetList.as_view()),
-    path('snippets/<int:pk>/', bv.SnippetDetail.as_view()),
-    path('wallpaper/', bv.WallPaperList.as_view(), name='wallpaper-list'),
-    path('wallpaper/detail/<int:id>/', bv.WallPaperDetail.as_view(), name='wallpaperDetail'),
-    path('users/', bv.UserList.as_view(), name='user-list'),
-    path('users/int<id>/', bv.UserDetail.as_view(), name='userDetail'),
+    path('user/list/', bv.UserList.as_view(), name='user-list'),
+    path('splash/', bv.GetSplash.as_view(), name='get-splash'),
+    path('subject/list/', bv.SubjectList.as_view(), name='subject-list'),
+    path('subject/detail/<int:pk>/', bv.GetWallpaperBySubjectId.as_view(), name='GetWallpaperBySubject'),
+    path('account/register/', bv.register_user, name="register-user"),
+    path('account/login/', bv.login_user, name="login-user"),
+    path('account/logout/', bv.logout_user, name="logout-user"),
+    path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
+    path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
+    path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(),name='GetSubjectSupportCount'),
+
+    path('wallpaper/list', bv.WallPaperList.as_view(), name='wallpaper-list'),
+    path('wallpaper/detail/<int:pk>/', bv.WallPaperDetail.as_view(), name='wallpaper-detail'),
+    path('category/list', bv.CategoryList.as_view(), name='category-list'),
 ]
