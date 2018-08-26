@@ -16,7 +16,7 @@ import time
 import tinify
 
 # 本虫使用方法，首先通过半次元日榜排行查看你需要的数据，以排名为准输入其排名,传递一个tuple即可，入口方法：start_bcy_spider
-# 已上传日期记录[0819,0818,]
+# 已上传日期记录[0817,0825]
 # 腾讯云存储
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 secret_id = 'AKIDc8TgYF5ANO5h8BkwWv89nHajgWCha73n'  # 替换为用户的 secretId
@@ -27,7 +27,7 @@ config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
 client = CosS3Client(config)
 
 # tiny压缩
-tinify.key = "FQU0jxywTfb0VB2xdWD05HqlqBYntdYC"
+tinify.key = "9HsFvbIYmXf8ykQrVdcDTBiikR1AStww"
 
 if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MicroWeb.settings')
@@ -50,7 +50,7 @@ query_data = {'iid': '36046028020', 'device_id': '46019894537', 'ac': 'wifi', 'c
               'manifest_version_code': '20180605', 'resolution': '1080*2160', 'dpi': '480',
               'update_version_code': '412', '_rticket': str(int(time.time()))}
 
-base_image_cloud_path = 'http://wallpager-1251812446.cosbj.myqcloud.com/image/'
+base_image_cloud_path = 'http://wallpager-1251812446.cosbj.myqcloud.com/image'
 
 
 # str不是16的倍数那就补足为16的倍数
@@ -74,22 +74,24 @@ def generate_encrypt_data(dict1, escape):
     return encrypted_text
 
 
-def get_cos_play_subject_by_id(item_id):
+def get_cos_play_subject_by_id(item_id, rank_pos):
     dict_data = {"token": "3e6ac2ddeb8064ac", "item_id": item_id}
     query_data['data'] = generate_encrypt_data(dict_data, '\x04')
     detail_data = requests.post(bcy_detail_url, headers=headers, data=query_data)
-    detail_json = detail_data.json()['data']
+    # print(detail_data.text)
+    detail_json = detail_data.json()["data"]
     # print(detail_json)
     multi_pic = detail_json['multi']
-    tag = detail_json['post_core']['name']
+    tag = detail_json['work']
     desc = detail_json['plain']
     name = tag
+    print(tag)
     subject = Subject(owner_id=1, name=name, description=desc, tag=name, type=2)
     subject.save()
     i = 1
     for pic in multi_pic:
         path = pic['path'].replace('/w650', '')
-        dir_name = 'id_' + str(subject.id) + '_' + 'type_2'
+        dir_name = 'id_' + str(subject.id) + '_' + 'type_2' + '_' + date + '_' + str(rank_pos)
         file_name = str(i) + '.jpg'
         cloud_image_path = base_image_cloud_path + '/' + dir_name + '/' + file_name
         if i == 1:
@@ -124,7 +126,7 @@ def save_pic_to_disk(url, file_name, dir_name):
         print(url + "  " + e.message)
     except tinify.ServerError as e:
         print(url + "  " + e.message)
-        save_pic_to_disk(url, file_name, dir_name)
+        # save_pic_to_disk(url, file_name, dir_name)
     except tinify.ConnectionError as e:
         print(url + "  " + e.message)
         save_pic_to_disk(url, file_name, dir_name)
@@ -156,20 +158,20 @@ def save_pic_to_txcloud(file_name, localfile):
 #     generate_encrypt_data(dict_data)
 
 
-def get_cos_rank_list(rank, page):
+def get_cos_rank_list(rank, page, date):
     if len(rank) == 0:
         return
-    dict_data = {"date": "20180818", "grid_type": "timeline", "token": "3e6ac2ddeb8064ac", "p": str(page),
+    dict_data = {"date": date, "grid_type": "timeline", "token": "3e6ac2ddeb8064ac", "p": str(page),
                  "type": "lastday"}
     query_data['data'] = generate_encrypt_data(dict_data, '\x02')
     rank_data = requests.post(bcy_list_url, headers=headers, data=query_data).json()['data']
     for i in rank:
         item_id = rank_data[i]['item_detail']['item_id']
-        print("开始抓取：" + rank_data[i]['item_detail']['item_id'] + "#################")
-        get_cos_play_subject_by_id(item_id)
+        print("开始抓取第" + str(i) + "个，id：" + item_id + "#################")
+        get_cos_play_subject_by_id(item_id, i+1)
 
 
-def start_bcy_spider(rank_tuple):
+def start_bcy_spider(rank_tuple, date):
     list1 = []
     list2 = []
     list3 = []
@@ -180,11 +182,12 @@ def start_bcy_spider(rank_tuple):
             list2.append(i % 20 - 1)
         if i > 40:
             list3.append(i % 20 - 1)
-    get_cos_rank_list(list1, 1)
-    get_cos_rank_list(list2, 2)
-    get_cos_rank_list(list3, 3)
+    get_cos_rank_list(list1, 1, date)
+    get_cos_rank_list(list2, 2, date)
+    get_cos_rank_list(list3, 3, date)
 
 
+date = "20180814"
 # 数据范围（1-50）
-rank_tuple = (10, 11, 16, 28, 37)
-start_bcy_spider(rank_tuple)
+rank_tuple = (3, 4, 7, 10, 12, 17, 20, 23, 37, 45, 50)
+start_bcy_spider(rank_tuple, date)
