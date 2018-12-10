@@ -51,6 +51,7 @@ class Subject(models.Model):
     created = models.DateTimeField(verbose_name='创建日期', default=timezone.now)
     support_people = models.ManyToManyField(to='MicroUser', related_name='subject_support', blank=True)
     supported = models.BooleanField(default=False)
+    bcy_id = models.CharField(max_length=30, default="", blank=True)
 
     class Meta:
         ordering = ("id",)
