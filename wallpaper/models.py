@@ -46,12 +46,16 @@ class Subject(models.Model):
     description = models.TextField(max_length=300, default="", blank=True)
     cover = models.URLField(default="")
     tag = models.CharField(max_length=60, default="", blank=True)
-    # 1魅族 2半次元 3mm131
-    type = models.IntegerField(default=1)
     created = models.DateTimeField(verbose_name='创建日期', default=timezone.now)
+    # 魅族、半次元、 MM131
+    source = models.CharField(default="", max_length=60)
+    # 数据来源id
+    source_id = models.CharField(max_length=30, default="", blank=True)
+    # 点赞&收藏
     support_people = models.ManyToManyField(to='MicroUser', related_name='subject_support', blank=True)
     supported = models.BooleanField(default=False)
-    bcy_id = models.CharField(max_length=30, default="", blank=True)
+
+    # bcy_id = models.CharField(max_length=30, default="", blank=True)
 
     class Meta:
         ordering = ("id",)
@@ -64,20 +68,25 @@ class Wallpaper(models.Model):
     owner = models.ForeignKey('MicroUser', default=1, on_delete=models.CASCADE, related_name='wallpapers')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, blank=True, null=True, related_name='wallpaper')
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, blank=True, null=True, related_name='wallpaper')
-    created = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=30, default="", blank=True)
-    describe = models.TextField(max_length=300, default="", blank=True)
-    small_url = models.URLField(default="")
+    url = models.URLField(default="")
+    origin_url = models.URLField(default="")
     sw = models.IntegerField(default=0, blank=True)
     sh = models.IntegerField(default=0, blank=True)
-    big_url = models.URLField(default="")
-    source = models.CharField(max_length=30, default="来自网络")
+    created = models.DateTimeField(auto_now_add=True)
+    # 魅族、半次元、 MM131
+    source = models.CharField(default="", max_length=60)
+    # 数据来源id
+    source_id = models.CharField(max_length=30, default="", blank=True)
+
+    # source = models.CharField(max_length=30, default="来自网络")
+    # name = models.CharField(max_length=30, default="", blank=True)
+    # describe = models.TextField(max_length=300, default="", blank=True)
 
     class Meta:
         ordering = ('id',)
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
 
 
 class Splash(models.Model):
