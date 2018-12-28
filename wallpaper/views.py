@@ -22,6 +22,7 @@ from wallpaper import state
 from wallpaper.state import generate_result_json
 from wallpaper.state import dump_result_json
 import django_filters.rest_framework as filters
+from datetime import datetime
 
 
 @api_view(['GET'])
@@ -104,36 +105,36 @@ class SubjectList(generics.ListAPIView):
     serializer_class = SubjectSerializer
     queryset = Subject.objects.all()
 
-    def filter_queryset(self, queryset):
-        limit = self.request.query_params.get('limit')
-        offset = self.request.query_params.get('offset')
-        if limit is None or offset is None:
-            return queryset.filter(id=-1)
-        offset = int(offset)
-        limit = int(limit)
-        subject_type = self.request.query_params.get('subject_type')
-        if 0 < int(subject_type) < 4:
-            queryset = queryset.filter(type=subject_type).order_by('-created')
-            # for i in (offset, max(offset, min(offset + limit - 1, len(queryset) - 1))):
-            #     subject = queryset[i]
-            #     try:
-            #         # print(subject.support_people.all())
-            #         subject.support_people.all().get(id=self.request.user.id)
-            #         subject.supported = True
-            #     except MicroUser.DoesNotExist:
-            #         subject.supported = False
-            return queryset
-        else:
-            queryset = queryset.order_by('-created')
-            # for i in (offset, max(offset, min(offset + limit - 1, len(queryset) - 1))):
-            #     subject = queryset[i]
-            #     try:
-            #         # print(subject.support_people.all())
-            #         subject.support_people.all().get(id=self.request.user.id)
-            #         subject.supported = True
-            #     except MicroUser.DoesNotExist:
-            #         subject.supported = False
-            return queryset
+    # def filter_queryset(self, queryset):
+    # limit = self.request.query_params.get('limit')
+    # offset = self.request.query_params.get('offset')
+    # if limit is None or offset is None:
+    #     return queryset.filter(id=-1)
+    # offset = int(offset)
+    # limit = int(limit)
+    # subject_type = self.request.query_params.get('subject_type')
+    # if 0 < int(subject_type) < 4:
+    #     queryset = queryset.filter(type=subject_type).order_by('-created')
+    #     # for i in (offset, max(offset, min(offset + limit - 1, len(queryset) - 1))):
+    #     #     subject = queryset[i]
+    #     #     try:
+    #     #         # print(subject.support_people.all())
+    #     #         subject.support_people.all().get(id=self.request.user.id)
+    #     #         subject.supported = True
+    #     #     except MicroUser.DoesNotExist:
+    #     #         subject.supported = False
+    #     return queryset
+    # else:
+    #     queryset = queryset.order_by('-created')
+    #     # for i in (offset, max(offset, min(offset + limit - 1, len(queryset) - 1))):
+    #     #     subject = queryset[i]
+    #     #     try:
+    #     #         # print(subject.support_people.all())
+    #     #         subject.support_people.all().get(id=self.request.user.id)
+    #     #         subject.supported = True
+    #     #     except MicroUser.DoesNotExist:
+    #     #         subject.supported = False
+    #     return queryset
 
 
 class GetPictureByCategoryId(generics.ListAPIView):
@@ -174,42 +175,41 @@ class GetSplash(generics.RetrieveAPIView):
         queryset = self.get_queryset().all()
         return get_object_or_404(queryset, pk=queryset.order_by('-id')[0].id)
 
-
-@api_view(['PUT'])
-def put_subject_support(request):
-    user = request.user
-    if user is None or not user.is_active:
-        return generate_result_json(state_code=state.STATE_INVALID_USER)
-    subject_id = request.data.get('subjectId')
-    support_type = request.data.get('type')
-    subject = Subject.objects.get(id=subject_id)
-    if subject is None:
-        return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
-    if support_type == '1':
-        subject.support_people.add(user)
-    if support_type == '-1':
-        subject.support_people.remove(user)
-    # print(subject.support_people.all())
-    return generate_result_json(state_code=state.STATE_SUCCESS)
-
-
-@api_view(['GET'])
-def get_subject_support_count(request):
-    lookup_field = 'subjectId'
-    return generate_result_json(state_code=state.STATE_SUCCESS)
-    # subject_id = request.GET.get('subjectId', '2853')
-    # subject = Subject.objects.get(id=subject_id)
-    # if subject is None:
-    #     return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
-    # return generate_result_json(state_code=state.STATE_SUCCESS, data=str(len(subject.support_people.all())))
-
-
-class GetSubjectSupportCount(generics.GenericAPIView):
-    lookup_field = 'subjectId'
-
-    def get(self, request, subjectId):
-        try:
-            subject = Subject.objects.get(id=subjectId)
-        except Subject.DoesNotExist:
-            return Response(generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST).content)
-        return Response(dump_result_json(state_code=state.STATE_SUCCESS, data=len(subject.support_people.all())))
+# @api_view(['PUT'])
+# def put_subject_support(request):
+#     user = request.user
+#     if user is None or not user.is_active:
+#         return generate_result_json(state_code=state.STATE_INVALID_USER)
+#     subject_id = request.data.get('subjectId')
+#     support_type = request.data.get('type')
+#     subject = Subject.objects.get(id=subject_id)
+#     if subject is None:
+#         return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
+#     if support_type == '1':
+#         subject.support_people.add(user)
+#     if support_type == '-1':
+#         subject.support_people.remove(user)
+#     # print(subject.support_people.all())
+#     return generate_result_json(state_code=state.STATE_SUCCESS)
+#
+#
+# @api_view(['GET'])
+# def get_subject_support_count(request):
+#     lookup_field = 'subjectId'
+#     return generate_result_json(state_code=state.STATE_SUCCESS)
+#     # subject_id = request.GET.get('subjectId', '2853')
+#     # subject = Subject.objects.get(id=subject_id)
+#     # if subject is None:
+#     #     return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
+#     # return generate_result_json(state_code=state.STATE_SUCCESS, data=str(len(subject.support_people.all())))
+#
+#
+# class GetSubjectSupportCount(generics.GenericAPIView):
+#     lookup_field = 'subjectId'
+#
+#     def get(self, request, subjectId):
+#         try:
+#             subject = Subject.objects.get(id=subjectId)
+#         except Subject.DoesNotExist:
+#             return Response(generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST).content)
+#         return Response(dump_result_json(state_code=state.STATE_SUCCESS, data=len(subject.support_people.all())))

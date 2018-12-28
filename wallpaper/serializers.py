@@ -21,8 +21,8 @@ class WallPagerSerializer(serializers.ModelSerializer):
         model = Wallpaper
         # owner = serializers.ReadOnlyField(source='owner.username')
         # subject = serializers.ReadOnlyField(source='subject.name')
-        owner = serializers.ReadOnlyField(source='owner.nickname')
-        fields = ('id', 'name', 'describe', 'small_url', 'big_url', 'source', 'owner')
+        # owner = serializers.ReadOnlyField(source='owner.nickname')
+        fields = ('id', 'url', 'origin_url', 'sw', 'sh')
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -30,12 +30,13 @@ class SubjectSerializer(serializers.ModelSerializer):
     #     many=True,
     #     queryset=Wallpaper.objects.all(),
     #     view_name="wallpaper-detail")
-    owner = MicroUserSerializer()
+
+    # owner = MicroUserSerializer()
 
     class Meta:
         model = Subject
-        fields = ('id', 'name', 'cover', 'description', 'owner', 'type', 'supported')
-        depth = 1
+        fields = ('id', 'name', 'cover', 'description', 'tag', 'created')
+        # depth = 1
 
 
 class CategorySerializer(serializers.ModelSerializer):

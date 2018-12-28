@@ -51,8 +51,9 @@ class Subject(models.Model):
     source = models.CharField(default="", max_length=60)
     # 数据来源id
     source_id = models.CharField(max_length=30, default="", blank=True)
-    # 点赞&收藏
-    support_people = models.ManyToManyField(to='MicroUser', related_name='subject_support', blank=True)
+    # # 点赞&收藏
+    # support_people = models.ManyToManyField(to='MicroUser', on_delete=models.CASCADE, related_name='subject_support',
+    #                                         blank=True)
     supported = models.BooleanField(default=False)
 
     # bcy_id = models.CharField(max_length=30, default="", blank=True)

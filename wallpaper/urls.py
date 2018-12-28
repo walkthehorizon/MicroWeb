@@ -10,8 +10,8 @@ urlpatterns = [
     path('account/login/', bv.login_user, name="login-user"),
     path('account/logout/', bv.logout_user, name="logout-user"),
     path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
-    path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
-    path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(),name='GetSubjectSupportCount'),
+    # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
+    # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(),name='GetSubjectSupportCount'),
 
     path('wallpaper/list', bv.WallPaperList.as_view(), name='wallpaper-list'),
     path('wallpaper/detail/<int:pk>/', bv.WallPaperDetail.as_view(), name='wallpaper-detail'),
