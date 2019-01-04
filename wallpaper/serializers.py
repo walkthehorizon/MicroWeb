@@ -32,6 +32,7 @@ class SubjectSerializer(serializers.ModelSerializer):
     #     view_name="wallpaper-detail")
 
     # owner = MicroUserSerializer()
+    created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
     class Meta:
         model = Subject

@@ -1,28 +1,22 @@
-import django_filters
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.generics import get_object_or_404
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
+import json
+
+from django.contrib import auth
+from django_filters import rest_framework
+from rest_framework import filters
+from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import status
-from rest_framework.views import APIView
-
-from wallpaper.models import *
-from rest_framework.request import Request
-from wallpaper.serializers import *
-from rest_framework import generics
-from wallpaper.permissions import IsOwnerOrReadOnly
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from django.contrib import auth
-import json
+
 from wallpaper import state
+from wallpaper.permissions import IsOwnerOrReadOnly
+from wallpaper.serializers import *
+from wallpaper.state import CustomResponse, STATE_SUCCESS
 from wallpaper.state import generate_result_json
-from wallpaper.state import dump_result_json
-import django_filters.rest_framework as filters
-from datetime import datetime
+from collections import OrderedDict
 
 
 @api_view(['GET'])
@@ -33,10 +27,87 @@ def api_root(request, format=None):
     })
 
 
+class CustomModelView(viewsets.ModelViewSet):
+    # pagination_class = LargeResultsSetPagination
+    # filter_class = ServerFilter
+    # queryset = ''
+    # serializer_class = ''
+    # permission_classes = ()
+    # filter_fields = ()
+    # search_fields = ()
+    filter_backends = (rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return CustomResponse(data=serializer.data,
+                              headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return CustomResponse(data=serializer.data, )
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return CustomResponse(data=serializer.data, )
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return CustomResponse(data=serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return CustomResponse(data=[])
+
+
+class CustomReadOnlyModelView(viewsets.ReadOnlyModelViewSet):
+    queryset = ''
+    serializer_class = ''
+    permission_classes = ()
+    filter_fields = ()
+    search_fields = ()
+    filter_backends = (rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return CustomResponse(data=serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return CustomResponse(data=serializer.data)
+
+
 class UserList(generics.ListAPIView):
     queryset = MicroUser.objects.all()
     serializer_class = MicroUserSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (rest_framework.DjangoFilterBackend,)
 
 
 @api_view(['POST'])
@@ -85,13 +156,14 @@ def logout_user(request):
     return generate_result_json(1)
 
 
-class WallPaperList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+class WallPapersViewSet(CustomReadOnlyModelView):
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
     serializer_class = WallPagerSerializer
+    filter_fields = ('subject_id',)
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(owner=self.request.user)
 
 
 class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -101,9 +173,22 @@ class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 # 依照type筛选数据
-class SubjectList(generics.ListAPIView):
+class SubjectViewSet(CustomReadOnlyModelView):
+    lookup_field = 'id'
+
     serializer_class = SubjectSerializer
     queryset = Subject.objects.all()
+
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.filter_queryset(self.get_queryset())
+    #
+    #     page = self.paginate_queryset(queryset)
+    #     if page is not None:
+    #         serializer = self.get_serializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return CustomResponse(serializer.data)
 
     # def filter_queryset(self, queryset):
     # limit = self.request.query_params.get('limit')
@@ -146,9 +231,9 @@ class GetPictureByCategoryId(generics.ListAPIView):
         return Wallpaper.objects.filter(category_id=self.kwargs.get('id'))
 
 
-class GetWallpaperBySubjectId(generics.ListAPIView):
+class GetSubjectWallpaper(generics.ListAPIView):
     serializer_class = WallPagerSerializer
-    lookup_field = 'pk'
+    lookup_field = 'id'
 
     def get_queryset(self):
         # print(self.request.query_params.keys())
@@ -165,15 +250,18 @@ class CategoryList(generics.ListAPIView):
     #     serializer.save(owner=self.request.user)
 
 
+# 获取启动页数据
 class GetSplash(generics.RetrieveAPIView):
     serializer_class = SplashSerializer
-
-    def get_queryset(self):
-        return Splash.objects.all()
+    queryset = Splash.objects.all().order_by('-id')
 
     def get_object(self):
-        queryset = self.get_queryset().all()
-        return get_object_or_404(queryset, pk=queryset.order_by('-id')[0].id)
+        return self.queryset[0]
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return CustomResponse(serializer.data)
 
 # @api_view(['PUT'])
 # def put_subject_support(request):
