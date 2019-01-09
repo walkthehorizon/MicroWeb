@@ -44,7 +44,9 @@ class Subject(models.Model):
     owner = models.ForeignKey(to='MicroUser', default=1, on_delete=models.CASCADE, related_name='subject_owner')
     name = models.CharField(default="", max_length=120, blank=True)
     description = models.TextField(max_length=300, default="", blank=True)
-    cover = models.URLField(default="")
+    cover = models.URLField(default="", blank=True)
+    cover_1 = models.URLField(default="", blank=True)
+    cover_2 = models.URLField(default="", blank=True)
     tag = models.CharField(max_length=60, default="", blank=True)
     created = models.DateTimeField(verbose_name='创建日期', default=timezone.now)
     # 魅族、半次元、 MM131

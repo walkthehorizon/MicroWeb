@@ -115,4 +115,10 @@ def is_exist_subject(logo):
     return False
 
 
-save_category_detail()
+# save_category_detail()
+from wallpaper.models import Wallpaper
+
+wallpapers = Subject.objects.all()
+for item in wallpapers:
+    item.cover = item.cover.replace("!tl640", "")
+    item.save()
