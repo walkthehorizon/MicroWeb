@@ -159,7 +159,7 @@ def logout_user(request):
 class WallPapersViewSet(CustomReadOnlyModelView):
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
-    serializer_class = WallPagerSerializer
+    serializer_class = WallPaperSerializer
     filter_fields = ('subject_id',)
 
     # def perform_create(self, serializer):
@@ -169,7 +169,7 @@ class WallPapersViewSet(CustomReadOnlyModelView):
 class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
-    serializer_class = WallPagerSerializer
+    serializer_class = WallPaperSerializer
 
 
 # 依照type筛选数据
@@ -223,7 +223,7 @@ class SubjectViewSet(CustomReadOnlyModelView):
 
 
 class GetPictureByCategoryId(generics.ListAPIView):
-    serializer_class = WallPagerSerializer
+    serializer_class = WallPaperSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -232,7 +232,7 @@ class GetPictureByCategoryId(generics.ListAPIView):
 
 
 class GetSubjectWallpaper(generics.ListAPIView):
-    serializer_class = WallPagerSerializer
+    serializer_class = WallPaperSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -262,6 +262,11 @@ class GetSplash(generics.RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return CustomResponse(serializer.data)
+
+
+class GetRandomRecommend(generics.ListAPIView):
+    serializer_class = WallPaperSerializer
+    queryset = Wallpaper.objects.all().order_by('?').distinct()
 
 # @api_view(['PUT'])
 # def put_subject_support(request):

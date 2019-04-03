@@ -10,6 +10,7 @@ urlpatterns = router.urls
 urlpatterns += [
     # path('user/list/', bv.UserList.as_view(), name='user-list'),
     path('splash/', bv.GetSplash().as_view(), name='get-splash'),
+    path('recommend/', bv.GetRandomRecommend().as_view(), name='get_random_recommend')
     # path('subject/list/', bv.SubjectList.as_view(), name='subject-list'),
     # path('subject/detail/<int:pk>/', bv.GetWallpaperBySubjectId.as_view(), name='GetWallpaperBySubject'),
     # path('account/register/', bv.register_user, name="register-user"),

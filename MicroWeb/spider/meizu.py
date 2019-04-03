@@ -118,7 +118,7 @@ def is_exist_subject(logo):
 # save_category_detail()
 from wallpaper.models import Wallpaper
 
-wallpapers = Subject.objects.all()
+wallpapers = Wallpaper.objects.all()
 for item in wallpapers:
-    item.cover = item.cover.replace("!tl640", "")
+    item.url = item.url.replace("wallpager-1251812446.file.myqcloud.com", "wallpager-1251812446.cos.ap-beijing.myqcloud.com")
     item.save()

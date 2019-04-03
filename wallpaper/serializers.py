@@ -16,7 +16,7 @@ class MicroUserSerializer(serializers.ModelSerializer):
         fields = ('id', 'nickname', 'avatar', 'phone', 'email', 'signature', 'date_joined', 'last_login')
 
 
-class WallPagerSerializer(serializers.ModelSerializer):
+class WallPaperSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallpaper
         # owner = serializers.ReadOnlyField(source='owner.username')
