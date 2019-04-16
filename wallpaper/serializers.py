@@ -41,9 +41,11 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = Category
-        fields = ('id', 'name', 'logo', 'description')
+        fields = ('id', 'name', 'logo', 'description', 'created')
 
 
 class SplashSerializer(serializers.ModelSerializer):

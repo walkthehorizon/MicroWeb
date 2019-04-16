@@ -29,9 +29,10 @@ class MicroUser(AbstractUser):
 
 
 class Category(models.Model):
-    name = models.CharField(choices=CATEGORY_CHOICES, default="其他", max_length=30)
+    name = models.CharField(default="", max_length=20)
     description = models.TextField(max_length=300, default="")
     logo = models.URLField(default="")
+    created = models.DateTimeField(verbose_name='创建日期', default=timezone.now)
 
     class Meta:
         ordering = ("id",)

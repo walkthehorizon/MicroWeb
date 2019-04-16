@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter, SimpleRouter
 router = DefaultRouter()
 router.register("subjects", bv.SubjectViewSet)
 router.register("wallpapers", bv.WallPapersViewSet)
+router.register("categorys",bv.CategoryViewSet)
 urlpatterns = router.urls
 urlpatterns += [
     # path('user/list/', bv.UserList.as_view(), name='user-list'),

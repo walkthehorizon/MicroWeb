@@ -84,7 +84,7 @@ def generate_encrypt_data(dict1, escape):
     else:
         encrypted_text = str(base64.encodebytes(cipher.encrypt(add_to_16(data_json, escape))), encoding='utf8').replace(
             '\n', '')
-    # print(encrypted_text)
+    print(encrypted_text)
     # print(len(encrypted_text))
     # encrypted_text = "ZUF3b+KH7Q/4/fUehqr0f+8chio5X2Byih1jgOFGieQG18gdrghcz7UvY+gWEtE0PtCMYvsmev07\ngpxKbwumvA=="
     # text_decrypted = str(cipher.decrypt(base64.decodebytes(bytes(encrypted_text, encoding='utf8'))).rstrip(b'\x05').decode("utf8"))  # 解密
@@ -175,10 +175,20 @@ def save_pic_to_txcloud(file_name, localfile):
         print("文件不存在，上传失败" + localfile)
 
 
-# # 获取Cos日榜数据
-# def get_rank_encrypt_data():
-#     dict_data = {"date": "20180813", "grid_type": "timeline", "token": "3e6ac2ddeb8064ac", "p": "1", "type": "lastday"}
-#     generate_encrypt_data(dict_data)
+#
+def get_detail_encrypt():
+    dict_data = {"token": "3e6ac2ddeb8064ac", "item_id": '6588244326256476429'}
+    generate_encrypt_data(dict_data, '\x04')
+
+
+# 获取Cos日榜数据
+def get_rank_encrypt_data():
+    dict_data = {"date": "20180813", "grid_type": "timeline", "token": "3e6ac2ddeb8064ac", "p": "1", "type": "lastday"}
+    generate_encrypt_data(dict_data, '\x02')
+
+get_detail_encrypt()
+get_rank_encrypt_data()
+
 
 # # 通过日排行进行爬取
 # def get_cos_rank_list(rank, page, date):
@@ -262,6 +272,3 @@ def get_cos_by_collect():
         # pos = (page - 1) * 20 + i + 1
         print("开始抓取" + work + ",id：" + item_id + "#################")
         get_cosplay_subject_by_id(item_id)
-
-
-get_cos_by_collect()

@@ -160,10 +160,15 @@ class WallPapersViewSet(CustomReadOnlyModelView):
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
     serializer_class = WallPaperSerializer
-    filter_fields = ('subject_id',)
+    filter_fields = ('subject_id', 'category_id')
 
     # def perform_create(self, serializer):
     #     serializer.save(owner=self.request.user)
+
+
+class CategoryViewSet(CustomReadOnlyModelView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
