@@ -39,7 +39,7 @@ class MicroUser(AbstractUser):
     nickname = models.CharField(max_length=30, blank=True, default="微梦用户")
     phone = models.CharField(max_length=11)
     signature = models.TextField(max_length=200, blank=True)
-    avatar = models.URLField(default=BASE_AVATAR + "default_avatar_" + str(random.uniform(1, 12)) + ".jpg", blank=True)
+    avatar = models.URLField(default=BASE_AVATAR + "default_avatar_" + str(random.uniform(1, 12)) + ".jpg")
 
     class Meta(AbstractUser.Meta):
         pass
