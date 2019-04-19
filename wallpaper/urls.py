@@ -6,11 +6,11 @@ from rest_framework.routers import DefaultRouter, SimpleRouter
 router = DefaultRouter()
 router.register("subjects", bv.SubjectViewSet)
 router.register("wallpapers", bv.WallPapersViewSet)
-router.register("categorys", bv.CategoryViewSet)
+router.register("categories", bv.CategoryViewSet)
 urlpatterns = router.urls
 urlpatterns += [
     # path('user/list/', bv.UserList.as_view(), name='user-list'),
-    path('splash/', bv.GetSplash().as_view(), name='get-splash'),
+    path('splash/', bv.GetSplash().as_view(), name='get_splash'),
     path('recommend/', bv.GetRandomRecommend().as_view(), name='get_random_recommend'),
     path('signature/', bv.get_temp_secret_key, name='get_temp_secret_key'),
     # path('subject/list/', bv.SubjectList.as_view(), name='subject-list'),
