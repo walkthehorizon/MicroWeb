@@ -1,9 +1,15 @@
+import sys
+
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.utils import timezone
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from django.contrib.auth.models import AbstractUser
 import random
+from qcloud_cos import CosConfig, CosS3Client, CosClientError, CosServiceError
+import logging
 
 # python manage.py makemigrations TestModel  # 让 Django 知道我们在我们的模型有一些变更
 # python manage.py migrate TestModel   # 创建表结构
@@ -16,6 +22,17 @@ CATEGORY_CHOICES = (('CosPlay', 'CosPlay'), ('动漫游戏', '动漫游戏'), ('
                     ('节庆假日', '节庆假日'), ('影视明星', '影视明星'), ('魅力女性', '魅力女性'), ('风景风光', '风景风光')
                     , ('性感美女', '性感美女'))
 BASE_AVATAR = "	http://wallpager-1251812446.cosbj.myqcloud.com/avatar/"
+
+# 腾讯云存储
+base_cos_url = "https://wallpager-1251812446.cos.ap-beijing.myqcloud.com/"
+
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+secret_id = 'AKIDayBAwYsqUv79xbjKUREmBMI0weCY9gT1'
+secret_key = 'WRL5ey62nOn381f6LL7gBWgcKvLZZQ5X'
+region = 'ap-beijing'
+config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
+# 2. 获取客户端对象
+client = CosS3Client(config)
 
 
 class MicroUser(AbstractUser):
@@ -91,6 +108,17 @@ class Wallpaper(models.Model):
 
     # def __str__(self):
     #     return self.name
+
+
+@receiver(post_delete, sender=Wallpaper)
+def delete_cos_picture(sender, instance, **kwargs):
+    picture_url = getattr(instance, 'url', '')
+    if not picture_url:
+        return
+    client.delete_object(
+        Bucket='wallpager-1251812446',
+        Key=str(picture_url).replace(base_cos_url, '')
+    )
 
 
 class Splash(models.Model):

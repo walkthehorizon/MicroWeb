@@ -18,6 +18,8 @@ import tinify
 # 本虫使用方法，首先通过半次元日榜排行查看你需要的数据，以排名为准输入其排名,传递一个tuple即可，入口方法：start_bcy_spider
 # 已上传日期记录[0817,0825]
 # 腾讯云存储
+from sts.sts import Sts
+
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 secret_id = 'AKIDc8TgYF5ANO5h8BkwWv89nHajgWCha73n'  # 替换为用户的 secretId
 secret_key = 'hLsEOPFuOkxzqVyHOK4d1DF6mGYfsxrZ'  # 替换为用户的 secretKey
@@ -186,9 +188,6 @@ def get_rank_encrypt_data():
     dict_data = {"date": "20180813", "grid_type": "timeline", "token": "3e6ac2ddeb8064ac", "p": "1", "type": "lastday"}
     generate_encrypt_data(dict_data, '\x02')
 
-get_detail_encrypt()
-get_rank_encrypt_data()
-
 
 # # 通过日排行进行爬取
 # def get_cos_rank_list(rank, page, date):
@@ -272,3 +271,29 @@ def get_cos_by_collect():
         # pos = (page - 1) * 20 + i + 1
         print("开始抓取" + work + ",id：" + item_id + "#################")
         get_cosplay_subject_by_id(item_id)
+
+
+def test():
+    dict_data = {'uid': '4084938', 'since': '0', 'grid_type': 'grid'}
+    generate_encrypt_data(dict_data, '\x10')
+
+
+def testKey():
+    # 方式 二
+    policy = {'version': '2.0', 'statement': [{'action': ['name/cos:PutObject'], 'effect': 'allow',
+                                               'resource': [
+                                                   'qcs::cos:ap-beijing:uid/1251812446:wallpager-1251812446/*']}]}
+    config = {
+        # 临时密钥有效时长，单位是秒
+        'duration_seconds': 1800,
+        # 固定密钥
+        'secret_id': 'AKIDayBAwYsqUv79xbjKUREmBMI0weCY9gT1',
+        # 固定密钥
+        'secret_key': 'WRL5ey62nOn381f6LL7gBWgcKvLZZQ5X',
+        # 设置 策略 policy, 可通过 get_policy(list)获取
+        'policy': policy
+    }
+
+    sts = Sts(config)
+    response = sts.get_credential()
+    print(json.loads(json.dumps(response)))

@@ -10,6 +10,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from sts.sts import Sts
 
 from wallpaper import state
 from wallpaper.permissions import IsOwnerOrReadOnly
@@ -154,6 +155,28 @@ def logout_user(request):
     print(request.user)
     auth.logout(request)
     return generate_result_json(1)
+
+
+@api_view(['GET'])
+def get_temp_secret_key(request):
+    policy = {'version': '2.0', 'statement': [{'action': ['name/cos:PutObject'], 'effect': 'allow',
+                                               'resource': [
+                                                   'qcs::cos:ap-beijing:uid/1251812446:wallpager-1251812446/*']}]}
+    config = {
+        # 临时密钥有效时长，单位是秒
+        'duration_seconds': 1800,
+        # 固定密钥
+        'secret_id': 'AKIDayBAwYsqUv79xbjKUREmBMI0weCY9gT1',
+        # 固定密钥
+        'secret_key': 'WRL5ey62nOn381f6LL7gBWgcKvLZZQ5X',
+        # 设置 策略 policy, 可通过 get_policy(list)获取
+        'policy': policy
+    }
+
+    sts = Sts(config)
+    response = sts.get_credential()
+    return CustomResponse(data=json.loads(json.dumps(response)))
+    # print(json.loads(json.dumps(response)))
 
 
 class WallPapersViewSet(CustomReadOnlyModelView):
