@@ -9,8 +9,8 @@ class MicroUserAdmin(admin.ModelAdmin):
 # Register your models here.
 class WallpaperAdmin(admin.ModelAdmin):
     # fields = ['name', 'describe', 'category', 'url']
-    list_display = ('id', 'category', 'subject', 'url', 'created', 'owner')
-    list_filter = ('category', 'owner', 'subject')
+    list_display = ('id', 'category', 'subject', 'url', 'created')
+    list_filter = ('category', 'subject')
 
 
 class SubjectAdmin(admin.ModelAdmin):

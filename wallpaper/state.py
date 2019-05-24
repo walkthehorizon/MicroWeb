@@ -18,6 +18,7 @@ STATE_PHONE_ERROR = 1002
 STATE_USER_NOT_EXIST = 1003
 STATE_INVALID_USER = 1100
 STATE_SUBJECT_NOT_EXIST = 1101
+STATE_WALLPAPER_NOT_EXIST = 1200
 
 state_dict = {
     STATE_SUCCESS: '请求成功',
@@ -27,6 +28,7 @@ state_dict = {
     STATE_USER_NOT_EXIST: '用户不存在',
     STATE_INVALID_USER: '无效用户',
     STATE_SUBJECT_NOT_EXIST: '专题不存在',
+    STATE_WALLPAPER_NOT_EXIST: '图片不存在'
 }
 
 
@@ -58,10 +60,11 @@ class CustomResponse(Response):
     arbitrary media types.
     """
 
-    def __init__(self, data=None, code=STATE_SUCCESS, msg=state_dict[STATE_SUCCESS],
-                 status=None,
+    def __init__(self, data=None, code=STATE_SUCCESS,
+                status=None,
                  template_name=None, headers=None,
                  exception=False, content_type=None):
+        msg = state_dict[code]
         """
         Alters the init arguments slightly.
         For example, drop 'template_name', and instead use 'data'.

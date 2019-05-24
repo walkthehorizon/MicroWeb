@@ -35,16 +35,6 @@ config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
 client = CosS3Client(config)
 
 
-class MicroUser(AbstractUser):
-    nickname = models.CharField(max_length=30, blank=True, default="微梦用户")
-    phone = models.CharField(max_length=11)
-    signature = models.TextField(max_length=200, blank=True)
-    avatar = models.URLField(default=BASE_AVATAR + "default_avatar_" + str(random.uniform(1, 12)) + ".jpg")
-
-    class Meta(AbstractUser.Meta):
-        pass
-
-
 class Category(models.Model):
     name = models.CharField(default="", max_length=20)
     description = models.TextField(max_length=300, default="")
@@ -86,7 +76,6 @@ class Subject(models.Model):
 
 
 class Wallpaper(models.Model):
-    owner = models.ForeignKey('MicroUser', default=1, on_delete=models.CASCADE, related_name='wallpapers')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, blank=True, null=True, related_name='wallpaper')
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, blank=True, null=True, related_name='wallpaper')
     url = models.URLField(default="")
@@ -133,3 +122,19 @@ class Splash(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=20)
+
+
+class MicroUser(AbstractUser):
+    nickname = models.CharField(max_length=30, blank=True, default="微梦用户")
+    phone = models.CharField(max_length=11)
+    signature = models.TextField(max_length=200, blank=True)
+    avatar = models.URLField(default=BASE_AVATAR + "default_avatar_" + str(random.uniform(1, 12)) + ".jpg")
+    isLogin = models.BooleanField(default=False)
+    wallpapers = models.ManyToManyField(Wallpaper, related_name="users", related_query_name="user")
+
+    class Meta(AbstractUser.Meta):
+        pass

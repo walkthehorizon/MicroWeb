@@ -1,11 +1,13 @@
 import json
 
 from django.contrib import auth
+from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import generics
 from rest_framework import permissions
-from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -15,8 +17,7 @@ from sts.sts import Sts
 from wallpaper import state
 from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
-from wallpaper.state import CustomResponse, STATE_SUCCESS
-from wallpaper.state import generate_result_json
+from wallpaper.state import CustomResponse
 from collections import OrderedDict
 
 
@@ -113,20 +114,21 @@ class UserList(generics.ListAPIView):
 
 @api_view(['POST'])
 def register_user(request):
-    print(request)
-    print(request.data)
+    # print(request)
+    # print(request.data)
     phone = request.data.get('phone')
     password = request.data.get('password')
     if len(phone) != 11:
-        return generate_result_json(state.STATE_PHONE_ERROR)
+        return CustomResponse(code=state.STATE_PHONE_ERROR)
     if len(password) < 6:
-        return generate_result_json(state.STATE_PASSWORD_ERROR)
-    user = auth.authenticate(username=phone, password=password)
+        return CustomResponse(code=state.STATE_PASSWORD_ERROR)
+    user = MicroUser.objects.all().get(phone=phone)
+    # user = auth.authenticate(username=phone, password=password)
     if user is not None:
-        return generate_result_json(state.STATE_USER_EXIST)
-    user = MicroUser.objects.create_user(username=phone, phone=phone, password=password)
+        return CustomResponse(code=state.STATE_USER_EXIST)
+    user = MicroUser.objects.create(username=phone, phone=phone, password=password)
     user.save()
-    return generate_result_json('注册成功', 1)
+    return CustomResponse()
 
 
 @api_view(['POST'])
@@ -135,26 +137,26 @@ def login_user(request):
     try:
         MicroUser.objects.get(username=username)
     except MicroUser.DoesNotExist:
-        return generate_result_json(state.STATE_USER_NOT_EXIST)
+        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
     password = request.POST.get('password', '')
-    user = auth.authenticate(username=username, password=password)
-    if user is not None and user.is_active:
+    # user = auth.authenticate(username=username, password=password)
+    user = MicroUser.objects.all().get(username=username)
+    if user.password == password:
         # Correct password, and the user is marked "active"
-        auth.login(request, user)
-        data = json.dumps(MicroUserSerializer(user).data)
-        print(data)
-        print(type(data))
-        return generate_result_json(1, data=data)
+        # auth.login(request, user)
+        user.isLogin = True
+        user.save()
+        return CustomResponse(data=MicroUserSerializer(user).data)
     else:
         # Show an error page
-        return generate_result_json(state.STATE_PASSWORD_ERROR)
+        return CustomResponse(code=state.STATE_PASSWORD_ERROR)
 
 
 @api_view(['POST'])
 def logout_user(request):
     print(request.user)
-    auth.logout(request)
-    return generate_result_json(1)
+    # auth.logout(request)
+    return CustomResponse()
 
 
 @api_view(['GET'])
@@ -183,10 +185,36 @@ class WallPapersViewSet(CustomReadOnlyModelView):
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
     serializer_class = WallPaperSerializer
-    filter_fields = ('subject_id', 'category_id')
+    filter_fields = ('subject_id', 'category_id',)
 
     # def perform_create(self, serializer):
     #     serializer.save(owner=self.request.user)
+
+
+class GetMyCollect(generics.ListAPIView):
+    serializer_class = WallPaperSerializer
+
+    def get_queryset(self):
+        phone = self.request.query_params.get('phone')
+        if MicroUser.objects.filter(phone=phone).count() == 0:
+            return ()
+        else:
+            return MicroUser.objects.get(phone=phone).wallpapers
+
+
+@api_view(['POST'])
+def add_collect(request):
+    try:
+        user = MicroUser.objects.get(phone=request.POST.get('phone'))
+    except MicroUser.DoesNotExist:
+        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
+    try:
+        paper = Wallpaper.objects.get(id=request.POST.get('paperId'))
+    except Wallpaper.DoesNotExist:
+        return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
+    user.wallpapers.add(paper)
+    user.save()
+    return CustomResponse()
 
 
 class CategoryViewSet(CustomReadOnlyModelView):
@@ -203,9 +231,13 @@ class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
 # 依照type筛选数据
 class SubjectViewSet(CustomReadOnlyModelView):
     lookup_field = 'id'
-
     serializer_class = SubjectSerializer
+    search_fields = ('id', 'name', 'description',)
     queryset = Subject.objects.all()
+
+    def get_queryset(self):
+        key = self.request.query_params.get('key')
+        return Subject.objects.filter(Q(name__contains=key) | Q(description__contains=key))
 
     # def list(self, request, *args, **kwargs):
     #     queryset = self.filter_queryset(self.get_queryset())
