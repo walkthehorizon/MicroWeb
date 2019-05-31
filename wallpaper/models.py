@@ -128,11 +128,20 @@ class Tag(models.Model):
     name = models.CharField(max_length=20)
 
 
+class Banner(models.Model):
+    subject_id = models.IntegerField()
+    image_url = models.URLField()
+    url = models.URLField(blank=True)
+    type = models.SmallIntegerField()
+    color = models.CharField(max_length=10, blank=True)
+    created = models.DateTimeField(auto_now=True)
+
+
 class MicroUser(AbstractUser):
     nickname = models.CharField(max_length=30, blank=True, default="微梦用户")
     phone = models.CharField(max_length=11)
     signature = models.TextField(max_length=200, blank=True)
-    avatar = models.URLField(default=BASE_AVATAR + "default_avatar_" + str(random.uniform(1, 12)) + ".jpg")
+    avatar = models.URLField(default="")
     isLogin = models.BooleanField(default=False)
     wallpapers = models.ManyToManyField(Wallpaper, related_name="users", related_query_name="user")
 

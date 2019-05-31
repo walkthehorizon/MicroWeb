@@ -53,3 +53,9 @@ class SplashSerializer(serializers.ModelSerializer):
         model = Splash
         get_latest_by = 'id'
         fields = ('name', 'duration', 'cover_url', 'link_url')
+
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = ('id', 'image_url', 'url', 'type', 'color', 'subject_id')

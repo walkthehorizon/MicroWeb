@@ -26,8 +26,13 @@ class SplashAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'duration')
 
 
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'type', 'subject_id', 'created')
+
+
 admin.site.register(MicroUser, MicroUserAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Wallpaper, WallpaperAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Splash, SplashAdmin)
+admin.site.register(Banner, BannerAdmin)
