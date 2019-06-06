@@ -329,9 +329,9 @@ class GetRandomRecommend(generics.ListAPIView):
     queryset = Wallpaper.objects.all().order_by('?').distinct()
 
 
-class GetBanners(generics.ListAPIView):
+class BannerViewSet(CustomReadOnlyModelView):
     serializer_class = BannerSerializer
-    queryset = Banner.objects.all().order_by('-created')
+    queryset = Banner.objects.order_by('-created')
 
 # @api_view(['PUT'])
 # def put_subject_support(request):

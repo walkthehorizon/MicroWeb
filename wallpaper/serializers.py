@@ -36,8 +36,8 @@ class SubjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subject
-        fields = ('id', 'name', 'cover', 'cover_1', 'cover_2', 'description', 'tag', 'created')
-        # depth = 1
+        fields = ('id', 'name', 'cover', 'cover_1', 'cover_2', 'description', 'tag', 'created','wallpaper')
+        depth = 1
 
 
 class CategorySerializer(serializers.ModelSerializer):

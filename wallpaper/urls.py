@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register("subjects", bv.SubjectViewSet)
 router.register("wallpapers", bv.WallPapersViewSet)
 router.register("categories", bv.CategoryViewSet)
+router.register("banners", bv.BannerViewSet)
 urlpatterns = router.urls
 urlpatterns += [
     # path('user/list/', bv.UserList.as_view(), name='user-list'),
@@ -19,7 +20,6 @@ urlpatterns += [
     path('account/login/', bv.login_user, name="login-user"),
     path('account/logout/', bv.logout_user, name="logout-user"),
     path('my/collect', bv.GetMyCollect.as_view(), name='my-collect'),
-    path('banner/', bv.GetBanners.as_view(), name='banner'),
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),

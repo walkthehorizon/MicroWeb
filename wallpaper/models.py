@@ -134,7 +134,7 @@ class Banner(models.Model):
     url = models.URLField(blank=True)
     type = models.SmallIntegerField()
     color = models.CharField(max_length=10, blank=True)
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class MicroUser(AbstractUser):
