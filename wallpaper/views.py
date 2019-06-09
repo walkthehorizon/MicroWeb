@@ -168,9 +168,9 @@ def get_temp_secret_key(request):
         # 临时密钥有效时长，单位是秒
         'duration_seconds': 1800,
         # 固定密钥
-        'secret_id': 'AKIDayBAwYsqUv79xbjKUREmBMI0weCY9gT1',
+        'secret_id': 'AKIDFqlUxBi0JOTN3VnGVYLlCSWN5aFhlQu9',
         # 固定密钥
-        'secret_key': 'WRL5ey62nOn381f6LL7gBWgcKvLZZQ5X',
+        'secret_key': 'WZSAVSXT9oRqngmdFdq8E8WkmYUBdojD',
         # 设置 策略 policy, 可通过 get_policy(list)获取
         'policy': policy
     }
