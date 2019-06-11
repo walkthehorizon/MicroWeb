@@ -14,7 +14,7 @@ class WallpaperAdmin(admin.ModelAdmin):
 
 
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'description', 'tag', 'source', 'created', 'owner')
+    list_display = ('id', 'name', 'description', 'tag', 'created')
     search_fields = ('name', 'description',)
 
 

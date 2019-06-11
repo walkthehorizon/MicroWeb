@@ -27,8 +27,8 @@ BASE_AVATAR = "	http://wallpager-1251812446.cosbj.myqcloud.com/avatar/"
 base_cos_url = "https://wallpager-1251812446.cos.ap-beijing.myqcloud.com/"
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-secret_id = 'AKIDayBAwYsqUv79xbjKUREmBMI0weCY9gT1'
-secret_key = 'WRL5ey62nOn381f6LL7gBWgcKvLZZQ5X'
+secret_id = 'AKIDFqlUxBi0JOTN3VnGVYLlCSWN5aFhlQu9'
+secret_key = 'WZSAVSXT9oRqngmdFdq8E8WkmYUBdojD'
 region = 'ap-beijing'
 config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
 # 2. 获取客户端对象

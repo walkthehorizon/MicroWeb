@@ -19,6 +19,7 @@ from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
 from wallpaper.state import CustomResponse
 from collections import OrderedDict
+from wallpaper import models
 
 
 @api_view(['GET'])
@@ -154,9 +155,12 @@ def login_user(request):
 
 @api_view(['POST'])
 def logout_user(request):
-    print(request.user)
+    # print(request.user)
     # auth.logout(request)
     return CustomResponse()
+
+
+from wallpaper.models import secret_key
 
 
 @api_view(['GET'])
@@ -168,9 +172,9 @@ def get_temp_secret_key(request):
         # 临时密钥有效时长，单位是秒
         'duration_seconds': 1800,
         # 固定密钥
-        'secret_id': 'AKIDFqlUxBi0JOTN3VnGVYLlCSWN5aFhlQu9',
+        'secret_id': models.secret_id,
         # 固定密钥
-        'secret_key': 'WZSAVSXT9oRqngmdFdq8E8WkmYUBdojD',
+        'secret_key': models.secret_key,
         # 设置 策略 policy, 可通过 get_policy(list)获取
         'policy': policy
     }
