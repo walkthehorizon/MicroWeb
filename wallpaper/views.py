@@ -118,45 +118,47 @@ def register_user(request):
     # print(request)
     # print(request.data)
     phone = request.data.get('phone')
-    password = request.data.get('password')
     if len(phone) != 11:
         return CustomResponse(code=state.STATE_PHONE_ERROR)
-    if len(password) < 6:
-        return CustomResponse(code=state.STATE_PASSWORD_ERROR)
-    user = MicroUser.objects.all().get(phone=phone)
     # user = auth.authenticate(username=phone, password=password)
-    if user is not None:
+    if MicroUser.objects.exists(phone=phone) is True:
         return CustomResponse(code=state.STATE_USER_EXIST)
-    user = MicroUser.objects.create(username=phone, phone=phone, password=password)
+    user = MicroUser.objects.create(username=phone, phone=phone, password='')
     user.save()
     return CustomResponse()
 
 
 @api_view(['POST'])
 def login_user(request):
-    username = request.POST.get('phone', '')
-    try:
-        MicroUser.objects.get(username=username)
-    except MicroUser.DoesNotExist:
-        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    password = request.POST.get('password', '')
-    # user = auth.authenticate(username=username, password=password)
-    user = MicroUser.objects.all().get(username=username)
-    if user.password == password:
-        # Correct password, and the user is marked "active"
-        # auth.login(request, user)
-        user.isLogin = True
-        user.save()
-        return CustomResponse(data=MicroUserSerializer(user).data)
+    phone = request.POST.get('phone', '')
+    if len(phone) != 11:
+        return CustomResponse(code=state.STATE_PHONE_ERROR)
+    if MicroUser.objects.filter(phone=phone).exists():
+        user = MicroUser.objects.get(phone=phone)
     else:
-        # Show an error page
-        return CustomResponse(code=state.STATE_PASSWORD_ERROR)
+        user = MicroUser.objects.create(username=phone, phone=phone, password='')
+    # user = auth.authenticate(username=username, password=password)
+    user.isLogin = True
+    user.save()
+    return CustomResponse(data=MicroUserSerializer(user).data)
+    # if user.password == password:
+    #     # Correct password, and the user is marked "active"
+    #     # auth.login(request, user)
+    # else:
+    #     # Show an error page
+    #     return CustomResponse(code=state.STATE_PASSWORD_ERROR)
 
 
 @api_view(['POST'])
 def logout_user(request):
-    # print(request.user)
     # auth.logout(request)
+    # print(request.META.get('HTTP_UID'))
+    try:
+        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
+    except MicroUser.DoesNotExist:
+        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
+    user.isLogin = False
+    user.save()
     return CustomResponse()
 
 
