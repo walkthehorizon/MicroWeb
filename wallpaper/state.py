@@ -19,6 +19,8 @@ STATE_USER_NOT_EXIST = 1003
 STATE_INVALID_USER = 1100
 STATE_SUBJECT_NOT_EXIST = 1101
 STATE_WALLPAPER_NOT_EXIST = 1200
+STATE_CATEGORY_NOT_EXIST = 1300
+STATE_INVALID_URL = 1301
 
 state_dict = {
     STATE_SUCCESS: '请求成功',
@@ -28,16 +30,10 @@ state_dict = {
     STATE_USER_NOT_EXIST: '用户不存在',
     STATE_INVALID_USER: '无效用户',
     STATE_SUBJECT_NOT_EXIST: '专题不存在',
-    STATE_WALLPAPER_NOT_EXIST: '图片不存在'
+    STATE_WALLPAPER_NOT_EXIST: '图片不存在',
+    STATE_CATEGORY_NOT_EXIST: '分类不存在',
+    STATE_INVALID_URL: '无效的url',
 }
-
-
-def generate_result_json(state_code=STATE_SUCCESS, data=''):
-    return JsonResponse({'result': state_dict.get(state_code), 'state': state_code, 'data': data})
-
-
-# def dump_result_json(state_code=STATE_SUCCESS, data=''):
-#     return json.dumps({'result': state_dict.get(state_code), 'state': state_code, 'data': data})
 
 
 def custom_exception_handler(exc, context):
@@ -61,7 +57,7 @@ class CustomResponse(Response):
     """
 
     def __init__(self, data=None, code=STATE_SUCCESS,
-                status=None,
+                 status=None,
                  template_name=None, headers=None,
                  exception=False, content_type=None):
         msg = state_dict[code]

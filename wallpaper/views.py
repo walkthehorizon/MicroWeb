@@ -1,89 +1,22 @@
 import json
 
-from django.contrib import auth
 from django.db.models import Q
-from django.views.decorators.csrf import csrf_exempt
 from django_filters import rest_framework
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
 from sts.sts import Sts
 
+from wallpaper import models
 from wallpaper import state
 from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
 from wallpaper.state import CustomResponse
-from collections import OrderedDict
-from wallpaper import models
 
 
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'users': reverse('user-list', request=request, format=format),
-        'wallpapers': reverse('wallpaper-list', request=request, format=format)
-    })
-
-
-class CustomModelView(viewsets.ModelViewSet):
-    # pagination_class = LargeResultsSetPagination
-    # filter_class = ServerFilter
-    # queryset = ''
-    # serializer_class = ''
-    # permission_classes = ()
-    # filter_fields = ()
-    # search_fields = ()
-    filter_backends = (rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return CustomResponse(data=serializer.data,
-                              headers=headers)
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return CustomResponse(data=serializer.data, )
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return CustomResponse(data=serializer.data, )
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
-        return CustomResponse(data=serializer.data)
-
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return CustomResponse(data=[])
-
-
-class CustomReadOnlyModelView(viewsets.ReadOnlyModelViewSet):
+class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ''
     serializer_class = ''
     permission_classes = ()
@@ -107,11 +40,7 @@ class CustomReadOnlyModelView(viewsets.ReadOnlyModelViewSet):
         return CustomResponse(data=serializer.data)
 
 
-class UserList(generics.ListAPIView):
-    queryset = MicroUser.objects.all()
-    serializer_class = MicroUserSerializer
-    filter_backends = (rest_framework.DjangoFilterBackend,)
-
+# 注册登录模块
 
 @api_view(['POST'])
 def register_user(request):
@@ -162,9 +91,7 @@ def logout_user(request):
     return CustomResponse()
 
 
-from wallpaper.models import secret_key
-
-
+# 获取Cos临时密钥
 @api_view(['GET'])
 def get_temp_secret_key(request):
     policy = {'version': '2.0', 'statement': [{'action': ['name/cos:PutObject'], 'effect': 'allow',
@@ -187,11 +114,12 @@ def get_temp_secret_key(request):
     # print(json.loads(json.dumps(response)))
 
 
-class WallPapersViewSet(CustomReadOnlyModelView):
+# 基础类的只读路由
+class WallPapersViewSet(CustomReadOnlyModelViewSet):
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
     serializer_class = WallPaperSerializer
-    filter_fields = ('subject_id', 'category_id',)
+    filter_fields = ('subject_id', 'category_id')
 
     # def perform_create(self, serializer):
     #     serializer.save(owner=self.request.user)
@@ -201,29 +129,28 @@ class GetMyCollect(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
     def get_queryset(self):
-        phone = self.request.query_params.get('phone')
-        if MicroUser.objects.filter(phone=phone).count() == 0:
-            return ()
-        else:
-            return MicroUser.objects.get(phone=phone).wallpapers
+        uid = self.request.META.get('HTTP_UID')
+        if uid is None:
+            return None
+        return MicroUser.objects.get(id=uid).collects.all()
 
 
 @api_view(['POST'])
-def add_collect(request):
+def add_collect(request, pid):
     try:
-        user = MicroUser.objects.get(phone=request.POST.get('phone'))
+        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
     except MicroUser.DoesNotExist:
         return CustomResponse(code=state.STATE_USER_NOT_EXIST)
     try:
-        paper = Wallpaper.objects.get(id=request.POST.get('paperId'))
+        paper = Wallpaper.objects.get(id=pid)
     except Wallpaper.DoesNotExist:
         return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
-    user.wallpapers.add(paper)
+    user.collects.add(paper)
     user.save()
     return CustomResponse()
 
 
-class CategoryViewSet(CustomReadOnlyModelView):
+class CategoryViewSet(CustomReadOnlyModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -235,7 +162,7 @@ class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 # 依照type筛选数据
-class SubjectViewSet(CustomReadOnlyModelView):
+class SubjectViewSet(CustomReadOnlyModelViewSet):
     lookup_field = 'id'
     serializer_class = SubjectSerializer
     search_fields = ('id', 'name', 'description',)
@@ -243,49 +170,25 @@ class SubjectViewSet(CustomReadOnlyModelView):
 
     def get_queryset(self):
         key = self.request.query_params.get('key')
-        return Subject.objects.filter(Q(name__contains=key) | Q(description__contains=key))
+        if key is None:
+            return Subject.objects.all()
+        else:
+            return Subject.objects.filter(Q(name__contains=key) | Q(description__contains=key))
 
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset())
-    #
-    #     page = self.paginate_queryset(queryset)
-    #     if page is not None:
-    #         serializer = self.get_serializer(page, many=True)
-    #         return self.get_paginated_response(serializer.data)
-    #
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     return CustomResponse(serializer.data)
 
-    # def filter_queryset(self, queryset):
-    # limit = self.request.query_params.get('limit')
-    # offset = self.request.query_params.get('offset')
-    # if limit is None or offset is None:
-    #     return queryset.filter(id=-1)
-    # offset = int(offset)
-    # limit = int(limit)
-    # subject_type = self.request.query_params.get('subject_type')
-    # if 0 < int(subject_type) < 4:
-    #     queryset = queryset.filter(type=subject_type).order_by('-created')
-    #     # for i in (offset, max(offset, min(offset + limit - 1, len(queryset) - 1))):
-    #     #     subject = queryset[i]
-    #     #     try:
-    #     #         # print(subject.support_people.all())
-    #     #         subject.support_people.all().get(id=self.request.user.id)
-    #     #         subject.supported = True
-    #     #     except MicroUser.DoesNotExist:
-    #     #         subject.supported = False
-    #     return queryset
-    # else:
-    #     queryset = queryset.order_by('-created')
-    #     # for i in (offset, max(offset, min(offset + limit - 1, len(queryset) - 1))):
-    #     #     subject = queryset[i]
-    #     #     try:
-    #     #         # print(subject.support_people.all())
-    #     #         subject.support_people.all().get(id=self.request.user.id)
-    #     #         subject.supported = True
-    #     #     except MicroUser.DoesNotExist:
-    #     #         subject.supported = False
-    #     return queryset
+# 更新Category封面
+@api_view(['POST'])
+def update_category_cover(request):
+    cid = request.POST.get('cid')
+    if cid is None or Category.objects.filter(id=cid).exists() is False:
+        return CustomResponse(code=state.STATE_CATEGORY_NOT_EXIST)
+    logo = request.POST.get('logo')
+    if logo is None or len(logo) < 1:
+        return CustomResponse(code=state.STATE_INVALID_URL)
+    category = Category.objects.get(id=cid)
+    category.logo = logo
+    category.save()
+    return CustomResponse()
 
 
 class GetPictureByCategoryId(generics.ListAPIView):
@@ -335,7 +238,7 @@ class GetRandomRecommend(generics.ListAPIView):
     queryset = Wallpaper.objects.all().order_by('?').distinct()
 
 
-class BannerViewSet(CustomReadOnlyModelView):
+class BannerViewSet(CustomReadOnlyModelViewSet):
     serializer_class = BannerSerializer
     queryset = Banner.objects.order_by('-created')
 

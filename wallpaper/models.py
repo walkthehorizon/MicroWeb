@@ -88,10 +88,6 @@ class Wallpaper(models.Model):
     # 数据来源id
     source_id = models.CharField(max_length=30, default="", blank=True)
 
-    # source = models.CharField(max_length=30, default="来自网络")
-    # name = models.CharField(max_length=30, default="", blank=True)
-    # describe = models.TextField(max_length=300, default="", blank=True)
-
     class Meta:
         ordering = ('id',)
 
@@ -143,7 +139,7 @@ class MicroUser(AbstractUser):
     signature = models.TextField(max_length=200, blank=True)
     avatar = models.URLField(default="")
     isLogin = models.BooleanField(default=False)
-    wallpapers = models.ManyToManyField(Wallpaper, related_name="users", related_query_name="user")
+    collects = models.ManyToManyField(Wallpaper, related_name="collects")
 
     class Meta(AbstractUser.Meta):
         pass
