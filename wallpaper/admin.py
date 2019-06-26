@@ -27,7 +27,7 @@ class SplashAdmin(admin.ModelAdmin):
 
 
 class BannerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'type', 'subject_id', 'created')
+    list_display = ('id', 'type', 'subject_id', 'title', 'created')
 
 
 admin.site.register(MicroUser, MicroUserAdmin)

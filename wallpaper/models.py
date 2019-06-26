@@ -129,6 +129,8 @@ class Banner(models.Model):
     image_url = models.URLField()
     url = models.URLField(blank=True)
     type = models.SmallIntegerField()
+    title = models.CharField(max_length=36, blank=True)
+    desc = models.TextField(max_length=300, blank=True)
     color = models.CharField(max_length=10, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 

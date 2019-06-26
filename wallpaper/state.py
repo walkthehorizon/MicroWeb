@@ -67,7 +67,6 @@ class CustomResponse(Response):
         Setting 'renderer' and 'media_type' will typically be deferred,
         For example being set automatically by the `APIView`.
         """
-        print(code)
         super(Response, self).__init__(None, status=status)
 
         if isinstance(data, Serializer):
