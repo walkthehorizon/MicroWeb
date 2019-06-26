@@ -58,4 +58,4 @@ class SplashSerializer(serializers.ModelSerializer):
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
-        fields = ('id', 'image_url', 'url', 'type', 'color', 'subject_id')
+        fields = ('id', 'image_url', 'url', 'type', 'color', 'subject_id', 'title', 'desc')
