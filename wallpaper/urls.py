@@ -13,7 +13,7 @@ urlpatterns += [
     # path('user/list/', bv.UserList.as_view(), name='user-list'),
     path('splash/', bv.GetSplash().as_view(), name='get_splash'),
     path('recommend/', bv.GetRandomRecommend().as_view(), name='get_random_recommend'),
-    path('signature/', bv.get_temp_secret_key, name='get_temp_secret_key'),
+    path('signature', bv.get_temp_secret_key, name='get_temp_secret_key'),
     # path('subject/list/', bv.SubjectList.as_view(), name='subject-list'),
     # path('subject/detail/<int:pk>/', bv.GetWallpaperBySubjectId.as_view(), name='GetWallpaperBySubject'),
     path('account/register/', bv.register_user, name="register-user"),
@@ -22,6 +22,7 @@ urlpatterns += [
     path('collect/my', bv.GetMyCollect.as_view(), name='my-collect'),
     path('collect/add/<int:pid>/', bv.add_collect),
     path('category/update/', bv.update_category_cover),
+    path('user/update/<int:pk>', bv.UserUpdate.as_view())
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),

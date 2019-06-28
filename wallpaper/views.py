@@ -9,11 +9,12 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from sts.sts import Sts
 
-from wallpaper import models
+from wallpaper import models as model
 from wallpaper import state
 from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
 from wallpaper.state import CustomResponse
+from rest_framework.response import Response
 
 
 class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -101,17 +102,18 @@ def get_temp_secret_key(request):
         # 临时密钥有效时长，单位是秒
         'duration_seconds': 1800,
         # 固定密钥
-        'secret_id': models.secret_id,
+        'secret_id': model.secret_id,
         # 固定密钥
-        'secret_key': models.secret_key,
+        'secret_key': model.secret_key,
         # 设置 策略 policy, 可通过 get_policy(list)获取
         'policy': policy
     }
 
     sts = Sts(config)
     response = sts.get_credential()
-    return CustomResponse(data=json.loads(json.dumps(response)))
+    # return CustomResponse(data=json.loads(json.dumps(response)))
     # print(json.loads(json.dumps(response)))
+    return Response(response)
 
 
 # 基础类的只读路由
@@ -241,6 +243,11 @@ class GetRandomRecommend(generics.ListAPIView):
 class BannerViewSet(CustomReadOnlyModelViewSet):
     serializer_class = BannerSerializer
     queryset = Banner.objects.order_by('-created')
+
+
+class UserUpdate(generics.UpdateAPIView):
+    serializer_class = MicroUserSerializer
+    queryset = MicroUser.objects.all()
 
 # @api_view(['PUT'])
 # def put_subject_support(request):
