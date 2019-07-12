@@ -76,8 +76,8 @@ class Subject(models.Model):
 
 
 class Wallpaper(models.Model):
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, blank=True, null=True, related_name='wallpaper')
-    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, blank=True, null=True, related_name='wallpaper')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, blank=True, null=True, related_name='categories')
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, blank=True, null=True, related_name='subjects')
     url = models.URLField(default="")
     origin_url = models.URLField(default="")
     sw = models.IntegerField(default=0, blank=True)
@@ -87,6 +87,7 @@ class Wallpaper(models.Model):
     source = models.CharField(default="", max_length=60)
     # 数据来源id
     source_id = models.CharField(max_length=30, default="", blank=True)
+    collect_num = models.IntegerField(default=0)
 
     class Meta:
         ordering = ('id',)
@@ -142,7 +143,7 @@ class MicroUser(AbstractUser):
     sex = models.SmallIntegerField(default=0)
     avatar = models.URLField(default="")
     isLogin = models.BooleanField(default=False)
-    collects = models.ManyToManyField(Wallpaper, related_name="collects")
+    collects = models.ManyToManyField(Wallpaper, related_name="users")
 
     class Meta(AbstractUser.Meta):
         pass

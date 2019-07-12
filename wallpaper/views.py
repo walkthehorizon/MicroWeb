@@ -147,8 +147,14 @@ def add_collect(request, pid):
         paper = Wallpaper.objects.get(id=pid)
     except Wallpaper.DoesNotExist:
         return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
-    user.collects.add(paper)
+    if user.collects.filter(id=paper.id).exists():
+        user.collects.remove(paper)
+    else:
+        user.collects.add(paper)
     user.save()
+    paper.collect_num = paper.users.all().count()
+    paper.save()
+    print(str("collect_num:" + str(paper.collect_num)))
     return CustomResponse()
 
 
