@@ -15,7 +15,6 @@ from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
 from wallpaper.state import CustomResponse
 from rest_framework.response import Response
-from django.core.cache import cache
 from django_redis import get_redis_connection
 
 con = get_redis_connection("default")
