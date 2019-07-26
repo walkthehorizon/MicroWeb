@@ -3,7 +3,7 @@ from .models import *
 
 
 class MicroUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nickname', 'avatar', 'phone', 'email', 'signature', 'date_joined', 'last_login')
+    list_display = ('id', 'nickname', 'phone', 'date_joined', 'last_login', 'pea')
 
 
 # Register your models here.

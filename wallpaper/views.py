@@ -15,6 +15,10 @@ from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
 from wallpaper.state import CustomResponse
 from rest_framework.response import Response
+from django.core.cache import cache
+from django_redis import get_redis_connection
+
+con = get_redis_connection("default")
 
 
 class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -137,24 +141,45 @@ class GetMyCollect(generics.ListAPIView):
         return MicroUser.objects.get(id=uid).collects.all()
 
 
+
 @api_view(['POST'])
 def add_collect(request, pid):
+    try:
+        paper = Wallpaper.objects.filter(id=pid)
+    except Wallpaper.DoesNotExist:
+        return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
+    try:
+        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
+    except MicroUser.DoesNotExist:
+        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
+    if user.collects.filter(id=paper.id).exists():
+        return CustomResponse()
+    user.collects.add(wallpaper_id=pid)
+    user.save()
+    # print(str("collect_num:" + str(con.hincrby("wallpaper:" + str(pid), "collect_num"))))
+    return CustomResponse()
+
+
+@api_view(['POST'])
+def buy_paper(request, pk):
     try:
         user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
     except MicroUser.DoesNotExist:
         return CustomResponse(code=state.STATE_USER_NOT_EXIST)
     try:
-        paper = Wallpaper.objects.get(id=pid)
+        paper = Wallpaper.objects.get(id=pk)
     except Wallpaper.DoesNotExist:
         return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
-    if user.collects.filter(id=paper.id).exists():
-        user.collects.remove(paper)
-    else:
-        user.collects.add(paper)
+    pea = int(request.query_params.get('pea'))
+    if pea < 1 or pea > 3:
+        return CustomResponse(code=state.STATE_ERROR)
+    if user.pea < pea:
+        return CustomResponse(code=state.STATE_PEA_NOT_ENOUGH)
+    if user.buys.filter(id=paper.id).exists():
+        return CustomResponse()
+    user.pea = user.pea - pea
+    user.buys.add(paper)
     user.save()
-    paper.collect_num = paper.users.all().count()
-    paper.save()
-    print(str("collect_num:" + str(paper.collect_num)))
     return CustomResponse()
 
 

@@ -21,6 +21,7 @@ urlpatterns += [
     path('account/logout/', bv.logout_user, name="logout-user"),
     path('collect/my', bv.GetMyCollect.as_view(), name='my-collect'),
     path('collect/add/<int:pid>', bv.add_collect),
+    path('buy/paper/<int:pk>', bv.buy_paper),
     path('category/update/', bv.update_category_cover),
     path('user/update/<int:pk>', bv.UserUpdate.as_view())
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),

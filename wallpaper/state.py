@@ -12,6 +12,7 @@ from rest_framework import status
 
 # 登陆注册模块
 STATE_SUCCESS = 0
+STATE_ERROR = 1
 STATE_USER_EXIST = 1000
 STATE_PASSWORD_ERROR = 1001
 STATE_PHONE_ERROR = 1002
@@ -21,9 +22,12 @@ STATE_SUBJECT_NOT_EXIST = 1101
 STATE_WALLPAPER_NOT_EXIST = 1200
 STATE_CATEGORY_NOT_EXIST = 1300
 STATE_INVALID_URL = 1301
+STATE_HAS_BUY = 1401
+STATE_PEA_NOT_ENOUGH = 1402
 
 state_dict = {
     STATE_SUCCESS: '请求成功',
+    STATE_ERROR: '请求异常',
     STATE_USER_EXIST: '用户已存在',
     STATE_PASSWORD_ERROR: '密码错误',
     STATE_PHONE_ERROR: '手机号错误',
@@ -33,6 +37,8 @@ state_dict = {
     STATE_WALLPAPER_NOT_EXIST: '图片不存在',
     STATE_CATEGORY_NOT_EXIST: '分类不存在',
     STATE_INVALID_URL: '无效的url',
+    STATE_HAS_BUY: '已购买',
+    STATE_PEA_NOT_ENOUGH: '看豆不足',
 }
 
 
@@ -60,7 +66,7 @@ class CustomResponse(Response):
                  status=None,
                  template_name=None, headers=None,
                  exception=False, content_type=None):
-        msg = state_dict[code]
+        msg = state_dict[code],
         """
         Alters the init arguments slightly.
         For example, drop 'template_name', and instead use 'data'.

@@ -79,12 +79,23 @@ WSGI_APPLICATION = 'MicroWeb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'wallpaper',
+        'NAME': 'test_wallpaper',
         'USER': 'shentu',
         'PASSWORD': '19951008',
         'HOST': '47.105.40.169',
         'Host': 'localhost',
         'PORT': '3306'
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://47.105.40.169:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": "19951008"
+        }
     }
 }
 

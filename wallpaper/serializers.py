@@ -13,7 +13,7 @@ class MicroUserSerializer(serializers.ModelSerializer):
     # "signature": "微梦官方编辑&程序&产品！",
     class Meta:
         model = MicroUser
-        fields = ('id', 'nickname', 'avatar', 'phone', 'email', 'sex', 'signature', 'date_joined', 'last_login')
+        fields = ('id', 'nickname', 'avatar', 'phone', 'email', 'sex', 'signature', 'date_joined', 'last_login', 'pea')
 
 
 class WallPaperSerializer(serializers.ModelSerializer):
