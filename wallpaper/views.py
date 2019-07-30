@@ -15,9 +15,11 @@ from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
 from wallpaper.state import CustomResponse
 from rest_framework.response import Response
-from django_redis import get_redis_connection
 
-con = get_redis_connection("default")
+
+# from django_redis import get_redis_connection
+
+# con = get_redis_connection("default")
 
 
 class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -140,22 +142,49 @@ class GetMyCollect(generics.ListAPIView):
         return MicroUser.objects.get(id=uid).collects.all()
 
 
-
 @api_view(['POST'])
 def add_collect(request, pid):
     try:
-        paper = Wallpaper.objects.filter(id=pid)
+        paper = Wallpaper.objects.get(id=pid)
     except Wallpaper.DoesNotExist:
         return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
     try:
         user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
     except MicroUser.DoesNotExist:
         return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    if user.collects.filter(id=paper.id).exists():
+    if paper.users.filter(id=user.id).exists():
         return CustomResponse()
-    user.collects.add(wallpaper_id=pid)
+    if paper.collect_num >= 300:
+        return CustomResponse(code=state.STATE_COLLECT_OVER)
+    user.collects.add(paper)
+    paper.collect_num = paper.collect_num + 1
+    paper.save()
     user.save()
-    # print(str("collect_num:" + str(con.hincrby("wallpaper:" + str(pid), "collect_num"))))
+    return CustomResponse()
+
+
+@api_view(['POST'])
+def del_collect(request):
+    ids = json.loads(request.body.decode(encoding='utf-8')).get('ids')
+    try:
+        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
+    except MicroUser.DoesNotExist:
+        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
+    papers = []
+    for pid in ids:
+        try:
+            paper = Wallpaper.objects.get(id=pid)
+            papers.append(paper)
+        except Wallpaper.DoesNotExist:
+            return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
+        try:
+            user.collects.remove(paper)
+        except KeyError:
+            return CustomResponse(code=state.STATE_ERROR)
+        paper.collect_num = paper.collect_num - 1
+    for paper in papers:
+        paper.save()
+    user.save()
     return CustomResponse()
 
 
