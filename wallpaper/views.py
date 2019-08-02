@@ -126,10 +126,33 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
     serializer_class = WallPaperSerializer
-    filter_fields = ('subject_id', 'category_id')
+    filter_fields = ('subject_id', 'category_id', 'banner_id')
 
-    # def perform_create(self, serializer):
-    #     serializer.save(owner=self.request.user)
+    # 筛选用户收藏
+    def filter_queryset(self, queryset):
+        uid = self.request.query_params.get('uid')
+        if uid is None or uid == -1:
+            return super().filter_queryset(queryset)
+        try:
+            user = MicroUser.objects.get(id=uid)
+        except MicroUser.DoesNotExist:
+            return super().filter_queryset(queryset)
+        return user.collects.all()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        users = MicroUser.objects.filter(id=request.META.get('HTTP_UID'))
+        if users.exists():
+            user = users.first()
+            for paper in page:
+                paper.collected = user.collects.filter(id=paper.id).exists()
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return CustomResponse(data=serializer.data)
 
 
 class GetMyCollect(generics.ListAPIView):
@@ -250,24 +273,6 @@ def update_category_cover(request):
     category.logo = logo
     category.save()
     return CustomResponse()
-
-
-class GetPictureByCategoryId(generics.ListAPIView):
-    serializer_class = WallPaperSerializer
-    lookup_field = 'id'
-
-    def get_queryset(self):
-        # print(self.request.query_params.keys())
-        return Wallpaper.objects.filter(category_id=self.kwargs.get('id'))
-
-
-class GetSubjectWallpaper(generics.ListAPIView):
-    serializer_class = WallPaperSerializer
-    lookup_field = 'id'
-
-    def get_queryset(self):
-        # print(self.request.query_params.keys())
-        return Wallpaper.objects.filter(subject_id=self.kwargs.get('pk'))
 
 
 # 获取所有分类

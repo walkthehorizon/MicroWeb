@@ -76,8 +76,10 @@ class Subject(models.Model):
 
 
 class Wallpaper(models.Model):
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, blank=True, null=True, related_name='categories')
-    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, blank=True, null=True, related_name='subjects')
+    category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, blank=True, null=True)
+    banner = models.ForeignKey('Banner', on_delete=models.SET_NULL, blank=True, null=True,
+                               related_name='banner_papers')
     url = models.URLField(default="")
     origin_url = models.URLField(default="")
     sw = models.IntegerField(default=0, blank=True)
@@ -88,6 +90,7 @@ class Wallpaper(models.Model):
     # 数据来源id
     source_id = models.CharField(max_length=30, default="", blank=True)
     collect_num = models.IntegerField(default=0)
+    collected = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('id',)

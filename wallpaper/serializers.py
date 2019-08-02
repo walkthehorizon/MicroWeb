@@ -22,7 +22,7 @@ class WallPaperSerializer(serializers.ModelSerializer):
         # owner = serializers.ReadOnlyField(source='owner.username')
         # subject = serializers.ReadOnlyField(source='subject.name')
         # owner = serializers.ReadOnlyField(source='owner.nickname')
-        fields = ('id', 'url', 'origin_url', 'subject_id', 'collect_num')
+        fields = ('id', 'url', 'origin_url', 'subject_id', 'collected', 'collect_num')
 
 
 class SubjectSerializer(serializers.ModelSerializer):

@@ -75,15 +75,14 @@ WSGI_APPLICATION = 'MicroWeb.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
+# 本地->爬虫库->线网库
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_wallpaper',
+        'NAME': 'wallpaper',  # test_wallpaper爬虫存储库
         'USER': 'shentu',
         'PASSWORD': '19951008',
-        'HOST': '47.105.40.169',
-        'Host': 'localhost',
+        'HOST': 'localhost',
         'PORT': '3306'
     }
 }
