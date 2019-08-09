@@ -18,7 +18,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 class AppVersionPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        version_code = request.META.get('versionCode')
+        version_code = request.META.get('VersionCode')
         if version_code is None or version_code < 101:
             return False
         return True

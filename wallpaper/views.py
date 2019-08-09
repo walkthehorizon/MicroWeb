@@ -49,14 +49,13 @@ class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
 # 注册登录模块
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def register_user(request):
-    # print(request)
-    # print(request.data)
     phone = request.data.get('phone')
     if len(phone) != 11:
         return CustomResponse(code=state.STATE_PHONE_ERROR)
     # user = auth.authenticate(username=phone, password=password)
-    if MicroUser.objects.exists(phone=phone) is True:
+    if MicroUser.objects.filter(phone=phone).exists() is True:
         return CustomResponse(code=state.STATE_USER_EXIST)
     user = MicroUser.objects.create(username=phone, phone=phone, password='')
     user.save()
@@ -64,6 +63,7 @@ def register_user(request):
 
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def login_user(request):
     phone = request.POST.get('phone', '')
     if len(phone) != 11:
@@ -75,13 +75,9 @@ def login_user(request):
     # user = auth.authenticate(username=username, password=password)
     user.isLogin = True
     user.save()
-    return CustomResponse(data=MicroUserSerializer(user).data)
-    # if user.password == password:
-    #     # Correct password, and the user is marked "active"
-    #     # auth.login(request, user)
-    # else:
-    #     # Show an error page
-    #     return CustomResponse(code=state.STATE_PASSWORD_ERROR)
+    data = json.loads(json.dumps(MicroUserSerializer(user).data))
+    data['token'] = Token.objects.get_or_create(user=user)[0].key
+    return CustomResponse(data=data)
 
 
 @api_view(['POST'])
@@ -130,8 +126,6 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
 
     # 筛选用户收藏
     def filter_queryset(self, queryset):
-        print(self.request.user)
-        print(self.request.auth)
         uid = self.request.query_params.get('uid')
         if uid is None or uid == -1:
             return super().filter_queryset(queryset)

@@ -155,8 +155,8 @@ class MicroUser(AbstractUser):
     avatar = models.URLField(default="")
     isLogin = models.BooleanField(default=False)
     pea = models.IntegerField(default=10)
-    collects = models.ManyToManyField(Wallpaper, related_name="users", related_query_name='user')
-    buys = models.ManyToManyField(Wallpaper, related_name="buy_users", related_query_name='buy_user')
+    collects = models.ManyToManyField(Wallpaper, related_name="users", related_query_name='user', blank=True)
+    buys = models.ManyToManyField(Wallpaper, related_name="buy_users", related_query_name='buy_user', blank=True)
 
     class Meta(AbstractUser.Meta):
         pass
