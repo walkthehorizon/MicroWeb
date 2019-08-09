@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import *
 
 
@@ -28,6 +29,7 @@ class SplashAdmin(admin.ModelAdmin):
 
 class BannerAdmin(admin.ModelAdmin):
     list_display = ('id', 'type', 'subject_id', 'title', 'created')
+
 
 
 admin.site.register(MicroUser, MicroUserAdmin)

@@ -6,7 +6,7 @@ from rest_framework import filters
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from sts.sts import Sts
 
 from wallpaper import models as model
@@ -130,6 +130,8 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
 
     # 筛选用户收藏
     def filter_queryset(self, queryset):
+        print(self.request.user)
+        print(self.request.auth)
         uid = self.request.query_params.get('uid')
         if uid is None or uid == -1:
             return super().filter_queryset(queryset)

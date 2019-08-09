@@ -1,7 +1,7 @@
 import sys
 
 from django.db import models
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from pygments.lexers import get_all_lexers
@@ -13,7 +13,9 @@ import logging
 
 # python manage.py makemigrations TestModel  # 让 Django 知道我们在我们的模型有一些变更
 # python manage.py migrate TestModel   # 创建表结构
+from rest_framework.authtoken.models import Token
 
+from MicroWeb import settings
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -108,6 +110,12 @@ def delete_cos_picture(sender, instance, **kwargs):
         Bucket='wallpager-1251812446',
         Key=str(picture_url).replace(base_cos_url, '')
     )
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 
 class Splash(models.Model):

@@ -68,7 +68,7 @@ class CustomResponse(Response):
                  status=None,
                  template_name=None, headers=None,
                  exception=False, content_type=None):
-        msg = state_dict[code],
+        msg = state_dict[code]
         """
         Alters the init arguments slightly.
         For example, drop 'template_name', and instead use 'data'.
@@ -122,7 +122,6 @@ class CustomPageResponse(Response):
         Setting 'renderer' and 'media_type' will typically be deferred,
         For example being set automatically by the `APIView`.
         """
-        print(code)
         super(Response, self).__init__(None, status=status)
 
         if isinstance(data, Serializer):
