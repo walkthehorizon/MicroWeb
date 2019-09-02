@@ -160,3 +160,12 @@ class MicroUser(AbstractUser):
 
     class Meta(AbstractUser.Meta):
         pass
+
+
+class Update(models.Model):
+    id = models.AutoField(primary_key=True)
+    appUrl = models.URLField(default="")
+    updateInfo = models.CharField(max_length=120)
+    isForce = models.BooleanField(default=False)
+    versionCode = models.SmallIntegerField()
+    versionName = models.CharField(max_length=12)

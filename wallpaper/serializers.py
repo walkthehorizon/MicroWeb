@@ -13,7 +13,7 @@ class MicroUserSerializer(serializers.ModelSerializer):
     # "signature": "微梦官方编辑&程序&产品！",
     class Meta:
         model = MicroUser
-        fields = ('id', 'nickname', 'avatar', 'phone', 'email', 'sex', 'signature', 'date_joined', 'last_login', 'pea')
+        fields = ('id', 'nickname', 'avatar', 'phone', 'email', 'sex', 'signature', 'pea')
 
 
 class WallPaperSerializer(serializers.ModelSerializer):
@@ -59,3 +59,9 @@ class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
         fields = ('id', 'image_url', 'url', 'type', 'color', 'subject_id', 'title', 'desc')
+
+
+class UpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Update
+        fields = '__all__'

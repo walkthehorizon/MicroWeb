@@ -309,6 +309,11 @@ class UserUpdate(generics.UpdateAPIView):
     serializer_class = MicroUserSerializer
     queryset = MicroUser.objects.all()
 
+
+@api_view(['GET'])
+def get_update_info(request):
+    data = UpdateSerializer(Update.objects.order_by('-id')[0]).data
+    return CustomResponse(data=data)
 # @api_view(['PUT'])
 # def put_subject_support(request):
 #     user = request.user
