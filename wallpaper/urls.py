@@ -26,6 +26,7 @@ urlpatterns += [
     path('category/update/', bv.update_category_cover),
     path('user/update/<int:pk>', bv.UserUpdate.as_view()),
     path('update', bv.get_update_info),
+    path('wallpaper/detail/<int:pk>', bv.get_paper_for_web)
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),

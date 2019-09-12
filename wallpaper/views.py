@@ -314,6 +314,16 @@ class UserUpdate(generics.UpdateAPIView):
 def get_update_info(request):
     data = UpdateSerializer(Update.objects.order_by('-id')[0]).data
     return CustomResponse(data=data)
+
+
+# 获取带有Subject信息的Paper
+@api_view(['GET'])
+def get_paper_for_web(request, pk):
+    paper = Wallpaper.objects.get(id=pk)
+    result = json.loads(json.dumps(WallPaperSerializer(paper).data))
+    result['description'] = paper.subject.description
+    result['title'] = paper.subject.name
+    return CustomResponse(data=result)
 # @api_view(['PUT'])
 # def put_subject_support(request):
 #     user = request.user
