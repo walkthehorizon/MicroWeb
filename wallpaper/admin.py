@@ -31,7 +31,6 @@ class BannerAdmin(admin.ModelAdmin):
     list_display = ('id', 'type', 'subject_id', 'title', 'created')
 
 
-
 admin.site.register(MicroUser, MicroUserAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Wallpaper, WallpaperAdmin)

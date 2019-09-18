@@ -312,8 +312,11 @@ class UserUpdate(generics.UpdateAPIView):
 
 @api_view(['GET'])
 def get_update_info(request):
-    data = UpdateSerializer(Update.objects.order_by('-id')[0]).data
-    return CustomResponse(data=data)
+    if Update.objects.count() < 1:
+        update = Update(versionCode=0)
+    else:
+        update = Update.objects.order_by('-id')[0]
+    return CustomResponse(data=UpdateSerializer(update).data)
 
 
 # 获取带有Subject信息的Paper

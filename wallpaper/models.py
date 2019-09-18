@@ -80,8 +80,7 @@ class Subject(models.Model):
 class Wallpaper(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, blank=True, null=True)
-    banner = models.ForeignKey('Banner', on_delete=models.SET_NULL, blank=True, null=True,
-                               related_name='banner_papers')
+    banner = models.ForeignKey('Banner', on_delete=models.SET_NULL, blank=True, null=True)
     url = models.URLField(default="")
     origin_url = models.URLField(default="")
     sw = models.IntegerField(default=0, blank=True)
