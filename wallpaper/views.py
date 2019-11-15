@@ -75,7 +75,7 @@ def login_user(request):
     # user = auth.authenticate(username=username, password=password)
     user.isLogin = True
     user.save()
-    data = json.loads(json.dumps(MicroUserSerializer(user).data))
+    data = MicroUserSerializer(user).data
     data['token'] = Token.objects.get_or_create(user=user)[0].key
     return CustomResponse(data=data)
 
@@ -217,17 +217,18 @@ def buy_paper(request, pk):
         paper = Wallpaper.objects.get(id=pk)
     except Wallpaper.DoesNotExist:
         return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
-    pea = int(request.query_params.get('pea'))
-    if pea < 1 or pea > 3:
+    download_type = int(request.query_params.get('type'))
+    if download_type != 1 and download_type != 2:
         return CustomResponse(code=state.STATE_ERROR)
-    if user.pea < pea:
-        return CustomResponse(code=state.STATE_PEA_NOT_ENOUGH)
     if user.buys.filter(id=paper.id).exists():
         return CustomResponse()
-    user.pea = user.pea - pea
+    resume = (3 if (download_type == 2) else 1)
+    if user.pea < resume:
+        return CustomResponse(code=state.STATE_PEA_NOT_ENOUGH)
+    user.pea = user.pea - resume
     user.buys.add(paper)
     user.save()
-    return CustomResponse()
+    return CustomResponse(data=resume)
 
 
 class CategoryViewSet(CustomReadOnlyModelViewSet):
@@ -253,7 +254,7 @@ class SubjectViewSet(CustomReadOnlyModelViewSet):
         if key is None:
             return Subject.objects.all()
         else:
-            return Subject.objects.filter(Q(name__contains=key) | Q(description__contains=key))
+            return Subject.objects.filter(name__contains=key)
 
 
 # 更新Category封面
