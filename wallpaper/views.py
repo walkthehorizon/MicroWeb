@@ -320,6 +320,20 @@ def get_update_info(request):
     return CustomResponse(data=UpdateSerializer(update).data)
 
 
+@api_view(['GET'])
+def get_is_sign(request):
+    try:
+        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
+    except MicroUser.DoesNotExist:
+        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
+    if user.today_login:
+        return CustomResponse(code=state.STATE_TODAY_HAS_SIGN)
+    user.today_login = True
+    user.pea += 5
+    user.save()
+    return CustomResponse()
+
+
 # 获取带有Subject信息的Paper
 @api_view(['GET'])
 def get_paper_for_web(request, pk):
@@ -328,6 +342,7 @@ def get_paper_for_web(request, pk):
     result['description'] = paper.subject.description
     result['title'] = paper.subject.name
     return CustomResponse(data=result)
+
 # @api_view(['PUT'])
 # def put_subject_support(request):
 #     user = request.user
