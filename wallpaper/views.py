@@ -221,7 +221,7 @@ def buy_paper(request, pk):
     if download_type != 1 and download_type != 2:
         return CustomResponse(code=state.STATE_ERROR)
     if user.buys.filter(id=paper.id).exists():
-        return CustomResponse()
+        return CustomResponse(code=state.STATE_HAS_BUY)
     resume = (3 if (download_type == 2) else 1)
     if user.pea < resume:
         return CustomResponse(code=state.STATE_PEA_NOT_ENOUGH)

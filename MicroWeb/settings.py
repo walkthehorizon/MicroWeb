@@ -135,7 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = "/MicroWeb/static/"
+STATIC_ROOT = "/usr/MicroWeb/static/"
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'wallpaper.state.custom_exception_handler',
