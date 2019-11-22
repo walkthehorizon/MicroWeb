@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'wallpaper',  # test_wallpaper爬虫存储库
         'USER': 'shentu',
         'PASSWORD': '19951008',
-        'HOST': 'localhost',
+        'HOST': '47.105.40.169',
         'PORT': '3306'
     }
 }

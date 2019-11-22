@@ -25,6 +25,7 @@ STATE_INVALID_URL = 1301
 STATE_HAS_BUY = 1401
 STATE_PEA_NOT_ENOUGH = 1402
 STATE_COLLECT_OVER = 1403
+STATE_TODAY_HAS_SIGN = 1500
 
 state_dict = {
     STATE_SUCCESS: '请求成功',
@@ -40,7 +41,8 @@ state_dict = {
     STATE_INVALID_URL: '无效的url',
     STATE_HAS_BUY: '已购买',
     STATE_PEA_NOT_ENOUGH: '看豆不足',
-    STATE_COLLECT_OVER: '可收藏量已满额，请移除部分后重试'
+    STATE_COLLECT_OVER: '可收藏量已满额，请移除部分后重试',
+    STATE_TODAY_HAS_SIGN: '今日已签到',
 }
 
 

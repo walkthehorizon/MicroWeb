@@ -153,6 +153,7 @@ class MicroUser(AbstractUser):
     sex = models.SmallIntegerField(default=0)
     avatar = models.URLField(default="")
     isLogin = models.BooleanField(default=False)
+    today_login = models.BooleanField(default=False)
     pea = models.IntegerField(default=10)
     collects = models.ManyToManyField(Wallpaper, related_name="users", related_query_name='user', blank=True)
     buys = models.ManyToManyField(Wallpaper, related_name="buy_users", related_query_name='buy_user', blank=True)
