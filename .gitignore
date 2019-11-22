@@ -119,3 +119,9 @@ wallpaper/migrations/0011_auto_20180604_1820.py
 wallpaper/migrations/__pycache__/
 
 /.idea
+
+*.pid
+
+*.ini
+
+/static
