@@ -301,6 +301,11 @@ class GetRandomRecommend(generics.ListAPIView):
     queryset = Wallpaper.objects.all().order_by('?').distinct()
 
 
+class GetNewWallpapers(generics.ListAPIView):
+    serializer_class = WallPaperSerializer
+    queryset = Wallpaper.objects.all().order_by("-created")
+
+
 class BannerViewSet(CustomReadOnlyModelViewSet):
     serializer_class = BannerSerializer
     queryset = Banner.objects.order_by('-created')

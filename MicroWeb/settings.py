@@ -14,7 +14,6 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -22,9 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7n*#v@xg(3d*ie(sm#s0m*vq1)vn8o3+srs4&q9pqtpty%t2q%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('HOSTNAME') != 'izm5e1ufcpbot0j9fz5gzez'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','api.wmmt119.top','wmmt119.top']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.wmmt119.top', 'wmmt119.top']
 
 AUTH_USER_MODEL = 'wallpaper.MicroUser'
 
@@ -77,16 +76,28 @@ WSGI_APPLICATION = 'MicroWeb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 # 本地->爬虫库->线网库
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'wallpaper',  # test_wallpaper爬虫存储库
-        'USER': 'shentu',
-        'PASSWORD': '19951008',
-        'HOST': '47.105.40.169',
-        'PORT': '3306'
+if DEBUG:
+    DATABASES = {  # 开发环境数据库配置
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'test_wallpaper',
+            'USER': 'shentu',
+            'PASSWORD': '19951008',
+            'HOST': '47.105.40.169',
+            'PORT': '3306'
+        }
     }
-}
+else:
+    DATABASES = {  # 生产环境数据库配置
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'wallpaper',  # test_wallpaper爬虫存储库
+            'USER': 'shentu',
+            'PASSWORD': '19951008',
+            'HOST': 'localhost',
+            'PORT': '3306'
+        }
+    }
 
 # CACHES = {
 #     "default": {
@@ -135,7 +146,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = "/usr/MicroWeb/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'wallpaper.state.custom_exception_handler',
