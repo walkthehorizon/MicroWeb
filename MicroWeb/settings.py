@@ -23,7 +23,10 @@ SECRET_KEY = '7n*#v@xg(3d*ie(sm#s0m*vq1)vn8o3+srs4&q9pqtpty%t2q%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('HOSTNAME') != 'izm5e1ufcpbot0j9fz5gzez'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.wmmt119.top', 'wmmt119.top']
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'api.wmmt119.top']
 
 AUTH_USER_MODEL = 'wallpaper.MicroUser'
 

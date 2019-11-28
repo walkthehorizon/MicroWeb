@@ -17,12 +17,14 @@ class MicroUserSerializer(serializers.ModelSerializer):
 
 
 class WallPaperSerializer(serializers.ModelSerializer):
+    created = serializers.DateTimeField(format="%Y-%m-%d", required=False, read_only=True)
+
     class Meta:
         model = Wallpaper
         # owner = serializers.ReadOnlyField(source='owner.username')
         # subject = serializers.ReadOnlyField(source='subject.name')
         # owner = serializers.ReadOnlyField(source='owner.nickname')
-        fields = ('id', 'url', 'origin_url', 'subject_id', 'collected', 'collect_num')
+        fields = ('id', 'url', 'origin_url', 'subject_id', 'collected', 'collect_num', 'created')
 
 
 class SubjectSerializer(serializers.ModelSerializer):
