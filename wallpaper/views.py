@@ -220,13 +220,13 @@ def buy_paper(request, pk):
     download_type = int(request.query_params.get('type'))
     if download_type != 1 and download_type != 2:
         return CustomResponse(code=state.STATE_ERROR)
-    if user.buys.filter(id=paper.id).exists():
-        return CustomResponse(code=state.STATE_HAS_BUY)
+    # if user.buys.filter(id=paper.id).exists():
+    #     return CustomResponse(code=state.STATE_HAS_BUY)
     resume = (3 if (download_type == 2) else 1)
     if user.pea < resume:
         return CustomResponse(code=state.STATE_PEA_NOT_ENOUGH)
     user.pea = user.pea - resume
-    user.buys.add(paper)
+    # user.buys.add(paper)
     user.save()
     return CustomResponse(data=resume)
 
@@ -334,7 +334,7 @@ def get_is_sign(request):
     if user.today_login:
         return CustomResponse(code=state.STATE_TODAY_HAS_SIGN)
     user.today_login = True
-    user.pea += 5
+    user.pea += 10
     user.save()
     return CustomResponse()
 
