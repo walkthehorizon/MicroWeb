@@ -331,9 +331,9 @@ def get_is_sign(request):
         user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
     except MicroUser.DoesNotExist:
         return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    if user.today_login:
+    if timezone.now().date() == user.last_sign:
         return CustomResponse(code=state.STATE_TODAY_HAS_SIGN)
-    user.today_login = True
+    user.last_sign = timezone.now()
     user.pea += 10
     user.save()
     return CustomResponse()
