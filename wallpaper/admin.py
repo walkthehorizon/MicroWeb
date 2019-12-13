@@ -5,6 +5,7 @@ from .models import *
 
 class MicroUserAdmin(admin.ModelAdmin):
     list_display = ('id', 'nickname', 'phone', 'date_joined', 'last_login', 'pea')
+    raw_id_fields = ['buys', 'collects']
 
 
 # Register your models here.

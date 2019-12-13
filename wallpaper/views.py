@@ -331,12 +331,12 @@ def get_is_sign(request):
         user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
     except MicroUser.DoesNotExist:
         return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    if timezone.now().date() == user.last_sign:
+    if timezone.now().date() == user.last_sign.date():
         return CustomResponse(code=state.STATE_TODAY_HAS_SIGN)
     user.last_sign = timezone.now()
     user.pea += 10
     user.save()
-    return CustomResponse()
+    return CustomResponse(data=10)
 
 
 # 获取带有Subject信息的Paper
