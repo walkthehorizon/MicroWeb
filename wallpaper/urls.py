@@ -28,7 +28,8 @@ urlpatterns += [
     path('user/update/<int:pk>', bv.UserUpdate.as_view()),
     path('update', bv.get_update_info),
     path('sign', bv.get_is_sign),
-    path('wallpaper/detail/<int:pk>', bv.get_paper_for_web)
+    path('wallpaper/detail/<int:pk>', bv.get_paper_for_web),
+    path('paper/set/banner', bv.set_wallpaper_banner),
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),

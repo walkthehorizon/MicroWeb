@@ -96,9 +96,6 @@ def logout_user(request):
 # 获取Cos临时密钥
 @api_view(['GET'])
 def get_temp_secret_key(request):
-    policy = {'version': '2.0', 'statement': [{'action': ['name/cos:PutObject'], 'effect': 'allow',
-                                               'resource': [
-                                                   'qcs::cos:ap-beijing:uid/1251812446:wallpager-1251812446/*']}]}
     config = {
         # 临时密钥有效时长，单位是秒
         'duration_seconds': 1800,
@@ -106,8 +103,18 @@ def get_temp_secret_key(request):
         'secret_id': model.secret_id,
         # 固定密钥
         'secret_key': model.secret_key,
-        # 设置 策略 policy, 可通过 get_policy(list)获取
-        'policy': policy
+        # 换成你的 bucket
+        'bucket': 'wallpager-1251812446',
+        # 换成 bucket 所在地区
+        'region': 'ap-beijing',
+        # 这里改成允许的路径前缀，可以根据自己网站的用户登录态判断允许上传的具体路径
+        # 例子： a.jpg 或者 a/* 或者 * (使用通配符*存在重大安全风险, 请谨慎评估使用)
+        'allow_prefix': 'avatar/*',
+        # 密钥的权限列表。简单上传和分片需要以下的权限，其他权限列表请看 https://cloud.tencent.com/document/product/436/31923
+        'allow_actions': [
+            # 简单上传
+            'name/cos:PutObject',
+        ]
     }
 
     sts = Sts(config)
@@ -270,6 +277,19 @@ def update_category_cover(request):
     category.logo = logo
     category.save()
     return CustomResponse()
+
+
+# 设置Cos所属Banner
+@api_view(['POST'])
+def set_wallpaper_banner(request):
+    try:
+        paper = Wallpaper.objects.get(id=request.POST.get('pid'))
+        paper.banner_id = request.POST.get('bid')
+        paper.save()
+    except Wallpaper.DoesNotExist as e:
+        print(e)
+        return CustomResponse(data=False)
+    return CustomResponse(True)
 
 
 # 获取所有分类
