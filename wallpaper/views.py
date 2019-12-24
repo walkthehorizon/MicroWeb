@@ -378,7 +378,7 @@ def get_paper_for_web(request, pk):
 
 @api_view(['GET'])
 def check_gzh_signature(request):
-    return request.GET['echostr']
+    return Response(request.GET['echostr'])
 # @api_view(['PUT'])
 # def put_subject_support(request):
 #     user = request.user
