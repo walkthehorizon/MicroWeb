@@ -4,7 +4,7 @@ from .models import *
 
 
 class MicroUserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nickname', 'phone', 'date_joined', 'last_login', 'pea')
+    list_display = ('id', 'nickname', 'phone', 'date_joined', 'last_login', 'pea', 'vip')
     raw_id_fields = ['buys', 'collects']
 
 

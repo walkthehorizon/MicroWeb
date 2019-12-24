@@ -8,6 +8,7 @@ router.register("subjects", bv.SubjectViewSet)
 router.register("wallpapers", bv.WallPapersViewSet)
 router.register("categories", bv.CategoryViewSet)
 router.register("banners", bv.BannerViewSet)
+router.register("comments", bv.CommentViewSet)
 urlpatterns = router.urls
 urlpatterns += [
     # path('user/list/', bv.UserList.as_view(), name='user-list'),
@@ -30,6 +31,7 @@ urlpatterns += [
     path('sign', bv.get_is_sign),
     path('wallpaper/detail/<int:pk>', bv.get_paper_for_web),
     path('paper/set/banner', bv.set_wallpaper_banner),
+    path('gzh/check', bv.check_gzh_signature),
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),

@@ -158,6 +158,12 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
         return CustomResponse(data=serializer.data)
 
 
+class CommentViewSet(CustomReadOnlyModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    filter_fields = ('paper_id', 'user_id')
+
+
 class GetMyCollect(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
@@ -354,9 +360,10 @@ def get_is_sign(request):
     if timezone.now().date() == user.last_sign.date():
         return CustomResponse(code=state.STATE_TODAY_HAS_SIGN)
     user.last_sign = timezone.now()
-    user.pea += 10
+    reward = 30 if user.vip else 10
+    user.pea += reward
     user.save()
-    return CustomResponse(data=10)
+    return CustomResponse(data=reward)
 
 
 # 获取带有Subject信息的Paper
@@ -368,6 +375,10 @@ def get_paper_for_web(request, pk):
     result['title'] = paper.subject.name
     return CustomResponse(data=result)
 
+
+@api_view(['GET'])
+def check_gzh_signature(request):
+    return request.GET['echostr']
 # @api_view(['PUT'])
 # def put_subject_support(request):
 #     user = request.user

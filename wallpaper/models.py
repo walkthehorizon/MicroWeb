@@ -155,6 +155,7 @@ class MicroUser(AbstractUser):
     isLogin = models.BooleanField(default=False)
     last_sign = models.DateTimeField(default=timezone.datetime(2019, 1, 1))
     pea = models.IntegerField(default=10)
+    vip = models.BooleanField(default=False)
     collects = models.ManyToManyField(Wallpaper, related_name="users", related_query_name='user', blank=True)
     buys = models.ManyToManyField(Wallpaper, related_name="buy_users", related_query_name='buy_user', blank=True)
 
@@ -169,3 +170,11 @@ class Update(models.Model):
     isForce = models.BooleanField(default=False)
     versionCode = models.SmallIntegerField()
     versionName = models.CharField(max_length=12)
+
+
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    content = models.TextField()
+    paper = models.ForeignKey(Wallpaper, models.CASCADE)
+    user = models.ForeignKey(MicroUser, models.SET_NULL, null=True)
+    created = models.DateTimeField(auto_now_add=True)
