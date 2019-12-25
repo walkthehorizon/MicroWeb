@@ -398,14 +398,16 @@ def get_wx_js_signature(request):
     current_time = int(time.time())
     if current_time - LAST_UPDATE_TIME > 7000:
         res = requests.get(
-            "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb9fe7918b9682642&secret"
-            "=e16fe1f1fdd61c176d4e05900a33bb13")
+            "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxeb10ca693233a27c&secret"
+            "=69a3bde51f96b3d335c0a1eeeabb7c99")
         Access_TOKEN = res.json().get('access_token')
     if current_time - LAST_UPDATE_TIME > 7000:
         res = requests.get(
             'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + Access_TOKEN + '&type=jsapi')
         JS_TICKET = res.json().get('ticket')
+    print(Access_TOKEN, JS_TICKET)
     sign = Sign(JS_TICKET, request.GET.get('url'))
+    print(sign.sign())
     return CustomResponse(data=sign.sign())
 # @api_view(['PUT'])
 # def put_subject_support(request):
