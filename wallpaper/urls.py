@@ -32,6 +32,7 @@ urlpatterns += [
     path('wallpaper/detail/<int:pk>', bv.get_paper_for_web),
     path('paper/set/banner', bv.set_wallpaper_banner),
     path('gzh/check', bv.check_gzh_signature),
+    path('gzh/signature', bv.get_wx_js_signature),
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),

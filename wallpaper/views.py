@@ -381,6 +381,32 @@ def get_paper_for_web(request, pk):
 def check_gzh_signature(request):
     print(request.GET['echostr'])
     return HttpResponse(request.GET['echostr'], content_type="text/plain")
+
+
+import requests
+from wallpaper.sign import Sign
+import time
+
+Access_TOKEN = ''
+JS_TICKET = ''
+LAST_UPDATE_TIME = 0
+
+
+@api_view(['GET'])
+def get_wx_js_signature(request):
+    global Access_TOKEN, JS_TICKET
+    current_time = int(time.time())
+    if current_time - LAST_UPDATE_TIME > 7000:
+        res = requests.get(
+            "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb9fe7918b9682642&secret"
+            "=e16fe1f1fdd61c176d4e05900a33bb13")
+        Access_TOKEN = res.json().get('access_token')
+    if current_time - LAST_UPDATE_TIME > 7000:
+        res = requests.get(
+            'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + Access_TOKEN + '&type=jsapi')
+        JS_TICKET = res.json().get('ticket')
+    sign = Sign(JS_TICKET, request.GET.get('url'))
+    return CustomResponse(data=sign.sign())
 # @api_view(['PUT'])
 # def put_subject_support(request):
 #     user = request.user
