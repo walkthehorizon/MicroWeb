@@ -1,6 +1,7 @@
 import json
 
 from django.db.models import Q
+from django.http import HttpResponse
 from django_filters import rest_framework
 from rest_framework import filters
 from rest_framework import generics
@@ -378,7 +379,8 @@ def get_paper_for_web(request, pk):
 
 @api_view(['GET'])
 def check_gzh_signature(request):
-    return Response(request.GET['echostr'])
+    print(request.GET['echostr'])
+    return HttpResponse(request.GET['echostr'], content_type="text/plain")
 # @api_view(['PUT'])
 # def put_subject_support(request):
 #     user = request.user
