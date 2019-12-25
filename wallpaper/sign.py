@@ -7,9 +7,9 @@ import hashlib
 class Sign:
     def __init__(self, jsapi_ticket, url):
         self.ret = {
-            'nonceStr': self.__create_nonce_str(),
+            'nonceStr': 'pWUBSGY8VNmz1Uk',
             'jsapi_ticket': jsapi_ticket,
-            'timestamp': self.__create_timestamp(),
+            'timestamp': 1577263748,
             'url': url
         }
 
