@@ -7,27 +7,14 @@ import hashlib
 class Sign:
     def __init__(self, jsapi_ticket, url):
         self.ret = {
-            'nonceStr': 'pWUBSGY8VNmz1Uk',
+            'nonceStr': ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15)),
             'jsapi_ticket': jsapi_ticket,
-            'timestamp': 1577263748,
+            'timestamp': int(time.time()),
             'url': url
         }
-
-    def __create_nonce_str(self):
-        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15))
-
-    def __create_timestamp(self):
-        return int(time.time())
 
     def sign(self):
         string = '&'.join(['%s=%s' % (key.lower(), self.ret[key]) for key in sorted(self.ret)])
         print(string)
         self.ret['signature'] = hashlib.sha1(string.encode("utf-8")).hexdigest()
         return self.ret
-
-
-if __name__ == '__main__':
-    # 注意 URL 一定要动态获取，不能 hardcode
-    sign = Sign('LIKLckvwlJT9cWIhEQTwfMaPlpy3KztLvoc7krYEbQs-cL4-CpQXe6E9iIedHx2G3GXUHXhbP4W_gkFkMBpCnA',
-                'https://wmmt119.top')
-    print(sign.sign())

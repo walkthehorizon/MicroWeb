@@ -1,6 +1,7 @@
 import json
+import time
 
-from django.db.models import Q
+import requests
 from django.http import HttpResponse
 from django_filters import rest_framework
 from rest_framework import filters
@@ -8,19 +9,19 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 from sts.sts import Sts
 
 from wallpaper import models as model
 from wallpaper import state
 from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
+from wallpaper.sign import Sign
 from wallpaper.state import CustomResponse
-from rest_framework.response import Response
 
+from django_redis import get_redis_connection
 
-# from django_redis import get_redis_connection
-
-# con = get_redis_connection("default")
+conn = get_redis_connection("default")
 
 
 class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -383,31 +384,22 @@ def check_gzh_signature(request):
     return HttpResponse(request.GET['echostr'], content_type="text/plain")
 
 
-import requests
-from wallpaper.sign import Sign
-import time
-
-Access_TOKEN = ''
-JS_TICKET = ''
-LAST_UPDATE_TIME = 0
-
-
 @api_view(['GET'])
 def get_wx_js_signature(request):
-    global Access_TOKEN, JS_TICKET, LAST_UPDATE_TIME
-    current_time = int(time.time())
-    if current_time - LAST_UPDATE_TIME > 7000:
+    access_token = conn.get('GZH:ACCESS_TOKEN')
+    if access_token is None:
         res = requests.get(
             "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxeb10ca693233a27c&secret"
             "=69a3bde51f96b3d335c0a1eeeabb7c99")
-        Access_TOKEN = res.json().get('access_token')
-        print('新的Access_TOKEN：' + Access_TOKEN + "\n")
+        access_token = res.json().get('access_token')
+        conn.set('GZH:ACCESS_TOKEN', access_token, ex=res.json().get('expires_in'))
+    js_ticket = conn.get('GZH:JS_TICKET')
+    if js_ticket is None:
         res = requests.get(
-            'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + Access_TOKEN + '&type=jsapi')
-        JS_TICKET = res.json().get('ticket')
-        print('新的TICKET：' + JS_TICKET + "\n")
-        LAST_UPDATE_TIME = current_time
-    sign = Sign(JS_TICKET, request.GET.get('url'))
+            'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + access_token + '&type=jsapi')
+        js_ticket = res.json().get('ticket')
+        conn.set('GZH:JS_TICKET', js_ticket, ex=res.json().get('expires_in'))
+    sign = Sign(js_ticket, request.GET.get('url'))
     return CustomResponse(data=sign.sign())
 # @api_view(['PUT'])
 # def put_subject_support(request):
