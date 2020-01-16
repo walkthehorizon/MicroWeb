@@ -91,6 +91,9 @@ class Wallpaper(models.Model):
     # 数据来源id
     source_id = models.CharField(max_length=30, default="", blank=True)
     collect_num = models.IntegerField(default=0)
+    comment_num = models.IntegerField(default=0)
+    share_num = models.IntegerField(default=0)
+    download_num = models.IntegerField(default=0)
     collected = models.BooleanField(default=False)
 
     class Meta:

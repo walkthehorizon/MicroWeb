@@ -17,14 +17,12 @@ class MicroUserSerializer(serializers.ModelSerializer):
 
 
 class WallPaperSerializer(serializers.ModelSerializer):
-    created = serializers.DateTimeField(format="%Y-%m-%d", required=False, read_only=True)
+    created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
     class Meta:
         model = Wallpaper
-        # owner = serializers.ReadOnlyField(source='owner.username')
-        # subject = serializers.ReadOnlyField(source='subject.name')
-        # owner = serializers.ReadOnlyField(source='owner.nickname')
-        fields = ('id', 'url', 'origin_url', 'subject_id', 'collected', 'collect_num', 'created')
+        fields = ['id', 'category', 'subject', 'url', 'origin_url', 'collect_num', 'comment_num', 'share_num',
+                  'download_num', 'collected', 'category', 'subject', 'created']
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -72,6 +70,12 @@ class UpdateSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
+    def to_representation(self, instance):
+        user_dict = super().to_representation(instance)
+        user_dict['nickname'] = instance.user.nickname
+        user_dict['avatar'] = instance.user.avatar
+        return user_dict
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('content', 'created',)

@@ -19,9 +19,7 @@ from wallpaper.serializers import *
 from wallpaper.sign import Sign
 from wallpaper.state import CustomResponse
 
-from django_redis import get_redis_connection
-
-conn = get_redis_connection("default")
+from django.core.cache import cache
 
 
 class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -160,10 +158,31 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
         return CustomResponse(data=serializer.data)
 
 
-class CommentViewSet(CustomReadOnlyModelViewSet):
-    queryset = Comment.objects.all()
+class GetPaperComments(generics.ListAPIView):
     serializer_class = CommentSerializer
-    filter_fields = ('paper_id', 'user_id')
+    lookup_field = 'paper_id'
+    queryset = Comment.objects.all()
+
+    def filter_queryset(self, queryset):
+        paper_id = self.request.query_params.get('paper_id')
+        print(paper_id)
+        return queryset.filter(paper_id=paper_id)
+
+
+@api_view(['POST'])
+def add_paper_comment(request):
+    uid = request.META.get('HTTP_UID')
+    pid = request.POST.get('pid')
+    content = request.POST.get('content')
+    if uid is None or pid is None or content is None or MicroUser.objects.filter(id=uid).exists() is False \
+            or Wallpaper.objects.filter(id=pid).exists() is False:
+        return CustomResponse(data=state.STATE_ERROR)
+    comment = Comment(content=content, paper_id=pid, user_id=uid)
+    comment.save()
+    paper = Wallpaper.objects.get(id=pid)
+    paper.comment_num += 1
+    paper.save()
+    return CustomResponse(CommentSerializer(comment).data)
 
 
 class GetMyCollect(generics.ListAPIView):
@@ -194,6 +213,7 @@ def add_collect(request, pid):
     paper.collect_num = paper.collect_num + 1
     paper.save()
     user.save()
+    cache.set('COLLECT:PAPER:' + str(paper.id) + ":UID:" + str(request.META.get('HTTP_UID')), True)
     return CustomResponse()
 
 
@@ -328,6 +348,19 @@ class GetRandomRecommend(generics.ListAPIView):
     serializer_class = WallPaperSerializer
     queryset = Wallpaper.objects.all().order_by('?').distinct()
 
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output.
+        """
+        for paper in args[0]:
+            collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
+            if collect_key in cache:
+                paper.collected = cache.get(collect_key)
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+        return serializer_class(*args, **kwargs)
+
 
 class GetNewWallpapers(generics.ListAPIView):
     serializer_class = WallPaperSerializer
@@ -386,56 +419,27 @@ def check_gzh_signature(request):
 
 @api_view(['GET'])
 def get_wx_js_signature(request):
-    access_token = conn.get('GZH:ACCESS_TOKEN')
+    access_token = cache.get('GZH:ACCESS_TOKEN')
     if access_token is None:
         res = requests.get(
             "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxeb10ca693233a27c&secret"
             "=69a3bde51f96b3d335c0a1eeeabb7c99")
         access_token = res.json().get('access_token')
-        conn.set('GZH:ACCESS_TOKEN', access_token, ex=res.json().get('expires_in'))
-    js_ticket = conn.get('GZH:JS_TICKET')
+        cache.set('GZH:ACCESS_TOKEN', access_token, ex=res.json().get('expires_in'))
+    js_ticket = cache.get('GZH:JS_TICKET')
     if js_ticket is None:
         res = requests.get(
             'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + access_token + '&type=jsapi')
         js_ticket = res.json().get('ticket')
-        conn.set('GZH:JS_TICKET', js_ticket, ex=res.json().get('expires_in'))
+        cache.set('GZH:JS_TICKET', js_ticket, ex=res.json().get('expires_in'))
     sign = Sign(js_ticket, request.GET.get('url'))
     return CustomResponse(data=sign.sign())
-# @api_view(['PUT'])
-# def put_subject_support(request):
-#     user = request.user
-#     if user is None or not user.is_active:
-#         return generate_result_json(state_code=state.STATE_INVALID_USER)
-#     subject_id = request.data.get('subjectId')
-#     support_type = request.data.get('type')
-#     subject = Subject.objects.get(id=subject_id)
-#     if subject is None:
-#         return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
-#     if support_type == '1':
-#         subject.support_people.add(user)
-#     if support_type == '-1':
-#         subject.support_people.remove(user)
-#     # print(subject.support_people.all())
-#     return generate_result_json(state_code=state.STATE_SUCCESS)
-#
-#
-# @api_view(['GET'])
-# def get_subject_support_count(request):
-#     lookup_field = 'subjectId'
-#     return generate_result_json(state_code=state.STATE_SUCCESS)
-#     # subject_id = request.GET.get('subjectId', '2853')
-#     # subject = Subject.objects.get(id=subject_id)
-#     # if subject is None:
-#     #     return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
-#     # return generate_result_json(state_code=state.STATE_SUCCESS, data=str(len(subject.support_people.all())))
-#
-#
-# class GetSubjectSupportCount(generics.GenericAPIView):
-#     lookup_field = 'subjectId'
-#
-#     def get(self, request, subjectId):
-#         try:
-#             subject = Subject.objects.get(id=subjectId)
-#         except Subject.DoesNotExist:
-#             return Response(generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST).content)
-#         return Response(dump_result_json(state_code=state.STATE_SUCCESS, data=len(subject.support_people.all())))
+
+
+@api_view(['POST'])
+def update_share_num(request):
+    pid = str(request.POST.get('pid'))
+    paper = Wallpaper.objects.get(id=pid)
+    paper.share_num += 1
+    paper.save()
+    return CustomResponse(data=state.STATE_SUCCESS)
