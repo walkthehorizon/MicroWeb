@@ -1,7 +1,7 @@
 import json
-import time
 
 import requests
+from django.core.cache import cache
 from django.http import HttpResponse
 from django_filters import rest_framework
 from rest_framework import filters
@@ -18,8 +18,6 @@ from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
 from wallpaper.sign import Sign
 from wallpaper.state import CustomResponse
-
-from django.core.cache import cache
 
 
 class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -156,6 +154,21 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return CustomResponse(data=serializer.data)
+
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output.
+        """
+        uid = self.request.META.get('HTTP_UID')
+        if uid is not None:
+            for paper in args[0]:
+                collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
+                if collect_key in cache:
+                    paper.collected = cache.get(collect_key)
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+        return serializer_class(*args, **kwargs)
 
 
 class GetPaperComments(generics.ListAPIView):
@@ -353,10 +366,12 @@ class GetRandomRecommend(generics.ListAPIView):
         Return the serializer instance that should be used for validating and
         deserializing input, and for serializing output.
         """
-        for paper in args[0]:
-            collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
-            if collect_key in cache:
-                paper.collected = cache.get(collect_key)
+        uid = self.request.META.get('HTTP_UID')
+        if uid is not None:
+            for paper in args[0]:
+                collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
+                if collect_key in cache:
+                    paper.collected = cache.get(collect_key)
         serializer_class = self.get_serializer_class()
         kwargs['context'] = self.get_serializer_context()
         return serializer_class(*args, **kwargs)
@@ -365,6 +380,21 @@ class GetRandomRecommend(generics.ListAPIView):
 class GetNewWallpapers(generics.ListAPIView):
     serializer_class = WallPaperSerializer
     queryset = Wallpaper.objects.all().order_by("-created")
+
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output.
+        """
+        uid = self.request.META.get('HTTP_UID')
+        if uid is not None:
+            for paper in args[0]:
+                collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
+                if collect_key in cache:
+                    paper.collected = cache.get(collect_key)
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+        return serializer_class(*args, **kwargs)
 
 
 class BannerViewSet(CustomReadOnlyModelViewSet):
