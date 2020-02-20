@@ -147,11 +147,11 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
-        users = MicroUser.objects.filter(id=request.META.get('HTTP_UID'))
-        if users.exists():
-            user = users.first()
+        uid = request.META.get('HTTP_UID')
+        print(request.META)
+        if uid is not None:
             for paper in page:
-                paper.collected = user.collects.filter(id=paper.id).exists()
+                paper.collected = MicroUser.objects.get(id=uid).collects.filter(id=paper.id).exists()
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
@@ -163,7 +163,7 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
 class CommentViewSet(CustomReadOnlyModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    filter_fields = ('paper_id', 'user_id')
+    search_fields = ('paper_id', 'user_id')
 
 
 class GetMyCollect(generics.ListAPIView):
@@ -334,6 +334,11 @@ class GetNewWallpapers(generics.ListAPIView):
     queryset = Wallpaper.objects.all().order_by("-created")
 
 
+class GetRankPapers(generics.ListAPIView):
+    serializer_class = WallPaperSerializer
+    queryset = Wallpaper.objects.all().order_by("-collect_num")
+
+
 class BannerViewSet(CustomReadOnlyModelViewSet):
     serializer_class = BannerSerializer
     queryset = Banner.objects.order_by('-created')
@@ -401,41 +406,3 @@ def get_wx_js_signature(request):
         conn.set('GZH:JS_TICKET', js_ticket, ex=res.json().get('expires_in'))
     sign = Sign(js_ticket, request.GET.get('url'))
     return CustomResponse(data=sign.sign())
-# @api_view(['PUT'])
-# def put_subject_support(request):
-#     user = request.user
-#     if user is None or not user.is_active:
-#         return generate_result_json(state_code=state.STATE_INVALID_USER)
-#     subject_id = request.data.get('subjectId')
-#     support_type = request.data.get('type')
-#     subject = Subject.objects.get(id=subject_id)
-#     if subject is None:
-#         return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
-#     if support_type == '1':
-#         subject.support_people.add(user)
-#     if support_type == '-1':
-#         subject.support_people.remove(user)
-#     # print(subject.support_people.all())
-#     return generate_result_json(state_code=state.STATE_SUCCESS)
-#
-#
-# @api_view(['GET'])
-# def get_subject_support_count(request):
-#     lookup_field = 'subjectId'
-#     return generate_result_json(state_code=state.STATE_SUCCESS)
-#     # subject_id = request.GET.get('subjectId', '2853')
-#     # subject = Subject.objects.get(id=subject_id)
-#     # if subject is None:
-#     #     return generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST)
-#     # return generate_result_json(state_code=state.STATE_SUCCESS, data=str(len(subject.support_people.all())))
-#
-#
-# class GetSubjectSupportCount(generics.GenericAPIView):
-#     lookup_field = 'subjectId'
-#
-#     def get(self, request, subjectId):
-#         try:
-#             subject = Subject.objects.get(id=subjectId)
-#         except Subject.DoesNotExist:
-#             return Response(generate_result_json(state_code=state.STATE_SUBJECT_NOT_EXIST).content)
-#         return Response(dump_result_json(state_code=state.STATE_SUCCESS, data=len(subject.support_people.all())))
