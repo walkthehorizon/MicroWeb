@@ -17,14 +17,22 @@ class MicroUserSerializer(serializers.ModelSerializer):
 
 
 class WallPaperSerializer(serializers.ModelSerializer):
-    created = serializers.DateTimeField(format="%Y-%m-%d", required=False, read_only=True)
+    created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
+    def to_representation(self, instance):
+        paper = super().to_representation(instance)
+        paper['subjectId'] = instance.subject.id
+        paper['categoryId'] = instance.category.id if instance.category is not None else -1
+        paper['originUrl'] = instance.origin_url
+        paper['collectNum'] = instance.collect_num
+        paper['commentNum'] = instance.comment_num
+        paper['shareNum'] = instance.share_num
+        paper['downloadNum'] = instance.download_num
+        return paper
 
     class Meta:
         model = Wallpaper
-        # owner = serializers.ReadOnlyField(source='owner.username')
-        # subject = serializers.ReadOnlyField(source='subject.name')
-        # owner = serializers.ReadOnlyField(source='owner.nickname')
-        fields = ('id', 'url', 'origin_url', 'subject_id', 'collected', 'collect_num', 'created')
+        fields = ['id', 'url', 'collected', 'created']
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -58,9 +66,14 @@ class SplashSerializer(serializers.ModelSerializer):
 
 
 class BannerSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        banner = super().to_representation(instance)
+        banner['imageUrl'] = instance.image_url
+        return banner
+
     class Meta:
         model = Banner
-        fields = ('id', 'image_url', 'url', 'type', 'color', 'subject_id', 'title', 'desc')
+        fields = ('id', 'url', 'type', 'color', 'title', 'desc')
 
 
 class UpdateSerializer(serializers.ModelSerializer):
@@ -72,6 +85,12 @@ class UpdateSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
 
+    def to_representation(self, instance):
+        user_dict = super().to_representation(instance)
+        user_dict['nickname'] = instance.user.nickname
+        user_dict['avatar'] = instance.user.avatar
+        return user_dict
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('content', 'created',)

@@ -8,14 +8,13 @@ router.register("subjects", bv.SubjectViewSet)
 router.register("wallpapers", bv.WallPapersViewSet)
 router.register("categories", bv.CategoryViewSet)
 router.register("banners", bv.BannerViewSet)
-router.register("comments", bv.CommentViewSet)
 urlpatterns = router.urls
 urlpatterns += [
     # path('user/list/', bv.UserList.as_view(), name='user-list'),
     path('splash/', bv.GetSplash().as_view(), name='get_splash'),
     path('recommend/', bv.GetRandomRecommend().as_view(), name='get_random_recommend'),
     path('paper/newest', bv.GetNewWallpapers().as_view()),
-    path('paper/rank', bv.GetRankPapers().as_view()),
+    path('paper/ranks', bv.GetRankPapers().as_view()),
     path('signature', bv.get_temp_secret_key, name='get_temp_secret_key'),
     # path('subject/list/', bv.SubjectList.as_view(), name='subject-list'),
     # path('subject/detail/<int:pk>/', bv.GetWallpaperBySubjectId.as_view(), name='GetWallpaperBySubject'),
@@ -34,6 +33,9 @@ urlpatterns += [
     path('paper/set/banner', bv.set_wallpaper_banner),
     path('gzh/check', bv.check_gzh_signature),
     path('gzh/signature', bv.get_wx_js_signature),
+    path('paper/comments', bv.GetPaperComments.as_view()),
+    path('paper/comments/add', bv.add_paper_comment),
+    path('paper/share/num', bv.update_share_num)
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),
