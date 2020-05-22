@@ -150,13 +150,14 @@ class Banner(models.Model):
 
 
 class MicroUser(AbstractUser):
+    uuid = models.CharField(max_length=30, blank=True, null=True)
     nickname = models.CharField(max_length=30, blank=True, default="微梦用户")
     phone = models.CharField(max_length=11)
     signature = models.TextField(max_length=200, blank=True)
     sex = models.SmallIntegerField(default=0)
     avatar = models.URLField(default="")
-    isLogin = models.BooleanField(default=False)
-    last_sign = models.DateTimeField(default=timezone.datetime(2019, 1, 1))
+    is_login = models.BooleanField(default=False)
+    last_sign = models.DateTimeField(default=timezone.now)
     pea = models.IntegerField(default=10)
     vip = models.BooleanField(default=False)
     collects = models.ManyToManyField(Wallpaper, related_name="users", related_query_name='user', blank=True)

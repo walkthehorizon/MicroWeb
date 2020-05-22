@@ -1,5 +1,6 @@
 from django.urls import path, include
-import wallpaper.views as bv
+import wallpaper.views.views as bv
+import wallpaper.views.users as user
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 # 创建路由器并注册我们的视图。
@@ -10,6 +11,14 @@ router.register("categories", bv.CategoryViewSet)
 router.register("banners", bv.BannerViewSet)
 urlpatterns = router.urls
 urlpatterns += [
+    # user
+    path('account/info', user.get_account_info, name="login-user"),
+    path('account/register/', user.register_user, name="register-user"),
+    path('account/logout/', user.logout_user, name="logout-user"),
+    path('paper/comments', user.GetPaperComments.as_view()),
+    path('paper/comments/add', user.add_paper_comment),
+
+    path('paper/search', bv.SearchList.as_view()),
     # path('user/list/', bv.UserList.as_view(), name='user-list'),
     path('splash/', bv.GetSplash().as_view(), name='get_splash'),
     path('recommend/', bv.GetRandomRecommend().as_view(), name='get_random_recommend'),
@@ -18,9 +27,7 @@ urlpatterns += [
     path('signature', bv.get_temp_secret_key, name='get_temp_secret_key'),
     # path('subject/list/', bv.SubjectList.as_view(), name='subject-list'),
     # path('subject/detail/<int:pk>/', bv.GetWallpaperBySubjectId.as_view(), name='GetWallpaperBySubject'),
-    path('account/register/', bv.register_user, name="register-user"),
-    path('account/login/', bv.login_user, name="login-user"),
-    path('account/logout/', bv.logout_user, name="logout-user"),
+
     path('collect/my', bv.GetMyCollect.as_view(), name='my-collect'),
     path('collect/add/<int:pid>', bv.add_collect),
     path('collect/del/collects', bv.del_collect),
@@ -33,8 +40,7 @@ urlpatterns += [
     path('paper/set/banner', bv.set_wallpaper_banner),
     path('gzh/check', bv.check_gzh_signature),
     path('gzh/signature', bv.get_wx_js_signature),
-    path('paper/comments', bv.GetPaperComments.as_view()),
-    path('paper/comments/add', bv.add_paper_comment),
+
     path('paper/share/num', bv.update_share_num)
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),

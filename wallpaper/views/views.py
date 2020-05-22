@@ -1,14 +1,16 @@
 import json
+from datetime import datetime
 
 import requests
 from django.core.cache import cache
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_control
 from django_filters import rest_framework
 from rest_framework import filters
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from sts.sts import Sts
 
@@ -42,53 +44,6 @@ class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return CustomResponse(data=serializer.data)
-
-
-# 注册登录模块
-
-@api_view(['POST'])
-@permission_classes([permissions.AllowAny])
-def register_user(request):
-    phone = request.data.get('phone')
-    if len(phone) != 11:
-        return CustomResponse(code=state.STATE_PHONE_ERROR)
-    # user = auth.authenticate(username=phone, password=password)
-    if MicroUser.objects.filter(phone=phone).exists() is True:
-        return CustomResponse(code=state.STATE_USER_EXIST)
-    user = MicroUser.objects.create(username=phone, phone=phone, password='')
-    user.save()
-    return CustomResponse()
-
-
-@api_view(['POST'])
-@permission_classes([permissions.AllowAny])
-def login_user(request):
-    phone = request.POST.get('phone', '')
-    if len(phone) != 11:
-        return CustomResponse(code=state.STATE_PHONE_ERROR)
-    if MicroUser.objects.filter(phone=phone).exists():
-        user = MicroUser.objects.get(phone=phone)
-    else:
-        user = MicroUser.objects.create(username=phone, phone=phone, password='')
-    # user = auth.authenticate(username=username, password=password)
-    user.isLogin = True
-    user.save()
-    data = MicroUserSerializer(user).data
-    data['token'] = Token.objects.get_or_create(user=user)[0].key
-    return CustomResponse(data=data)
-
-
-@api_view(['POST'])
-def logout_user(request):
-    # auth.logout(request)
-    # print(request.META.get('HTTP_UID'))
-    try:
-        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
-    except MicroUser.DoesNotExist:
-        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    user.isLogin = False
-    user.save()
-    return CustomResponse()
 
 
 # 获取Cos临时密钥
@@ -168,33 +123,6 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
         serializer_class = self.get_serializer_class()
         kwargs['context'] = self.get_serializer_context()
         return serializer_class(*args, **kwargs)
-
-
-class GetPaperComments(generics.ListAPIView):
-    serializer_class = CommentSerializer
-    lookup_field = 'paper_id'
-    queryset = Comment.objects.all()
-
-    def filter_queryset(self, queryset):
-        paper_id = self.request.query_params.get('paper_id')
-        print(paper_id)
-        return queryset.filter(paper_id=paper_id)
-
-
-@api_view(['POST'])
-def add_paper_comment(request):
-    uid = request.META.get('HTTP_UID')
-    pid = request.POST.get('pid')
-    content = request.POST.get('content')
-    if uid is None or pid is None or content is None or MicroUser.objects.filter(id=uid).exists() is False \
-            or Wallpaper.objects.filter(id=pid).exists() is False:
-        return CustomResponse(data=state.STATE_ERROR)
-    comment = Comment(content=content, paper_id=pid, user_id=uid)
-    comment.save()
-    paper = Wallpaper.objects.get(id=pid)
-    paper.comment_num += 1
-    paper.save()
-    return CustomResponse(CommentSerializer(comment).data)
 
 
 class GetMyCollect(generics.ListAPIView):
@@ -289,6 +217,19 @@ class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = WallPaperSerializer
 
 
+class SearchList(generics.ListAPIView):
+    serializer_class = SubjectSerializer
+    search_fields = 'name'
+    queryset = Subject.objects.all()
+
+    def get_queryset(self):
+        key = self.request.query_params.get('key')
+        if key is None:
+            return []
+        else:
+            return Subject.objects.filter(name__contains=key)
+
+
 # 依照type筛选数据
 class SubjectViewSet(CustomReadOnlyModelViewSet):
     lookup_field = 'id'
@@ -360,20 +301,22 @@ class GetRandomRecommend(generics.ListAPIView):
     serializer_class = WallPaperSerializer
     queryset = Wallpaper.objects.all().order_by('?').distinct()
 
-    def get_serializer(self, *args, **kwargs):
-        """
-        Return the serializer instance that should be used for validating and
-        deserializing input, and for serializing output.
-        """
-        uid = self.request.META.get('HTTP_UID')
-        if uid is not None:
-            for paper in args[0]:
-                collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
-                if collect_key in cache:
-                    paper.collected = cache.get(collect_key)
-        serializer_class = self.get_serializer_class()
-        kwargs['context'] = self.get_serializer_context()
-        return serializer_class(*args, **kwargs)
+    # def get_serializer(self, *args, **kwargs):
+    #     """
+    #     Return the serializer instance that should be used for validating and
+    #     deserializing input, and for serializing output.
+    #     """
+    #     print(datetime.now())
+    #     uid = self.request.META.get('HTTP_UID')
+    #     if uid is not None:
+    #         for paper in args[0]:
+    #             collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
+    #             if collect_key in cache:
+    #                 paper.collected = cache.get(collect_key)
+    #     serializer_class = self.get_serializer_class()
+    #     kwargs['context'] = self.get_serializer_context()
+    #     print(datetime.now())
+    #     return serializer_class(*args, **kwargs)
 
 
 class GetNewWallpapers(generics.ListAPIView):
