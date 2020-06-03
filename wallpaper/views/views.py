@@ -1,17 +1,16 @@
 import json
-from datetime import datetime
 
+import django_filters
 import requests
 from django.core.cache import cache
 from django.http import HttpResponse
-from django.views.decorators.cache import cache_control
-from django_filters import rest_framework
 from rest_framework import filters
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from sts.sts import Sts
 
 from wallpaper import models as model
@@ -28,7 +27,7 @@ class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = ()
     filter_fields = ()
     search_fields = ()
-    filter_backends = (rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -245,19 +244,25 @@ class SubjectViewSet(CustomReadOnlyModelViewSet):
             return Subject.objects.filter(name__contains=key)
 
 
+
+
+
 # 更新Category封面
 @api_view(['POST'])
 def update_category_cover(request):
+    if settings.DEBUG is False:
+        return
     cid = request.POST.get('cid')
-    if cid is None or Category.objects.filter(id=cid).exists() is False:
-        return CustomResponse(code=state.STATE_CATEGORY_NOT_EXIST)
-    logo = request.POST.get('logo')
-    if logo is None or len(logo) < 1:
-        return CustomResponse(code=state.STATE_INVALID_URL)
-    category = Category.objects.get(id=cid)
-    category.logo = logo
-    category.save()
     return CustomResponse()
+    # if cid is None or Category.objects.filter(id=cid).exists() is False:
+    #     return CustomResponse(code=state.STATE_CATEGORY_NOT_EXIST)
+    # logo = request.POST.get('logo')
+    # if logo is None or len(logo) < 1:
+    #     return CustomResponse(code=state.STATE_INVALID_URL)
+    # category = Category.objects.get(id=cid)
+    # category.logo = logo
+    # category.save()
+    # return CustomResponse()
 
 
 # 设置Cos所属Banner

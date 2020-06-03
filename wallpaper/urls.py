@@ -1,6 +1,7 @@
 from django.urls import path, include
 import wallpaper.views.views as bv
 import wallpaper.views.users as user
+import wallpaper.views.manager as manager
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 # 创建路由器并注册我们的视图。
@@ -41,7 +42,7 @@ urlpatterns += [
     path('gzh/check', bv.check_gzh_signature),
     path('gzh/signature', bv.get_wx_js_signature),
 
-    path('paper/share/num', bv.update_share_num)
+    path('paper/share/num', bv.update_share_num),
     # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
     # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
     # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),
@@ -49,4 +50,6 @@ urlpatterns += [
     # path('wallpaper/list', bv.WallPaperList.as_view(), name='wallpaper-list'),
     # path('wallpaper/detail/<int:pk>/', bv.WallPaperDetail.as_view(), name='wallpaper-detail'),
     # path('category/list', bv.CategoryList.as_view(), name='category-list'),
+
+    path('subject/delete', manager.delete_subject),
 ]
