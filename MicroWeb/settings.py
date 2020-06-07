@@ -80,26 +80,26 @@ WSGI_APPLICATION = 'MicroWeb.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 # 本地->爬虫库->线网库
 if DEBUG:
-    # DATABASES = {  # 开发环境数据库配置
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.mysql',
-    #         'NAME': 'test_wallpaper',
-    #         'USER': 'shentu',
-    #         'PASSWORD': '19951008',
-    #         'HOST': '47.105.40.169',
-    #         'PORT': '3306'
-    #     }
-    # }
     DATABASES = {  # 开发环境数据库配置
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'wallpaper',
-            'USER': 'root',
+            'NAME': 'test_wallpaper',
+            'USER': 'shentu',
             'PASSWORD': '19951008',
-            'HOST': 'localhost',
+            'HOST': '47.105.40.169',
             'PORT': '3306'
         }
     }
+    # DATABASES = {  # 开发环境数据库配置
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'NAME': 'wallpaper',
+    #         'USER': 'root',
+    #         'PASSWORD': '19951008',
+    #         'HOST': 'localhost',
+    #         'PORT': '3306'
+    #     }
+    # }
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",

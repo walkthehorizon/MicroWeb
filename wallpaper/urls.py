@@ -51,5 +51,7 @@ urlpatterns += [
     # path('wallpaper/detail/<int:pk>/', bv.WallPaperDetail.as_view(), name='wallpaper-detail'),
     # path('category/list', bv.CategoryList.as_view(), name='category-list'),
 
+    # manager
     path('subject/delete', manager.delete_subject),
+    path('subjects', manager.GetSubjects.as_view()),
 ]
