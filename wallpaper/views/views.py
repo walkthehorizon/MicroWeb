@@ -1,24 +1,20 @@
 import json
 
-import django_filters
-import requests
-from django.core.cache import cache
-from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
 from sts.sts import Sts
 
-from wallpaper import models as model
-from wallpaper import state
+from wallpaper import models as model, state
 from wallpaper.permissions import IsOwnerOrReadOnly
 from wallpaper.serializers import *
-from wallpaper.sign import Sign
 from wallpaper.state import CustomResponse
+import wallpaper.views.helper as util
+from wallpaper.views.users import Download_Normal_Price, Download_Origin_Price
 
 
 class CustomReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
@@ -97,10 +93,8 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         uid = request.META.get('HTTP_UID')
-        print(uid)
-        if uid is not None:
-            for paper in page:
-                paper.collected = MicroUser.objects.get(id=uid).collects.filter(id=paper.id).exists()
+        for paper in page:
+            paper.collected = UserCollectPaper.objects.filter(user_id=uid, paper_id=paper.id).exists()
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
@@ -114,119 +108,71 @@ class WallPapersViewSet(CustomReadOnlyModelViewSet):
         deserializing input, and for serializing output.
         """
         uid = self.request.META.get('HTTP_UID')
-        if uid is not None:
-            for paper in args[0]:
-                collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
-                if collect_key in cache:
-                    paper.collected = cache.get(collect_key)
+        for paper in args[0]:
+            paper.collected = UserCollectPaper.objects.filter(user_id=uid, paper_id=paper.id).exists()
+        # if uid is not None:
+        #     for paper in args[0]:
+        #         collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
+        #         if collect_key in cache:
+        #             paper.collected = cache.get(collect_key)
         serializer_class = self.get_serializer_class()
         kwargs['context'] = self.get_serializer_context()
         return serializer_class(*args, **kwargs)
 
 
+# 获取我的收藏（按收藏时间倒序）
 class GetMyCollect(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
     def get_queryset(self):
         uid = self.request.META.get('HTTP_UID')
-        if uid is None:
-            return None
-        return MicroUser.objects.get(id=uid).collects.all()
+        papers = []
+        paper_type = CHOICE_TYPE[0][0] if (util.is_newest_version(self.request)) else CHOICE_TYPE[1][0]
+        for collect in UserCollectPaper.objects.filter(user_id=uid, paper__type=paper_type).order_by('-date'):
+            papers.append(Wallpaper.objects.get(id=collect.paper_id))
+        return papers
 
 
 @api_view(['POST'])
 def add_collect(request, pid):
-    try:
-        paper = Wallpaper.objects.get(id=pid)
-    except Wallpaper.DoesNotExist:
+    if Wallpaper.objects.filter(id=pid).exists() is False:
         return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
-    try:
-        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
-    except MicroUser.DoesNotExist:
-        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    if paper.users.filter(id=user.id).exists():
+    uid = request.META.get('HTTP_UID')
+    if UserCollectPaper.objects.filter(user_id=uid, paper_id=pid).exists():
         return CustomResponse()
-    if paper.collect_num >= 300:
+    if len(UserCollectPaper.objects.filter(user_id=uid)) >= 300:
         return CustomResponse(code=state.STATE_COLLECT_OVER)
-    user.collects.add(paper)
-    paper.collect_num = paper.collect_num + 1
-    paper.save()
-    user.save()
-    cache.set('COLLECT:PAPER:' + str(paper.id) + ":UID:" + str(request.META.get('HTTP_UID')), True)
+    collect = UserCollectPaper(user_id=uid, paper_id=pid)
+    collect.save()
+    # cache.set('COLLECT:PAPER:' + str(paper.id) + ":UID:" + str(request.META.get('HTTP_UID')), True)
     return CustomResponse()
 
 
 @api_view(['POST'])
 def del_collect(request):
     ids = json.loads(request.body.decode(encoding='utf-8')).get('ids')
-    try:
-        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
-    except MicroUser.DoesNotExist:
-        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    papers = []
     for pid in ids:
-        try:
-            paper = Wallpaper.objects.get(id=pid)
-            papers.append(paper)
-        except Wallpaper.DoesNotExist:
-            return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
-        try:
-            user.collects.remove(paper)
-        except KeyError:
-            return CustomResponse(code=state.STATE_ERROR)
-        paper.collect_num = paper.collect_num - 1
-    for paper in papers:
-        paper.save()
-    user.save()
+        collect = UserCollectPaper.objects.get(user_id=util.get_uid(request), paper_id=pid)
+        collect.delete()
     return CustomResponse()
 
 
 @api_view(['POST'])
 def buy_paper(request, pk):
-    try:
-        user = MicroUser.objects.get(id=request.META.get('HTTP_UID'))
-    except MicroUser.DoesNotExist:
-        return CustomResponse(code=state.STATE_USER_NOT_EXIST)
-    try:
-        paper = Wallpaper.objects.get(id=pk)
-    except Wallpaper.DoesNotExist:
-        return CustomResponse(code=state.STATE_WALLPAPER_NOT_EXIST)
     download_type = int(request.query_params.get('type'))
-    if download_type != 1 and download_type != 2:
-        return CustomResponse(code=state.STATE_ERROR)
-    # if user.buys.filter(id=paper.id).exists():
-    #     return CustomResponse(code=state.STATE_HAS_BUY)
-    resume = (3 if (download_type == 2) else 1)
+    resume = Download_Origin_Price if (download_type == 2) else Download_Normal_Price
+    user = MicroUser.objects.get(id=util.get_uid(request))
     if user.pea < resume:
         return CustomResponse(code=state.STATE_PEA_NOT_ENOUGH)
-    user.pea = user.pea - resume
-    # user.buys.add(paper)
+    user.pea -= resume
     user.save()
     return CustomResponse(data=resume)
-
-
-class CategoryViewSet(CustomReadOnlyModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
 
 
 class WallPaperDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Wallpaper.objects.all()
     serializer_class = WallPaperSerializer
-
-
-class SearchList(generics.ListAPIView):
-    serializer_class = SubjectSerializer
-    search_fields = 'name'
-    queryset = Subject.objects.all()
-
-    def get_queryset(self):
-        key = self.request.query_params.get('key')
-        if key is None:
-            return []
-        else:
-            return Subject.objects.filter(name__contains=key)
 
 
 # 依照type筛选数据
@@ -242,9 +188,6 @@ class SubjectViewSet(CustomReadOnlyModelViewSet):
             return Subject.objects.all()
         else:
             return Subject.objects.filter(name__contains=key)
-
-
-
 
 
 # 更新Category封面
@@ -273,7 +216,6 @@ def set_wallpaper_banner(request):
         paper.banner_id = request.POST.get('bid')
         paper.save()
     except Wallpaper.DoesNotExist as e:
-        print(e)
         return CustomResponse(data=False)
     return CustomResponse(True)
 
@@ -304,29 +246,13 @@ class GetSplash(generics.RetrieveAPIView):
 
 class GetRandomRecommend(generics.ListAPIView):
     serializer_class = WallPaperSerializer
-    queryset = Wallpaper.objects.all().order_by('?').distinct()
 
-    # def get_serializer(self, *args, **kwargs):
-    #     """
-    #     Return the serializer instance that should be used for validating and
-    #     deserializing input, and for serializing output.
-    #     """
-    #     print(datetime.now())
-    #     uid = self.request.META.get('HTTP_UID')
-    #     if uid is not None:
-    #         for paper in args[0]:
-    #             collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
-    #             if collect_key in cache:
-    #                 paper.collected = cache.get(collect_key)
-    #     serializer_class = self.get_serializer_class()
-    #     kwargs['context'] = self.get_serializer_context()
-    #     print(datetime.now())
-    #     return serializer_class(*args, **kwargs)
-
-
-class GetNewWallpapers(generics.ListAPIView):
-    serializer_class = WallPaperSerializer
-    queryset = Wallpaper.objects.all().order_by("-created")
+    def get_queryset(self):
+        version = self.request.META.get('HTTP_VERSION_NAME')
+        if version == state.NEWEST_APP_VERSION:
+            return Wallpaper.objects.all().filter(type=0).order_by('?').distinct()
+        else:
+            return Wallpaper.objects.all().filter(type=1).order_by('?').distinct()
 
     def get_serializer(self, *args, **kwargs):
         """
@@ -334,11 +260,33 @@ class GetNewWallpapers(generics.ListAPIView):
         deserializing input, and for serializing output.
         """
         uid = self.request.META.get('HTTP_UID')
-        if uid is not None:
-            for paper in args[0]:
-                collect_key = 'COLLECT:PAPER:' + str(paper.id) + ":UID:" + self.request.META.get('HTTP_UID')
-                if collect_key in cache:
-                    paper.collected = cache.get(collect_key)
+        for paper in args[0]:
+            paper.collected = UserCollectPaper.objects.filter(user_id=uid, paper_id=paper.id).exists()
+            paper.collect_num = len(UserCollectPaper.objects.filter(paper_id=paper.id))
+
+        serializer_class = self.get_serializer_class()
+        kwargs['context'] = self.get_serializer_context()
+        return serializer_class(*args, **kwargs)
+
+
+class GetNewWallpapers(generics.ListAPIView):
+    serializer_class = WallPaperSerializer
+
+    def get_queryset(self):
+        version = self.request.META.get('HTTP_VERSION_NAME')
+        if version == state.NEWEST_APP_VERSION:
+            return Wallpaper.objects.all().filter(type=0).order_by("-created")
+        else:
+            return Wallpaper.objects.all().filter(type=1).order_by("-created")
+
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output.
+        """
+        uid = self.request.META.get('HTTP_UID')
+        for paper in args[0]:
+            paper.collected = UserCollectPaper.objects.filter(user_id=uid, paper_id=paper.id).exists()
         serializer_class = self.get_serializer_class()
         kwargs['context'] = self.get_serializer_context()
         return serializer_class(*args, **kwargs)
@@ -346,7 +294,12 @@ class GetNewWallpapers(generics.ListAPIView):
 
 class GetRankPapers(generics.ListAPIView):
     serializer_class = WallPaperSerializer
-    queryset = Wallpaper.objects.all().order_by("-collect_num")
+
+    def get_queryset(self):
+        if util.is_newest_version(self.request):
+            return Wallpaper.objects.all().filter(type=0).order_by("-collect_num")
+        else:
+            return Wallpaper.objects.all().filter(type=1).order_by("-collect_num")
 
 
 class BannerViewSet(CustomReadOnlyModelViewSet):
@@ -391,31 +344,6 @@ def get_paper_for_web(request, pk):
     result['description'] = paper.subject.description
     result['title'] = paper.subject.name
     return CustomResponse(data=result)
-
-
-@api_view(['GET'])
-def check_gzh_signature(request):
-    print(request.GET['echostr'])
-    return HttpResponse(request.GET['echostr'], content_type="text/plain")
-
-
-@api_view(['GET'])
-def get_wx_js_signature(request):
-    access_token = cache.get('GZH:ACCESS_TOKEN')
-    if access_token is None:
-        res = requests.get(
-            "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxeb10ca693233a27c&secret"
-            "=69a3bde51f96b3d335c0a1eeeabb7c99")
-        access_token = res.json().get('access_token')
-        cache.set('GZH:ACCESS_TOKEN', access_token, ex=res.json().get('expires_in'))
-    js_ticket = cache.get('GZH:JS_TICKET')
-    if js_ticket is None:
-        res = requests.get(
-            'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + access_token + '&type=jsapi')
-        js_ticket = res.json().get('ticket')
-        cache.set('GZH:JS_TICKET', js_ticket, ex=res.json().get('expires_in'))
-    sign = Sign(js_ticket, request.GET.get('url'))
-    return CustomResponse(data=sign.sign())
 
 
 @api_view(['POST'])

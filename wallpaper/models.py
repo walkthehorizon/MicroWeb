@@ -23,6 +23,7 @@ STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 CATEGORY_CHOICES = (('CosPlay', 'CosPlay'), ('动漫游戏', '动漫游戏'), ('美丽文字', '美丽文字'), ('萌娃萌宠', '萌娃萌宠'),
                     ('节庆假日', '节庆假日'), ('影视明星', '影视明星'), ('魅力女性', '魅力女性'), ('风景风光', '风景风光')
                     , ('性感美女', '性感美女'))
+CHOICE_TYPE = [(0, "动漫"), (1, "Cos"), (2, "写真")]
 BASE_AVATAR = "	http://wallpager-1251812446.cosbj.myqcloud.com/avatar/"
 
 # 腾讯云存储
@@ -42,6 +43,7 @@ class Category(models.Model):
     description = models.TextField(max_length=300, default="")
     logo = models.URLField(default="")
     created = models.DateTimeField(verbose_name='创建日期', default=timezone.now)
+    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=1)
 
     class Meta:
         ordering = ("id",)
@@ -53,6 +55,7 @@ class Category(models.Model):
 class Subject(models.Model):
     owner = models.ForeignKey(to='MicroUser', default=1, on_delete=models.CASCADE, related_name='subject_owner')
     name = models.CharField(default="", max_length=120, blank=True)
+    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=1)
     description = models.TextField(max_length=300, default="", blank=True)
     cover = models.URLField(default="", blank=True)
     cover_1 = models.URLField(default="", blank=True)
@@ -86,8 +89,9 @@ class Wallpaper(models.Model):
     sw = models.IntegerField(default=0, blank=True)
     sh = models.IntegerField(default=0, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=1)
     # 魅族、半次元、 MM131
-    source = models.CharField(default="", max_length=60)
+    source = models.CharField(verbose_name='来源', default="", max_length=60)
     # 数据来源id
     source_id = models.CharField(max_length=30, default="", blank=True)
     collect_num = models.IntegerField(default=0)
@@ -156,15 +160,19 @@ class MicroUser(AbstractUser):
     signature = models.TextField(max_length=200, blank=True)
     sex = models.SmallIntegerField(default=0)
     avatar = models.URLField(default="")
-    is_login = models.BooleanField(default=False)
     last_sign = models.DateTimeField(default=timezone.now)
     pea = models.IntegerField(default=10)
     vip = models.BooleanField(default=False)
-    collects = models.ManyToManyField(Wallpaper, related_name="users", related_query_name='user', blank=True)
-    buys = models.ManyToManyField(Wallpaper, related_name="buy_users", related_query_name='buy_user', blank=True)
 
     class Meta(AbstractUser.Meta):
         pass
+
+
+class UserCollectPaper(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(MicroUser, on_delete=models.CASCADE)
+    paper = models.ForeignKey(Wallpaper, on_delete=models.CASCADE)
+    date = models.DateTimeField(verbose_name='添加日期', default=timezone.now)
 
 
 class Update(models.Model):

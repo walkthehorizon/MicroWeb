@@ -3,25 +3,26 @@ from wallpaper.models import *
 
 
 class MicroUserSerializer(serializers.ModelSerializer):
-    # "id": 1,
-    # "last_login": "2018-07-03T09:17:28.915275Z",
-    # "username": "shentu",
-    # "email": "1308311472@qq.com",
-    # "date_joined": "2018-07-02T10:05:53.214821Z",
-    # "nickname": "神荼",
-    # "phone": "18519118029",
-    # "signature": "微梦官方编辑&程序&产品！",
+    # last_sign = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+
     class Meta:
         model = MicroUser
-        fields = ('id', 'nickname', 'avatar', 'phone', 'email', 'sex', 'signature', 'pea', 'vip')
+        exclude = ['last_login', 'is_superuser', 'username', 'first_name', 'last_name', 'is_staff', 'is_active',
+                   'date_joined', 'groups', 'user_permissions', 'uuid', 'id', 'password', 'last_sign']
+
+    def to_representation(self, instance):
+        user = super().to_representation(instance)
+        user['uid'] = instance.id
+        return user
 
 
 class WallPaperSerializer(serializers.ModelSerializer):
-    created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
+    created = serializers.DateTimeField(format="%Y-%m-%d", required=False, read_only=True)
 
     def to_representation(self, instance):
         paper = super().to_representation(instance)
-        paper['subjectId'] = instance.subject.id
+        if instance.subject is not None:
+            paper['subjectId'] = instance.subject.id
         paper['categoryId'] = instance.category.id if instance.category is not None else -1
         paper['originUrl'] = instance.origin_url
         paper['collectNum'] = instance.collect_num

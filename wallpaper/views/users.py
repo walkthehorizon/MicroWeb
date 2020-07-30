@@ -5,7 +5,9 @@ from wallpaper import state
 from wallpaper.models import MicroUser, Comment, Wallpaper
 from wallpaper.serializers import MicroUserSerializer, Token, CommentSerializer
 from wallpaper.state import CustomResponse
-from django.utils import timezone
+
+Download_Normal_Price = 0
+Download_Origin_Price = 1
 
 
 # 用户模块
@@ -20,6 +22,9 @@ def get_account_info(request):
     user = MicroUser.objects.get(uuid=uuid)
     data = MicroUserSerializer(user).data
     data['token'] = Token.objects.get_or_create(user=user)[0].key
+    data['nPrice'] = Download_Normal_Price
+    data['oPrice'] = Download_Origin_Price
+    data['showDonateInterval'] = 24*60*60*1000
     return CustomResponse(data=data)
 
 

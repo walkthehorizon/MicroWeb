@@ -16,6 +16,18 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.owner == request.user
 
 
+class IsUserOrReadOnly(permissions.BasePermission):
+    """
+    The request is authenticated as a user, or is a read-only request.
+    """
+
+    def has_permission(self, request, view):
+        return (
+                request.method in permissions.SAFE_METHODS or
+                request.user
+        )
+
+
 class AppVersionPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         version_code = request.META.get('VersionCode')

@@ -33,6 +33,7 @@ AUTH_USER_MODEL = 'wallpaper.MicroUser'
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,36 +81,36 @@ WSGI_APPLICATION = 'MicroWeb.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 # 本地->爬虫库->线网库
 if DEBUG:
-    DATABASES = {  # 开发环境数据库配置
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'test_wallpaper',
-            'USER': 'shentu',
-            'PASSWORD': '19951008',
-            'HOST': '47.105.40.169',
-            'PORT': '3306'
-        }
-    }
     # DATABASES = {  # 开发环境数据库配置
     #     'default': {
     #         'ENGINE': 'django.db.backends.mysql',
-    #         'NAME': 'wallpaper',
-    #         'USER': 'root',
+    #         'NAME': 'test_wallpaper',
+    #         'USER': 'shentu',
     #         'PASSWORD': '19951008',
-    #         'HOST': 'localhost',
+    #         'HOST': '47.105.40.169',
     #         'PORT': '3306'
     #     }
     # }
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/1",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "PASSWORD": "123456"
-            }
+    DATABASES = {  # 开发环境数据库配置
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'wallpaper',
+            'USER': 'root',
+            'PASSWORD': '19951008',
+            'HOST': 'localhost',
+            'PORT': '3306'
         }
     }
+    # CACHES = {
+    #     "default": {
+    #         "BACKEND": "django_redis.cache.RedisCache",
+    #         "LOCATION": "redis://127.0.0.1:6379/1",
+    #         "OPTIONS": {
+    #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+    #             "PASSWORD": "123456"
+    #         }
+    #     }
+    # }
 else:
     DATABASES = {  # 生产环境数据库配置
         'default': {
@@ -121,16 +122,16 @@ else:
             'PORT': '3306'
         }
     }
-    CACHES = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://47.105.40.169:6379/1",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                "PASSWORD": "19951008"
-            }
-        }
-    }
+    # CACHES = {
+    #     "default": {
+    #         "BACKEND": "django_redis.cache.RedisCache",
+    #         "LOCATION": "redis://47.105.40.169:6379/1",
+    #         "OPTIONS": {
+    #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+    #             "PASSWORD": "19951008"
+    #         }
+    #     }
+    # }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -175,12 +176,13 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DEFAULT_PAGINATION_CLASS': 'wallpaper.state.CustomPagePagination',
     'PAGE_SIZE': 20,
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend',],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', ],
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         # 'wallpaper.permissions.AppVersionPermission',
+        'wallpaper.permissions.IsUserOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.TokenAuthentication',
