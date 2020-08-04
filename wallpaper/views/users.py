@@ -24,7 +24,7 @@ def get_account_info(request):
     data['token'] = Token.objects.get_or_create(user=user)[0].key
     data['nPrice'] = Download_Normal_Price
     data['oPrice'] = Download_Origin_Price
-    data['showDonateInterval'] = 24*60*60*1000
+    data['showDonateInterval'] = 24 * 60 * 60 * 1000
     return CustomResponse(data=data)
 
 

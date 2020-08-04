@@ -7,6 +7,8 @@ import wallpaper.views.subject as subject
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 # 创建路由器并注册我们的视图。
+from wallpaper.views import jpush
+
 router = DefaultRouter()
 router.register("subjects", bv.SubjectViewSet)
 router.register("wallpapers", bv.WallPapersViewSet)
@@ -57,4 +59,6 @@ urlpatterns += [
     # manager
     path('subject/delete', manager.delete_subject),
     path('subjects', manager.GetSubjects.as_view()),
+
+    # path('push/', jpush.audience),
 ]
