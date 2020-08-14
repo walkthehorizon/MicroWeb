@@ -20,9 +20,8 @@ from MicroWeb import settings
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
-CATEGORY_CHOICES = (('CosPlay', 'CosPlay'), ('动漫游戏', '动漫游戏'), ('美丽文字', '美丽文字'), ('萌娃萌宠', '萌娃萌宠'),
-                    ('节庆假日', '节庆假日'), ('影视明星', '影视明星'), ('魅力女性', '魅力女性'), ('风景风光', '风景风光')
-                    , ('性感美女', '性感美女'))
+TYPE_ANIM = 0
+TYPE_COS = 1
 CHOICE_TYPE = [(0, "动漫"), (1, "Cos"), (2, "写真")]
 BASE_AVATAR = "	http://wallpager-1251812446.cosbj.myqcloud.com/avatar/"
 
@@ -170,8 +169,8 @@ class MicroUser(AbstractUser):
 
 class UserCollectPaper(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(MicroUser, on_delete=models.CASCADE)
-    paper = models.ForeignKey(Wallpaper, on_delete=models.CASCADE)
+    user = models.ForeignKey(MicroUser, on_delete=models.DO_NOTHING)
+    paper = models.ForeignKey(Wallpaper, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(verbose_name='添加日期', default=timezone.now)
 
 

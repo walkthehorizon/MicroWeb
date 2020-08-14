@@ -59,6 +59,5 @@ urlpatterns += [
     # manager
     path('subject/delete', manager.delete_subject),
     path('subjects', manager.GetSubjects.as_view()),
-
-    # path('push/', jpush.audience),
+    path('upload', manager.upload_paper),
 ]
