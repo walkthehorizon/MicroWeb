@@ -11,7 +11,7 @@ router = DefaultRouter()
 router.register("subjects", bv.SubjectViewSet)
 router.register("wallpapers", bv.WallPapersViewSet)
 # router.register("categories", bv.CategoryViewSet)
-router.register("banners", bv.BannerViewSet)
+# router.register("banners", bv.BannerViewSet)
 urlpatterns = router.urls
 urlpatterns += [
     # user
@@ -43,13 +43,8 @@ urlpatterns += [
     path('paper/set/banner', bv.set_wallpaper_banner),
 
     path('paper/share/num', bv.update_share_num),
-    # path('category/list/<int:id>/', bv.GetPictureByCategoryId.as_view(), name='get-category-by-id'),
-    # path('subject/put/support/', bv.put_subject_support, name='put-subject-support'),
-    # path('subject/support/<int:subjectId>/', bv.GetSubjectSupportCount.as_view(), name='GetSubjectSupportCount'),
-    #
-    # path('wallpaper/list', bv.WallPaperList.as_view(), name='wallpaper-list'),
-    # path('wallpaper/detail/<int:pk>/', bv.WallPaperDetail.as_view(), name='wallpaper-detail'),
-    # path('category/list', bv.CategoryList.as_view(), name='category-list'),
+    # banner
+    path('banners', bv.GetBanners.as_view()),
 
     # category
     path('categories', category.GetCategories.as_view()),

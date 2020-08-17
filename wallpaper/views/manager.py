@@ -46,7 +46,8 @@ class GetSubjects(generics.ListAPIView):
 @permission_classes([permissions.AllowAny])
 def upload_paper(request):
     url = request.POST.get('url')
-    if url is None:
+    category_id = request.POST.get('categoryId')
+    if url is None or category_id is None:
         return CustomResponse(code=state.STATE_ERROR)
     if Wallpaper.objects.filter(origin_url=url).exists():
         return CustomResponse()
@@ -56,7 +57,7 @@ def upload_paper(request):
     except Exception as e:
         print(e)
         return CustomResponse(code=state.STATE_ERROR)
-    paper = Wallpaper.objects.create(origin_url=url, type=TYPE_ANIM)
+    paper = Wallpaper.objects.create(origin_url=url, type=TYPE_ANIM, category_id=category_id)
     md5 = hashlib.md5()
     md5.update(url.encode('utf-8'))
     dest_path = '/image/' + str(paper.id) + '/' + md5.hexdigest() + '.jpg'
@@ -85,3 +86,4 @@ def upload_to_cos(local_path, dest_path):
         # print(response['ETag'])
     except CosServiceError as e:
         print(e)
+

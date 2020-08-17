@@ -10,8 +10,6 @@ from rest_framework.serializers import Serializer
 from rest_framework.views import exception_handler
 from rest_framework import status
 
-NEWEST_APP_VERSION = "1.1.0"
-
 # 登陆注册模块
 STATE_SUCCESS = 0
 STATE_ERROR = -1

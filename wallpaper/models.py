@@ -20,9 +20,9 @@ from MicroWeb import settings
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
-TYPE_ANIM = 0
-TYPE_COS = 1
-CHOICE_TYPE = [(0, "动漫"), (1, "Cos"), (2, "写真")]
+TYPE_COS = 0
+TYPE_ANIM = 1
+CHOICE_TYPE = [(0, "Cos"), (1, "动漫"), (2, "写真")]
 BASE_AVATAR = "	http://wallpager-1251812446.cosbj.myqcloud.com/avatar/"
 
 # 腾讯云存储
@@ -39,10 +39,10 @@ client = CosS3Client(config)
 
 class Category(models.Model):
     name = models.CharField(default="", max_length=20)
-    description = models.TextField(max_length=300, default="")
-    logo = models.URLField(default="")
+    description = models.TextField(max_length=300, default="", null=True, blank=True)
+    logo = models.URLField(default="", blank=True, null=True)
     created = models.DateTimeField(verbose_name='创建日期', default=timezone.now)
-    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=1)
+    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=TYPE_COS)
 
     class Meta:
         ordering = ("id",)
@@ -54,8 +54,8 @@ class Category(models.Model):
 class Subject(models.Model):
     owner = models.ForeignKey(to='MicroUser', default=1, on_delete=models.CASCADE, related_name='subject_owner')
     name = models.CharField(default="", max_length=120, blank=True)
-    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=1)
-    description = models.TextField(max_length=300, default="", blank=True)
+    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=TYPE_COS)
+    description = models.TextField(max_length=300, default="", blank=True, null=True)
     cover = models.URLField(default="", blank=True)
     cover_1 = models.URLField(default="", blank=True)
     cover_2 = models.URLField(default="", blank=True)
@@ -88,7 +88,7 @@ class Wallpaper(models.Model):
     sw = models.IntegerField(default=0, blank=True)
     sh = models.IntegerField(default=0, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=1)
+    type = models.SmallIntegerField(verbose_name='类型', choices=CHOICE_TYPE, default=TYPE_COS)
     # 魅族、半次元、 MM131
     source = models.CharField(verbose_name='来源', default="", max_length=60)
     # 数据来源id

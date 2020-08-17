@@ -1,6 +1,7 @@
 from rest_framework import generics, filters
 
 import wallpaper.views.helper as util
+from wallpaper import models
 from wallpaper.models import CHOICE_TYPE
 from wallpaper.models import Subject
 from wallpaper.serializers import SubjectSerializer
@@ -12,4 +13,4 @@ class Search(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
 
     def get_queryset(self):
-        return Subject.objects.filter(type=CHOICE_TYPE[0][0] if util.is_newest_version(self.request) else CHOICE_TYPE[0][1])
+        return Subject.objects.filter(type=models.TYPE_COS if util.is_old_version(self.request) else models.TYPE_ANIM)

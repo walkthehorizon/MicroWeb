@@ -23,6 +23,7 @@ class SubjectAdmin(admin.ModelAdmin):
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description')
+    search_fields = ('name',)
 
 
 class SplashAdmin(admin.ModelAdmin):

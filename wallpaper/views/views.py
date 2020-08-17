@@ -127,7 +127,7 @@ class GetMyCollect(generics.ListAPIView):
     def get_queryset(self):
         uid = self.request.META.get('HTTP_UID')
         papers = []
-        paper_type = CHOICE_TYPE[0][0] if (util.is_newest_version(self.request)) else CHOICE_TYPE[1][0]
+        paper_type = model.TYPE_COS if (util.is_old_version(self.request)) else model.TYPE_ANIM
         for collect in UserCollectPaper.objects.filter(user_id=uid, paper__type=paper_type).order_by('-date'):
             papers.append(Wallpaper.objects.get(id=collect.paper_id))
         return papers
@@ -248,11 +248,10 @@ class GetRandomRecommend(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
     def get_queryset(self):
-        version = self.request.META.get('HTTP_VERSION_NAME')
-        if version == state.NEWEST_APP_VERSION:
-            return Wallpaper.objects.all().filter(type=0).order_by('?').distinct()
+        if util.is_old_version(self.request):
+            return Wallpaper.objects.all().filter(type=TYPE_COS).order_by('?').distinct()
         else:
-            return Wallpaper.objects.all().filter(type=1).order_by('?').distinct()
+            return Wallpaper.objects.all().filter(type=TYPE_ANIM).order_by('?').distinct()
 
     def get_serializer(self, *args, **kwargs):
         """
@@ -273,11 +272,11 @@ class GetNewWallpapers(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
     def get_queryset(self):
-        version = self.request.META.get('HTTP_VERSION_NAME')
-        if version == state.NEWEST_APP_VERSION:
-            return Wallpaper.objects.all().filter(type=0).order_by("-created")
+
+        if util.is_old_version(self.request):
+            return Wallpaper.objects.all().filter(type=model.TYPE_COS).order_by("-created")
         else:
-            return Wallpaper.objects.all().filter(type=1).order_by("-created")
+            return Wallpaper.objects.all().filter(type=model.TYPE_ANIM).order_by("-created")
 
     def get_serializer(self, *args, **kwargs):
         """
@@ -296,15 +295,17 @@ class GetRankPapers(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
     def get_queryset(self):
-        if util.is_newest_version(self.request):
-            return Wallpaper.objects.all().filter(type=0).order_by("-collect_num")
+        if util.is_old_version(self.request):
+            return Wallpaper.objects.all().filter(type=model.TYPE_COS).order_by("-collect_num")
         else:
-            return Wallpaper.objects.all().filter(type=1).order_by("-collect_num")
+            return Wallpaper.objects.all().filter(type=model.TYPE_ANIM).order_by("-collect_num")
 
 
-class BannerViewSet(CustomReadOnlyModelViewSet):
+class GetBanners(generics.ListAPIView):
     serializer_class = BannerSerializer
-    queryset = Banner.objects.order_by('-created')
+
+    def get_queryset(self):
+        return Banner.objects.order_by('-created') if util.is_old_version(self.request) else []
 
 
 class UserUpdate(generics.UpdateAPIView):
