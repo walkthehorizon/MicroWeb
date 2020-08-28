@@ -2,7 +2,6 @@ from rest_framework import generics, filters
 
 import wallpaper.views.helper as util
 from wallpaper import models
-from wallpaper.models import CHOICE_TYPE
 from wallpaper.models import Subject
 from wallpaper.serializers import SubjectSerializer
 

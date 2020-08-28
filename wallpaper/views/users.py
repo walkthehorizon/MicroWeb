@@ -21,7 +21,7 @@ def get_account_info(request):
         user.save()
     user = MicroUser.objects.get(uuid=uuid)
     data = MicroUserSerializer(user).data
-    data['token'] = Token.objects.get_or_create(user=user)[0].key
+    # data['token'] = Token.objects.get_or_create(user=user)[0].key
     data['nPrice'] = Download_Normal_Price
     data['oPrice'] = Download_Origin_Price
     data['showDonateInterval'] = 24 * 60 * 60 * 1000

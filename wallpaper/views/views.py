@@ -342,8 +342,12 @@ def get_is_sign(request):
 def get_paper_for_web(request, pk):
     paper = Wallpaper.objects.get(id=pk)
     result = json.loads(json.dumps(WallPaperSerializer(paper).data))
-    result['description'] = paper.subject.description
-    result['title'] = paper.subject.name
+    if paper.category is not None:
+        result['description'] = paper.category.description
+        result['title'] = paper.category.name
+    if paper.subject is not None:
+        result['description'] = paper.subject.description
+        result['title'] = paper.subject.name
     return CustomResponse(data=result)
 
 

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'wallpaper',
     'rest_framework',
     'django_filters',
-    'rest_framework.authtoken'
+    # 'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -182,7 +182,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         # 'wallpaper.permissions.AppVersionPermission',
-        'wallpaper.permissions.IsUserOrReadOnly',
+        # 'wallpaper.permissions.IsUserOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.TokenAuthentication',
