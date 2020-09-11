@@ -127,7 +127,7 @@ class GetMyCollect(generics.ListAPIView):
     def get_queryset(self):
         uid = self.request.META.get('HTTP_UID')
         papers = []
-        paper_type = model.TYPE_COS if (util.is_old_version(self.request)) else model.TYPE_ANIM
+        paper_type = model.TYPE_COS if (util.is_gentle_mode(self.request)) else model.TYPE_ANIM
         for collect in UserCollectPaper.objects.filter(user_id=uid, paper__type=paper_type).order_by('-date'):
             papers.append(Wallpaper.objects.get(id=collect.paper_id))
         return papers
@@ -248,7 +248,7 @@ class GetRandomRecommend(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
     def get_queryset(self):
-        if util.is_old_version(self.request):
+        if util.is_gentle_mode(self.request):
             return Wallpaper.objects.all().filter(type=TYPE_COS).order_by('?').distinct()
         else:
             return Wallpaper.objects.all().filter(type=TYPE_ANIM).order_by('?').distinct()
@@ -273,7 +273,7 @@ class GetNewWallpapers(generics.ListAPIView):
 
     def get_queryset(self):
 
-        if util.is_old_version(self.request):
+        if util.is_gentle_mode(self.request):
             return Wallpaper.objects.all().filter(type=model.TYPE_COS).order_by("-created")
         else:
             return Wallpaper.objects.all().filter(type=model.TYPE_ANIM).order_by("-created")
@@ -295,7 +295,7 @@ class GetRankPapers(generics.ListAPIView):
     serializer_class = WallPaperSerializer
 
     def get_queryset(self):
-        if util.is_old_version(self.request):
+        if util.is_gentle_mode(self.request):
             return Wallpaper.objects.all().filter(type=model.TYPE_COS).order_by("-collect_num")
         else:
             return Wallpaper.objects.all().filter(type=model.TYPE_ANIM).order_by("-collect_num")
@@ -305,7 +305,7 @@ class GetBanners(generics.ListAPIView):
     serializer_class = BannerSerializer
 
     def get_queryset(self):
-        return Banner.objects.order_by('-created') if util.is_old_version(self.request) else []
+        return Banner.objects.order_by('-created') if util.is_gentle_mode(self.request) else []
 
 
 class UserUpdate(generics.UpdateAPIView):

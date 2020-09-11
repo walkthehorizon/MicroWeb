@@ -22,7 +22,8 @@ LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted((item, item) for item in get_all_styles())
 TYPE_COS = 0
 TYPE_ANIM = 1
-CHOICE_TYPE = [(0, "Cos"), (1, "动漫"), (2, "写真")]
+TYPE_MM = 2
+CHOICE_TYPE = [(TYPE_COS, "Cos"), (TYPE_ANIM, "动漫"), (TYPE_MM, "写真")]
 BASE_AVATAR = "	http://wallpager-1251812446.cosbj.myqcloud.com/avatar/"
 
 # 腾讯云存储

@@ -1,10 +1,11 @@
 from rest_framework import permissions, generics
 from rest_framework.decorators import api_view, permission_classes
 
-from wallpaper import state
+from wallpaper import state, models
 from wallpaper.models import MicroUser, Comment, Wallpaper
 from wallpaper.serializers import MicroUserSerializer, Token, CommentSerializer
 from wallpaper.state import CustomResponse
+import wallpaper.views.helper as helper
 
 Download_Normal_Price = 0
 Download_Origin_Price = 1
@@ -16,6 +17,9 @@ Download_Origin_Price = 1
 @permission_classes([permissions.AllowAny])
 def get_account_info(request):
     uuid = request.GET.get('uuid', '')
+    channel = request.META.get('HTTP_CHANNEL')
+    version = request.META.get('HTTP_VERSION_CODE')
+    # print(channel, version)
     if not MicroUser.objects.filter(uuid=uuid).exists():
         user = MicroUser(uuid=uuid)
         user.save()
@@ -25,6 +29,8 @@ def get_account_info(request):
     data['nPrice'] = Download_Normal_Price
     data['oPrice'] = Download_Origin_Price
     data['showDonateInterval'] = 24 * 60 * 60 * 1000
+    data['canSetMode'] = False if channel == 'google_play' and version == str(helper.NEWEST_VERSION) else True
+    data['defaultContentMode'] = models.TYPE_COS if data['canSetMode'] else models.TYPE_ANIM
     return CustomResponse(data=data)
 
 

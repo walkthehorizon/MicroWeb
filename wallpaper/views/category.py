@@ -10,7 +10,7 @@ class GetCategories(generics.ListAPIView):
     serializer_class = CategorySerializer
 
     def get_queryset(self):
-        if util.is_old_version(self.request):
+        if util.is_gentle_mode(self.request):
             return Category.objects.all().filter(type=models.TYPE_COS)
         else:
             return Category.objects.all().filter(type=models.TYPE_ANIM)

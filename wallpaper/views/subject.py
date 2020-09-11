@@ -12,4 +12,4 @@ class Search(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
 
     def get_queryset(self):
-        return Subject.objects.filter(type=models.TYPE_COS if util.is_old_version(self.request) else models.TYPE_ANIM)
+        return Subject.objects.filter(type=models.TYPE_COS if util.is_gentle_mode(self.request) else models.TYPE_ANIM)
