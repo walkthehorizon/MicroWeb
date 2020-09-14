@@ -29,7 +29,9 @@ def get_account_info(request):
     data['nPrice'] = Download_Normal_Price
     data['oPrice'] = Download_Origin_Price
     data['showDonateInterval'] = 24 * 60 * 60 * 1000
-    data['canSetMode'] = False if channel == 'google_play' and version == str(helper.NEWEST_VERSION) else True
+    newest_version = models.Config.objects.all()[0].newest_version
+    # print('version ', newest_version)
+    data['canSetMode'] = False if channel == 'google_play' and version == str(newest_version) else True
     data['defaultContentMode'] = models.TYPE_COS if data['canSetMode'] else models.TYPE_ANIM
     return CustomResponse(data=data)
 

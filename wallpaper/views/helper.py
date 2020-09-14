@@ -1,8 +1,6 @@
 # 将要发布的最新版本
 from wallpaper import models
 
-NEWEST_VERSION = models.Config.objects.all()[0].newest_version
-
 
 # 请求是否来自客户端最新版本
 def is_gentle_mode(request):
