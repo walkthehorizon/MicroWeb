@@ -190,3 +190,7 @@ class Comment(models.Model):
     paper = models.ForeignKey(Wallpaper, models.CASCADE)
     user = models.ForeignKey(MicroUser, models.SET_NULL, null=True)
     created = models.DateTimeField(auto_now_add=True)
+
+
+class Config(models.Model):
+    newest_version = models.IntegerField(verbose_name='版本号', default=100, help_text='当前App最新的版本号')

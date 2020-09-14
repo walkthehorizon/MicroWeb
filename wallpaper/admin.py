@@ -38,6 +38,10 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'content', 'user_id', 'created')
 
 
+class ConfigAdmin(admin.ModelAdmin):
+    list_display = ('newest_version',)
+
+
 admin.site.register(MicroUser, MicroUserAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Wallpaper, WallpaperAdmin)
@@ -45,3 +49,4 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Splash, SplashAdmin)
 admin.site.register(Banner, BannerAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(Config, ConfigAdmin)
