@@ -156,7 +156,7 @@ class Banner(models.Model):
 class MicroUser(AbstractUser):
     uuid = models.CharField(max_length=30, blank=True, null=True)
     nickname = models.CharField(max_length=30, blank=True, default="微梦用户")
-    phone = models.CharField(max_length=11)
+    phone = models.CharField(max_length=11, blank=True, null=True)
     signature = models.TextField(max_length=200, blank=True)
     sex = models.SmallIntegerField(default=0)
     avatar = models.URLField(default="")
