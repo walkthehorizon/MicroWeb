@@ -115,7 +115,7 @@ else:
     DATABASES = {  # 生产环境数据库配置
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'test_wallpaper',  # test_wallpaper爬虫存储库
+            'NAME': 'wallpaper',
             'USER': 'shentu',
             'PASSWORD': '19951008',
             'HOST': 'localhost',

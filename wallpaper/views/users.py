@@ -31,7 +31,7 @@ def get_account_info(request):
     data['showDonateInterval'] = 24 * 60 * 60 * 1000
     newest_version = models.Config.objects.all()[0].newest_version
     # print('version ', newest_version)
-    data['canSetMode'] = False if channel == 'google_play' and version == str(newest_version) else True
+    data['canSetMode'] = False if channel == 'google_play' and version >= str(newest_version) else True
     data['defaultContentMode'] = models.TYPE_COS if data['canSetMode'] else models.TYPE_ANIM
     return CustomResponse(data=data)
 
