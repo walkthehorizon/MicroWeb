@@ -358,3 +358,11 @@ def update_share_num(request):
     paper.share_num += 1
     paper.save()
     return CustomResponse(data=state.STATE_SUCCESS)
+
+
+@api_view(['POST'])
+def set_paper_garbage(request, pk):
+    paper = Wallpaper.objects.get(id=pk)
+    paper.garbage += 1
+    paper.save()
+    return CustomResponse()

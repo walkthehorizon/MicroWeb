@@ -28,6 +28,7 @@ urlpatterns += [
     path('paper/newest', bv.GetNewWallpapers().as_view()),
     path('paper/ranks', bv.GetRankPapers().as_view()),
     path('signature', bv.get_temp_secret_key, name='get_temp_secret_key'),
+    path('garbage/set/<int:pk>', bv.set_paper_garbage),
     # path('subject/list/', bv.SubjectList.as_view(), name='subject-list'),
     # path('subject/detail/<int:pk>/', bv.GetWallpaperBySubjectId.as_view(), name='GetWallpaperBySubject'),
 

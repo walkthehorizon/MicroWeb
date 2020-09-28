@@ -99,6 +99,7 @@ class Wallpaper(models.Model):
     share_num = models.IntegerField(default=0)
     download_num = models.IntegerField(default=0)
     collected = models.BooleanField(default=False)
+    garbage = models.IntegerField(default=0, verbose_name='被标记为垃圾的次数')
 
     class Meta:
         ordering = ('id',)
