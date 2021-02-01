@@ -1,0 +1,121 @@
+2021/01/28 06:16:05 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:06 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:07 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:07 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:09 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:11 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:15 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:22 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:16:35 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:17:01 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:17:53 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:18:53 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:19:54 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:20:54 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:21:55 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:22:55 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:23:56 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:24:56 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:25:56 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:04 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:05 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:06 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:06 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:08 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:10 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:14 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:20 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:27:34 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:28:00 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:28:51 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:29:52 [emerg] 1#1: unknown directive " #" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:35 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:36 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:37 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:37 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:39 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:42 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:46 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:35:53 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:36:07 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:36:33 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:37:07 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:37:07 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:37:08 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:37:09 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:37:10 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:37:13 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:37:16 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:40:54 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:40:55 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:40:56 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:40:56 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:40:58 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:41:00 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:41:04 [emerg] 1#1: unknown directive " " in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:17 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:18 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:19 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:20 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:21 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:23 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:27 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:34 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:53:47 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:54:13 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:55:05 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:56:05 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:57:06 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:58:06 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 06:59:06 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:00:07 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:01:07 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:02:08 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:03:08 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:04:09 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:05:09 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:06:10 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:07:10 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:08:10 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:09:11 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:10:11 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:11:12 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:12:12 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:13:13 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:14:13 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:15:13 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:16:14 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:17:14 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:18:15 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:19:15 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:20:16 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:21:16 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:22:17 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:23:17 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:24:17 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:25:18 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:26:18 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:27:19 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:28:19 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:29:20 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:30:20 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:31:20 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:32:21 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:33:21 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:34:22 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:35:22 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:36:23 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:37:23 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:38:23 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:39:24 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:40:24 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:41:25 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:42:25 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:43:26 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:44:26 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:45:26 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:46:27 [emerg] 1#1: invalid parameter "8000" in /etc/nginx/conf.d/nginx.conf:4
+2021/01/28 07:53:58 [error] 20#20: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 172.23.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "uwsgi://172.23.0.3:8000", host: "localhost"
+2021/01/28 08:09:45 [error] 20#20: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.24.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "uwsgi://172.24.0.3:8000", host: "localhost"
+2021/01/28 08:09:55 [error] 20#20: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.24.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "uwsgi://172.24.0.3:8000", host: "localhost"
+2021/01/28 09:33:28 [error] 21#21: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.27.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "uwsgi://172.27.0.3:8000", host: "localhost"

@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="291c5088-3e35-4776-bc46-ef93fd9615a4" name="Default Changelist" comment="admin显示subject id">
+      <change afterPath="$PROJECT_DIR$/../docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/.idea/DjangoDemo.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MicroWeb/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../environment.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extras/api.wmmt119.top.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extras/api.wmmt119.top.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extras/wallpaper.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extras/wmmt119.top.key" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../extras/wmmt119.top.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/.idea/wallpaper.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0002_auto_20200807_1145.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0003_auto_20200817_1518.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0004_auto_20200817_1521.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0005_auto_20200817_1523.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0006_config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0007_auto_20200921_1423.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/0008_wallpaper_garbage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/permissions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/serializers.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/sign.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/state.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/views/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/views/category.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/views/helper.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/views/manager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/views/subject.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/views/users.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wallpaper/views/views.py" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/MicroWeb$bcy.coverage" NAME="bcy Coverage Results" MODIFIED="1555645370881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MicroWeb/spider" />
+    <SUITE FILE_PATH="coverage/MicroWeb$views.coverage" NAME="views Coverage Results" MODIFIED="1555644667409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/wallpaper" />
+    <SUITE FILE_PATH="coverage/MicroWeb$meizu.coverage" NAME="meizu Coverage Results" MODIFIED="1547463079232" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/MicroWeb/spider" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Test_Wallpaper@47.105.40.169" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Test_Wallpaper@47.105.40.169" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="Test_Wallpaper@47.105.40.169" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="test_wallpaper: schema" type="76f4a085:MysqlImplModel$Schema" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" module-name="MicroWeb" is-module-sdk="true">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+    <option name="myUseModuleSdk" value="true" />
+    <option name="myModuleName" value="MicroWeb" />
+  </component>
+  <component name="ExecutionTargetDialog">
+    <checked>
+      <node key="608493d8-ffa3-4789-8f8a-6f1a0236a123">
+        <node key="test_wallpaper" />
+      </node>
+    </checked>
+    <expanded>
+      <node key="608493d8-ffa3-4789-8f8a-6f1a0236a123" />
+      <node key="9fcd1aa3-8ac4-4c57-8e38-ca3cb3941de5" />
+    </expanded>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="ProjectId" id="1TdtnF4zk9UQ867pxKu2j0aLhbR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SearchEverywhereHistoryKey" value="tzinfo&#9;null&#9;null" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="database.console.LAST_STATE" value="false" />
+    <property name="js.buildTools.gulp.gulp_package_dir" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\PyCharm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Micro\MicroWeb\extras" />
+      <recent name="D:\Micro\MicroWeb" />
+      <recent name="D:\Micro\MicroWeb\wallpaper\getui" />
+      <recent name="D:\Micro\MicroWeb\wallpaper" />
+      <recent name="D:\MicroWeb\extras" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Micro\MicroWeb\wallpaper" />
+      <recent name="D:\Micro\MicroWeb\wallpaper\views" />
+      <recent name="D:\MicroWeb\MicroWeb" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="DEPLOY_CLOUD_APP_RUN_CONFIGURATION" factoryName="Deploy to Mini Program">
+      <option name="alreadyReset" value="true" />
+      <option name="appVersion" />
+      <option name="cloudAppId" />
+      <option name="description" />
+      <option name="envType" />
+      <option name="onlyUpload" value="false" />
+      <option name="pathOrUrl" />
+      <option name="uploadType" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ECS on Alibaba Cloud" type="ECS_RUN_CONFIGRATION" factoryName="Ecs configuration factory">
+      <option name="accountModel" />
+      <option name="accountModels" />
+      <option name="address" />
+      <option name="afterCommand" value="" />
+      <option name="alreadyReset" value="true" />
+      <option name="autoOpen" value="false" />
+      <option name="beforeCommand" />
+      <option name="defaultTabIdx" value="0" />
+      <option name="ecsInstance">
+        <EcsInstance>
+          <option name="OSType" value="linux" />
+          <option name="instanceId" value="i-m5e1ufcpbot0j9fz5gze" />
+          <option name="instanceName" value="实验体1号" />
+          <option name="netType" value="vpc" />
+          <option name="privateIps" value="172.31.198.245" />
+          <option name="publicIps" value="47.105.40.169" />
+          <option name="regionId" value="cn-qingdao" />
+          <option name="tags">
+            <list />
+          </option>
+        </EcsInstance>
+      </option>
+      <option name="ecsInstances" />
+      <option name="hostIds" />
+      <option name="hostTagId" value="0" />
+      <option name="location" value="/root" />
+      <option name="pathOrUrl" value="D:\static" />
+      <option name="tagId" value="0" />
+      <option name="terminalCommand" />
+      <option name="type" value="ECS" />
+      <option name="uploadType" value="FILE" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="ECS_RUN_CONFIGRATION" factoryName="Ecs configuration factory">
+      <option name="accountModel" />
+      <option name="accountModels" />
+      <option name="address" />
+      <option name="afterCommand" />
+      <option name="alreadyReset" value="true" />
+      <option name="autoOpen" value="false" />
+      <option name="beforeCommand" />
+      <option name="defaultTabIdx" value="0" />
+      <option name="ecsInstance">
+        <EcsInstance>
+          <option name="OSType" />
+          <option name="instanceId" />
+          <option name="instanceName" />
+          <option name="netType" />
+          <option name="privateIps" />
+          <option name="publicIps" />
+          <option name="regionId" />
+          <option name="tags" />
+        </EcsInstance>
+      </option>
+      <option name="ecsInstances" />
+      <option name="hostIds" />
+      <option name="hostTagId" value="0" />
+      <option name="location" />
+      <option name="pathOrUrl" />
+      <option name="tagId" value="0" />
+      <option name="terminalCommand" />
+      <option name="type" />
+      <option name="uploadType" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <module name="micro_web" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="D:\Anaconda3\envs\MicroWeb\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="0.0.0.0" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@26eeddda" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@26eeddda" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@640088b5" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+          </expand>
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
+  </component>
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="291c5088-3e35-4776-bc46-ef93fd9615a4" name="Default Changelist" comment="" />
+      <created>1544756345153</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1544756345153</updated>
+      <workItem from="1559626686414" duration="51000" />
+      <workItem from="1559640180089" duration="873000" />
+      <workItem from="1559701777738" duration="9680000" />
+      <workItem from="1559815358820" duration="3093000" />
+      <workItem from="1560152788365" duration="5795000" />
+      <workItem from="1560224491778" duration="1313000" />
+      <workItem from="1560484840689" duration="6418000" />
+      <workItem from="1560738932993" duration="4678000" />
+      <workItem from="1560823937882" duration="1658000" />
+      <workItem from="1560836401123" duration="1198000" />
+      <workItem from="1560923866000" duration="9828000" />
+      <workItem from="1560995816212" duration="4641000" />
+      <workItem from="1561001649513" duration="2802000" />
+      <workItem from="1561025674568" duration="625000" />
+      <workItem from="1561083308716" duration="6693000" />
+      <workItem from="1561342800754" duration="2512000" />
+      <workItem from="1561364116465" duration="598000" />
+      <workItem from="1561427524204" duration="3434000" />
+      <workItem from="1561517000573" duration="516000" />
+      <workItem from="1561533125429" duration="1222000" />
+      <workItem from="1561605373097" duration="145000" />
+      <workItem from="1561613895223" duration="7066000" />
+      <workItem from="1561688160290" duration="269000" />
+      <workItem from="1561703809509" duration="971000" />
+      <workItem from="1562119611227" duration="3407000" />
+      <workItem from="1562574344625" duration="844000" />
+      <workItem from="1562640456865" duration="6398000" />
+      <workItem from="1562724714886" duration="2081000" />
+      <workItem from="1562758617760" duration="233000" />
+      <workItem from="1562812126706" duration="1906000" />
+      <workItem from="1562910549683" duration="2018000" />
+      <workItem from="1563156696573" duration="88000" />
+      <workItem from="1563352975011" duration="3917000" />
+      <workItem from="1563359884701" duration="3546000" />
+      <workItem from="1563432346118" duration="4276000" />
+      <workItem from="1563515494190" duration="359000" />
+      <workItem from="1563761400962" duration="13048000" />
+      <workItem from="1564024573023" duration="2155000" />
+      <workItem from="1564106077768" duration="3364000" />
+      <workItem from="1564118822675" duration="14061000" />
+      <workItem from="1564368089514" duration="7179000" />
+      <workItem from="1564452123979" duration="5968000" />
+      <workItem from="1564554072465" duration="11580000" />
+      <workItem from="1564639508676" duration="3480000" />
+      <workItem from="1564712039185" duration="13360000" />
+      <workItem from="1564972748663" duration="3190000" />
+      <workItem from="1565258043800" duration="1744000" />
+      <workItem from="1565319444225" duration="13302000" />
+      <workItem from="1565575579524" duration="2350000" />
+      <workItem from="1565579240169" duration="645000" />
+      <workItem from="1565588186942" duration="7234000" />
+      <workItem from="1565663190060" duration="5199000" />
+      <workItem from="1565749869439" duration="602000" />
+      <workItem from="1567153270990" duration="156000" />
+      <workItem from="1567404311727" duration="5286000" />
+      <workItem from="1567411531317" duration="2672000" />
+      <workItem from="1567688503044" duration="668000" />
+      <workItem from="1567748876116" duration="234000" />
+      <workItem from="1567751798156" duration="2961000" />
+      <workItem from="1568182001130" duration="432000" />
+      <workItem from="1568271017588" duration="2357000" />
+      <workItem from="1568615759635" duration="5239000" />
+      <workItem from="1568689176683" duration="2623000" />
+      <workItem from="1568774695871" duration="2418000" />
+      <workItem from="1568948068609" duration="6577000" />
+      <workItem from="1569214277148" duration="599000" />
+      <workItem from="1570608992475" duration="6000" />
+      <workItem from="1573801970286" duration="2279000" />
+      <workItem from="1573804289305" duration="4546000" />
+      <workItem from="1574062285984" duration="5416000" />
+      <workItem from="1574145249215" duration="640000" />
+      <workItem from="1574230599214" duration="1245000" />
+      <workItem from="1574303897739" duration="2555000" />
+      <workItem from="1574403530828" duration="1629000" />
+      <workItem from="1574405172721" duration="3618000" />
+      <workItem from="1574747808181" duration="6850000" />
+      <workItem from="1574930063772" duration="3916000" />
+      <workItem from="1574997065023" duration="4469000" />
+      <workItem from="1575362745797" duration="303000" />
+      <workItem from="1575428108433" duration="2885000" />
+      <workItem from="1575515854715" duration="1328000" />
+      <workItem from="1575872419981" duration="2280000" />
+      <workItem from="1576053526114" duration="7924000" />
+      <workItem from="1576118536620" duration="2736000" />
+      <workItem from="1576205133748" duration="72000" />
+      <workItem from="1576205246375" duration="1783000" />
+      <workItem from="1576464515943" duration="3991000" />
+      <workItem from="1576563793402" duration="7349000" />
+      <workItem from="1576658629503" duration="6000" />
+      <workItem from="1577086546059" duration="5443000" />
+      <workItem from="1577169265614" duration="21527000" />
+      <workItem from="1577347339402" duration="647000" />
+      <workItem from="1577415221718" duration="10433000" />
+      <workItem from="1578293808717" duration="10869000" />
+      <workItem from="1578969945592" duration="27235000" />
+      <workItem from="1579229254050" duration="6277000" />
+      <workItem from="1581697063258" duration="454000" />
+      <workItem from="1582448268813" duration="930000" />
+      <workItem from="1587376132410" duration="3907000" />
+      <workItem from="1587449659707" duration="23196000" />
+      <workItem from="1589187683193" duration="11932000" />
+      <workItem from="1589870119786" duration="7699000" />
+      <workItem from="1590379124546" duration="13539000" />
+      <workItem from="1591169880058" duration="9606000" />
+      <workItem from="1592449902903" duration="2940000" />
+      <workItem from="1593414924032" duration="19984000" />
+      <workItem from="1595230245282" duration="41078000" />
+      <workItem from="1596420128587" duration="14795000" />
+      <workItem from="1596539992901" duration="17137000" />
+      <workItem from="1597202708599" duration="2395000" />
+      <workItem from="1597391604782" duration="29814000" />
+      <workItem from="1598605440375" duration="14290000" />
+      <workItem from="1599730093744" duration="11809000" />
+      <workItem from="1600656292311" duration="28003000" />
+      <workItem from="1602487686205" duration="2963000" />
+      <workItem from="1604910179349" duration="112000" />
+      <workItem from="1611565779960" duration="2744000" />
+      <workItem from="1611717827418" duration="4436000" />
+      <workItem from="1611735402108" duration="1726000" />
+      <workItem from="1611737217327" duration="545000" />
+      <workItem from="1611738385299" duration="127000" />
+      <workItem from="1611804328186" duration="2232000" />
+      <workItem from="1611814990351" duration="10437000" />
+      <workItem from="1611916157066" duration="155000" />
+      <workItem from="1611916338640" duration="5074000" />
+    </task>
+    <task id="LOCAL-00013" summary="完善收藏，字段优化">
+      <created>1562928090646</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1562928090646</updated>
+    </task>
+    <task id="LOCAL-00014" summary="支持看够购买下载">
+      <created>1564136537150</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1564136537150</updated>
+    </task>
+    <task id="LOCAL-00015" summary="优化收藏功能">
+      <created>1564481042140</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1564481042140</updated>
+    </task>
+    <task id="LOCAL-00016" summary="banner优化">
+      <created>1564735602179</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1564735602179</updated>
+    </task>
+    <task id="LOCAL-00017" summary="合并migrate">
+      <created>1564740249077</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1564740249077</updated>
+    </task>
+    <task id="LOCAL-00018" summary="提交合并的migration文件">
+      <created>1564740385628</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1564740385628</updated>
+    </task>
+    <task id="LOCAL-00019" summary="支持用户认证与权限">
+      <created>1565340359687</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1565340359687</updated>
+    </task>
+    <task id="LOCAL-00020" summary="登录成功返回Token，升级标准库">
+      <created>1565344659526</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1565344659526</updated>
+    </task>
+    <task id="LOCAL-00021" summary="新增app更新接口">
+      <created>1567406825832</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1567406825832</updated>
+    </task>
+    <task id="LOCAL-00022" summary="支持https">
+      <created>1567410554929</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1567410554929</updated>
+    </task>
+    <task id="LOCAL-00023" summary="增加api域名支持">
+      <created>1567748945614</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1567748945614</updated>
+    </task>
+    <task id="LOCAL-00024" summary="针对web提供带有subject的wallpaper">
+      <created>1568276725421</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1568276725421</updated>
+    </task>
+    <task id="LOCAL-00025" summary="优化版本信息接口">
+      <created>1568792864551</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1568792864551</updated>
+    </task>
+    <task id="LOCAL-00026" summary="优化版本信息接口">
+      <created>1574333734278</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1574333734279</updated>
+    </task>
+    <task id="LOCAL-00027" summary="调整文件结构，优化static">
+      <created>1574404147943</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1574404147943</updated>
+    </task>
+    <task id="LOCAL-00028" summary="fix bug">
+      <created>1574407807859</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1574407807859</updated>
+    </task>
+    <task id="LOCAL-00029" summary="调整settings，新增最新paper接口">
+      <created>1574756824298</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1574756824298</updated>
+    </task>
+    <task id="LOCAL-00030" summary="修复下载扣除看豆bug,调整签到看豆奖励个数">
+      <created>1575874077211</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1575874077211</updated>
+    </task>
+    <task id="LOCAL-00031" summary="修复下载扣除看豆bug,调整签到看豆奖励个数">
+      <created>1576061211404</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1576061211404</updated>
+    </task>
+    <task id="LOCAL-00032" summary="优化签到">
+      <created>1576061348277</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1576061348277</updated>
+    </task>
+    <task id="LOCAL-00033" summary="修复cos签名异常">
+      <created>1576579418452</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1576579418452</updated>
+    </task>
+    <task id="LOCAL-00034" summary="评论、微信公众号验证接口">
+      <created>1577183374271</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1577183374271</updated>
+    </task>
+    <task id="LOCAL-00035" summary="bug fix">
+      <created>1577183952559</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1577183952559</updated>
+    </task>
+    <task id="LOCAL-00036" summary="bug fix">
+      <created>1577239349848</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1577239349848</updated>
+    </task>
+    <task id="LOCAL-00037" summary="新增获取JsSDK签名接口">
+      <created>1577256522822</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1577256522822</updated>
+    </task>
+    <task id="LOCAL-00038" summary="bug fix">
+      <created>1577259110306</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1577259110306</updated>
+    </task>
+    <task id="LOCAL-00039" summary="7000s内固定signature">
+      <created>1577263653803</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1577263653803</updated>
+    </task>
+    <task id="LOCAL-00040" summary="sign fix">
+      <created>1577264137037</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1577264137037</updated>
+    </task>
+    <task id="LOCAL-00041" summary="新增评论功能、点赞、评论行为次数统计等">
+      <created>1579161447731</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1579161447731</updated>
+    </task>
+    <task id="LOCAL-00042" summary="所有wallpaper增加collected字段">
+      <created>1579420016072</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1579420016072</updated>
+    </task>
+    <task id="LOCAL-00043" summary="字段调整">
+      <created>1590144219403</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1590144219404</updated>
+    </task>
+    <task id="LOCAL-00044" summary="支持subject删除">
+      <created>1591181384744</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1591181384744</updated>
+    </task>
+    <task id="LOCAL-00045" summary="update manager">
+      <created>1591495921194</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1591495921194</updated>
+    </task>
+    <task id="LOCAL-00046" summary="update database setting">
+      <created>1591685755551</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1591685755551</updated>
+    </task>
+    <task id="LOCAL-00047" summary="接口优化">
+      <created>1596094521967</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1596094521967</updated>
+    </task>
+    <task id="LOCAL-00048" summary="更新域名证书">
+      <created>1596527286363</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1596527286363</updated>
+    </task>
+    <task id="LOCAL-00049" summary="update">
+      <created>1597391928366</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1597391928366</updated>
+    </task>
+    <task id="LOCAL-00050" summary="update requirements">
+      <created>1597394291233</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1597394291233</updated>
+    </task>
+    <task id="LOCAL-00051" summary="delete jpush">
+      <created>1597394603637</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1597394603637</updated>
+    </task>
+    <task id="LOCAL-00052" summary="接口优化">
+      <created>1597661517976</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1597661517976</updated>
+    </task>
+    <task id="LOCAL-00053" summary="delete test_wallpaper.sql">
+      <created>1597661941223</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1597661941223</updated>
+    </task>
+    <task id="LOCAL-00054" summary="功能优化">
+      <created>1598606135228</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1598606135228</updated>
+    </task>
+    <task id="LOCAL-00055" summary="支持本地切换浏览模式">
+      <created>1599805536894</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1599805536895</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Add Config">
+      <created>1600053885190</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1600053885191</updated>
+    </task>
+    <task id="LOCAL-00057" summary="优化canSetMode设置">
+      <created>1600055101274</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1600055101274</updated>
+    </task>
+    <task id="LOCAL-00058" summary="切换线网数据库">
+      <created>1600657531809</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1600657531810</updated>
+    </task>
+    <task id="LOCAL-00059" summary="update MicroUser phone">
+      <created>1600669481959</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1600669481959</updated>
+    </task>
+    <task id="LOCAL-00060" summary="支持标记Paper为垃圾">
+      <created>1601284382959</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1601284382959</updated>
+    </task>
+    <task id="LOCAL-00061" summary="admin显示subject id">
+      <created>1601288322244</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1601288322244</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="评论、微信公众号验证接口" />
+    <MESSAGE value="新增获取JsSDK签名接口" />
+    <MESSAGE value="bug fix" />
+    <MESSAGE value="7000s内固定signature" />
+    <MESSAGE value="sign fix" />
+    <MESSAGE value="新增评论功能、点赞、评论行为次数统计等" />
+    <MESSAGE value="所有wallpaper增加collected字段" />
+    <MESSAGE value="字段调整" />
+    <MESSAGE value="支持subject删除" />
+    <MESSAGE value="update manager" />
+    <MESSAGE value="update database setting" />
+    <MESSAGE value="更新域名证书" />
+    <MESSAGE value="update" />
+    <MESSAGE value="update requirements" />
+    <MESSAGE value="delete jpush" />
+    <MESSAGE value="接口优化" />
+    <MESSAGE value="delete test_wallpaper.sql" />
+    <MESSAGE value="功能优化" />
+    <MESSAGE value="支持本地切换浏览模式" />
+    <MESSAGE value="Add Config" />
+    <MESSAGE value="优化canSetMode设置" />
+    <MESSAGE value="切换线网数据库" />
+    <MESSAGE value="update MicroUser phone" />
+    <MESSAGE value="支持标记Paper为垃圾" />
+    <MESSAGE value="admin显示subject id" />
+    <option name="LAST_COMMIT_MESSAGE" value="admin显示subject id" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/wallpaper/permissions.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/MicroWeb$test.coverage" NAME="test Coverage Results" MODIFIED="1564565313168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/wallpaper" />
+    <SUITE FILE_PATH="coverage/MicroWeb$getui.coverage" NAME="getui Coverage Results" MODIFIED="1598513572932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/wallpaper/views" />
+    <SUITE FILE_PATH="coverage/MicroWeb$manage.coverage" NAME="manage Coverage Results" MODIFIED="1574304344520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
