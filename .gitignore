@@ -114,7 +114,7 @@ micro_web/__pycache__/
 templates/
 wallpaper/__pycache__/
 
-/.idea
+.idea/
 
 *.pid
 
