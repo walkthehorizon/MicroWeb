@@ -85,7 +85,8 @@ DATABASES = {  # 生产环境数据库配置
         'NAME': 'wallpaper',
         'USER': 'shentu',
         'PASSWORD': '19951008',
-        'HOST': 'db',
+        # 'HOST': 'localhost',
+        'HOST': '182.254.141.131',
         'PORT': '3306'
     }
 }

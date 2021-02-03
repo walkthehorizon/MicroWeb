@@ -105,8 +105,14 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-.idea/
-__pycache__/
+.gitignore
+.idea/dataSources.local.xml
+.idea/inspectionProfiles/
+.idea/vcs.xml
+.idea/workspace.xml
+micro_web/__pycache__/
+templates/
+wallpaper/__pycache__/
 
 /.idea
 
