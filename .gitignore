@@ -118,6 +118,4 @@ wallpaper/__pycache__/
 
 *.pid
 
-*.ini
-
 /static
