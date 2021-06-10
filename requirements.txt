@@ -6,7 +6,7 @@ chardet==3.0.4
 cos-python-sdk-v5==1.5.5
 cryptography==2.7
 dicttoxml==1.7.4
-Django==2.2.1
+Django==2.2.24
 django-filter==2.0.0
 django-redis==4.10.0
 django-simpleui==2021.2
